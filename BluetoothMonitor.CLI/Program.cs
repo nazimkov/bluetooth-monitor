@@ -124,12 +124,13 @@ namespace BluetoothBatteryReader
 
                 try
                 {
+                    var selectedRfcomm = rfcommResult.Services[selectedService];
                     StreamSocket socket = new StreamSocket();
-                    await socket.ConnectAsync(rfcommResult.Services[selectedService].ConnectionHostName, rfcommResult.Services[selectedService].ConnectionServiceName);
-                    Console.WriteLine("Connected to service: " + rfcommResult.Services[selectedService].ServiceId.Uuid);
+                    await socket.ConnectAsync(selectedRfcomm.ConnectionHostName, selectedRfcomm.ConnectionServiceName);
+                    Console.WriteLine("Connected to service: " + selectedRfcomm.ServiceId.Uuid);
 
                     // Probe the device with several common commands that accessories might respond to
-                    await ProbeDeviceAsync(socket);
+                    //await ProbeDeviceAsync(socket);
 
                     CancellationTokenSource source = new CancellationTokenSource();
                     CancellationToken cancelToken = source.Token;
@@ -165,16 +166,16 @@ namespace BluetoothBatteryReader
             var probes = new[]
             {
                 "AT+IPHONEACCEV",
-                "AT+IPHONEACCEV?",
-                "AT+BAT?",
-                "AT+GETBAT",
-                "AT+GET_BATTERY",
-                "GET BATTERY",
-                "GET_BAT",
-                "BATTERY",
-                "STATUS",
-                "AT+STATUS",
-                "\r\n" // send a newline to trigger any prompt
+                //"AT+IPHONEACCEV?",
+                //"AT+BAT?",
+                //"AT+GETBAT",
+                //"AT+GET_BATTERY",
+                //"GET BATTERY",
+                //"GET_BAT",
+                //"BATTERY",
+                //"STATUS",
+                //"AT+STATUS",
+                //"\r\n" // send a newline to trigger any prompt
             };
 
             foreach (var p in probes)
@@ -232,7 +233,7 @@ namespace BluetoothBatteryReader
         static string GetRfcommServiceDescription(Guid uuid)
         {
             // Common RFCOMM/SDP service UUIDs
-            var map = new System.Collections.Generic.Dictionary<Guid, string>(System.Collections.Generic.EqualityComparer<Guid>.Default)
+            var map = new Dictionary<Guid, string>(EqualityComparer<Guid>.Default)
             {
                 { Guid.Parse("00001101-0000-1000-8000-00805f9b34fb"), "Serial Port (SPP)" },
                 { Guid.Parse("00001108-0000-1000-8000-00805f9b34fb"), "Headset (HS)" },
@@ -268,75 +269,130 @@ namespace BluetoothBatteryReader
     {
         public static async Task Read(StreamSocket socket, CancellationTokenSource source)
         {
-            IBuffer buffer = new Windows.Storage.Streams.Buffer(1024);
-            uint bytesRead = 1024;
-
-            IBuffer result = await socket.InputStream.ReadAsync(buffer, bytesRead, InputStreamOptions.Partial);
-            await Write(socket, "OK");
-
-            DataReader reader = DataReader.FromBuffer(result);
-            var output = reader.ReadString(result.Length);
-
-            if (output.Length != 0)
+            // Keep reading packets until cancellation or until we parse a battery level
+            while (!source.IsCancellationRequested)
             {
+                IBuffer buffer = new Windows.Storage.Streams.Buffer(1024);
+                uint bytesRead = 1024;
+
+                IBuffer result;
+                try
+                {
+                    result = await socket.InputStream.ReadAsync(buffer, bytesRead, InputStreamOptions.Partial);
+                }
+                catch (Exception)
+                {
+                    // Socket read failed or closed
+                    return;
+                }
+
+                if (result == null || result.Length == 0)
+                {
+                    // No more data
+                    return;
+                }
+
+                DataReader reader = DataReader.FromBuffer(result);
+                var output = reader.ReadString(result.Length);
+
+                if (string.IsNullOrWhiteSpace(output))
+                {
+                    continue;
+                }
+
                 Console.WriteLine("Recieved :" + output.Replace("\r", " "));
 
-                // First check for IPHONEACCEV as before
-                if (output.Contains("IPHONEACCEV"))
+                // Normalize for case-insensitive checks but keep original for parsing values
+                var line = output.Trim();
+                var up = line.ToUpperInvariant();
+
+                try
                 {
-                    try
+                    // Handle known RFCOMM/AT-like exchanges
+                    if (up.Contains("BRSF"))
                     {
-                        var batteryCmd = output.Substring(output.IndexOf("IPHONEACCEV"));
-                        Console.WriteLine("Battery level :" + (Int32.Parse(batteryCmd.Substring(batteryCmd.LastIndexOf(",") + 1)) + 1) * 10);
+                        await Write(socket, "+BRSF: 1024");
+                        await Write(socket, "OK");
+                    }
+                    else if (up.Contains("CIND="))
+                    {
+                        await Write(socket, "+CIND:(\"service\",(0-1)),(\"call\",(0-1)),(\"callsetup\",(0-3)),(\"callheld\",(0-2)),(\"battchg\",(0-5))");
+                        await Write(socket, "OK");
+                    }
+                    else if (up.Contains("CIND?"))
+                    {
+                        await Write(socket, "+CIND: 0,0,0,0,3");
+                        await Write(socket, "OK");
+                    }
+                    else if (up.Contains("BIND=?"))
+                    {
+                        await Write(socket, "+BIND: (2)");
+                        await Write(socket, "OK");
+                    }
+                    else if (up.Contains("BIND?"))
+                    {
+                        await Write(socket, "+BIND: 2,1");
+                        await Write(socket, "OK");
+                    }
+                    else if (up.Contains("XAPL="))
+                    {
+                        await Write(socket, "+XAPL=iPhone,7");
+                        await Write(socket, "OK");
+                    }
+                    else if (up.Contains("IPHONEACCEV"))
+                    {
+                        // parse comma separated parameters after IPHONEACCEV
+                        var batteryCmd = up.Substring(up.IndexOf("IPHONEACCEV"));
+                        Console.WriteLine("Battery level :" + (int.Parse(batteryCmd.Substring(batteryCmd.LastIndexOf(",") + 1)) + 1) * 10);
                         source.Cancel();
                         return;
                     }
-                    catch (Exception e)
+                    else if (up.Contains("BIEV="))
                     {
-                        Console.WriteLine("Could not retrieve " + e.Message);
+                        var eq = line.Split(new[] { '=' }, 2);
+                        if (eq.Length > 1)
+                        {
+                            var p = eq[1].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+                            if (p.Length >= 2 && p[0] == "2" && int.TryParse(p[1], out int v))
+                            {
+                                Console.WriteLine($"Battery level (BIEV): {v}%");
+                                source.Cancel();
+                                return;
+                            }
+                        }
+                    }
+                    else if (up.Contains("XEVENT=BATTERY"))
+                    {
+                        var eq = line.Split(new[] { '=' }, 2);
+                        if (eq.Length > 1)
+                        {
+                            var p = eq[1].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToArray();
+                            if (p.Length >= 3 && int.TryParse(p[1], out int a) && int.TryParse(p[2], out int b) && b != 0)
+                            {
+                                int percent = (int)((double)a / b * 100.0);
+                                Console.WriteLine($"Battery level (XEVENT ratio): {percent}%");
+                                source.Cancel();
+                                return;
+                            }
+                            else if (p.Length >= 2 && int.TryParse(p[1], out int v2))
+                            {
+                                int overall = (v2 + 1) * 10;
+                                Console.WriteLine($"Battery level (XEVENT): {overall}%");
+                                source.Cancel();
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Default acknowledgement so many accessories expect an OK/CRLF reply
+                        await Write(socket, "OK");
                     }
                 }
-
-                // Try to detect common battery keywords and numeric values
-                try
+                catch (Exception ex)
                 {
-                    // percent pattern e.g. "85%"
-                    var m = Regex.Match(output, "(\\d{1,3})\\s*%");
-                    if (m.Success)
-                    {
-                        if (int.TryParse(m.Groups[1].Value, out int val) && val >= 0 && val <= 100)
-                        {
-                            Console.WriteLine($"Battery level (parsed %): {val}%");
-                            source.Cancel();
-                            return;
-                        }
-                    }
-
-                    // battery: 85 or Battery=85
-                    m = Regex.Match(output, "battery[^0-9]{0,3}([0-9]{1,3})", RegexOptions.IgnoreCase);
-                    if (m.Success)
-                    {
-                        if (int.TryParse(m.Groups[1].Value, out int val) && val >= 0 && val <= 100)
-                        {
-                            Console.WriteLine($"Battery level (parsed battery): {val}%");
-                            source.Cancel();
-                            return;
-                        }
-                    }
-
-                    // generic number fallback (first number between 0 and 100)
-                    m = Regex.Match(output, "\\b([0-9]{1,3})\\b");
-                    if (m.Success)
-                    {
-                        if (int.TryParse(m.Groups[1].Value, out int val) && val >= 0 && val <= 100)
-                        {
-                            Console.WriteLine($"Battery level (parsed number): {val}%");
-                            source.Cancel();
-                            return;
-                        }
-                    }
+                    Console.WriteLine("Could not handle response: " + ex.Message);
                 }
-                catch { }
             }
         }
 
