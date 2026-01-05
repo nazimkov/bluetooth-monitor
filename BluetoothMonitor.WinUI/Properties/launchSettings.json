@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BluetoothMonitor.WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "BluetoothMonitor.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
