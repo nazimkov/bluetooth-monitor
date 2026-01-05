@@ -33,12 +33,12 @@
                         <ProgressRing Width="20"
                                       Height="20"
                                       Margin="12,0,0,0"
-                                      IsActive="{Binding IsBusy}" />
+                                      IsActive="{x:Bind IsBusy}" />
                     </StackPanel>
 
                     <ListView x:Name="DevicesList"
-                              ItemsSource="{Binding Devices}"
-                              SelectedItem="{Binding SelectedDevice, Mode=TwoWay}"
+                              ItemsSource="{x:Bind Devices}"
+                              SelectedItem="{x:Bind SelectedDevice, Mode=TwoWay}"
                               Height="260">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:DeviceEntry">
@@ -55,7 +55,7 @@
                             Margin="0,12,0,0"
                             Width="160"
                             HorizontalAlignment="Left"
-                            IsEnabled="{Binding CanRefresh}"
+                            IsEnabled="{x:Bind CanRefresh}"
                             Click="RefreshDevices_Click" />
                 </StackPanel>
 
@@ -65,8 +65,8 @@
                     </StackPanel>
 
                     <ListView x:Name="ServicesList"
-                              ItemsSource="{Binding Services}"
-                              SelectedItem="{Binding SelectedService, Mode=TwoWay}"
+                              ItemsSource="{x:Bind Services}"
+                              SelectedItem="{x:Bind SelectedService, Mode=TwoWay}"
                               Height="260">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="local:ServiceEntry">
@@ -100,7 +100,7 @@
                 CornerRadius="4">
             <StackPanel>
                 <TextBlock Text="Logs" FontWeight="SemiBold" Margin="0,0,0,8" />
-                <ListView ItemsSource="{Binding Logs}" Height="150">
+                <ListView ItemsSource="{x:Bind Logs}" Height="150">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding}" TextWrapping="Wrap" />

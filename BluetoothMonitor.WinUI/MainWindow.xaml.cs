@@ -54,6 +54,8 @@ namespace BluetoothMonitor.WinUI
         public event PropertyChangedEventHandler? PropertyChanged;
         public MainWindow()
         {
+            // Initialize the XAML UI first and set DataContext so bindings like {Binding Devices}
+            // on the ListView find the properties on this instance.
             InitializeComponent();
             Closed += (_, _) => Cleanup();
 
