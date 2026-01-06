@@ -15,5 +15,9 @@
     </Content>  
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BluetoothMonitor.Core\BluetoothMonitor.Core.csproj" />
+  </ItemGroup>
+
 
 </Project>

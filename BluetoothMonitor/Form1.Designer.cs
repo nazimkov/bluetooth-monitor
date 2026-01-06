@@ -104,8 +104,7 @@ partial class Form1
         var deviceId = await this.bluetoothService.FindDeviceIdAsync(DeviceName);
         if (deviceId != null)
         {
-            await this.bluetoothService.ConnectToClassicBluetoothDeviceAsync(deviceId);
-            var batteryLevel = 10;
+            var batteryLevel = await this.bluetoothService.GetDeviceBatteryLevel(deviceId);
             MessageBox.Show($"Battery level is {batteryLevel}%");
         }
         // Show the form when the user double clicks on the notify icon.

@@ -1,8 +1,6 @@
-using System.Net.Sockets;
-using System.Runtime.InteropServices.WindowsRuntime;
+using BluetoothMonitor.Core;
+using BluetoothMonitor.Core.Devices;
 using Windows.Devices.Bluetooth;
-using Windows.Devices.Bluetooth.GenericAttributeProfile;
-using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Devices.Enumeration;
 using Windows.Networking.Sockets;
 using Windows.Security.Cryptography;
@@ -15,165 +13,94 @@ namespace BluetoothMonitor;
 // https://github.com/inthehand/32feet/issues/75
 
 
-
-internal sealed class BluetoothClassicDeviceService : IBluetoothService
-{
-    private readonly BluetoothMonitor.CLI.BluetoothClassicDevices _classicDevices = new();
-
-    public async Task<List<DeviceInformation>> ListDevicesAsync()
-    {
-        var aqsFilter = BluetoothDevice.GetDeviceSelectorFromPairingState(true);
-        var devices = await DeviceInformation.FindAllAsync(aqsFilter);
-        return devices.ToList();
-    }
-
-    public async Task<string?> FindDeviceIdAsync(string deviceName)
-    {
-        var aqsFilter = BluetoothDevice.GetDeviceSelectorFromDeviceName(deviceName);
-        var devices = await DeviceInformation.FindAllAsync(aqsFilter);
-        if (devices is null) return null;
-
-        foreach (var device in devices)
-        {
-            if (device?.Name == deviceName) return device.Id;
-
-        }
-        return null;
-    }
-
-    public Task<int> CheckBatteryLevelAsync(string deviceId)
-    {
-        if (string.IsNullOrEmpty(deviceId))
-            throw new ArgumentException("deviceId is null or empty", nameof(deviceId));
-
-        if (_classicDevices.TryGetBatteryLevel(deviceId, out var device))
-        {
-            return Task.FromResult((int)device.Charge);
-        }
-
-        throw new Exception($"Battery service not found for device with id: {deviceId}.");
-    }
-}
-
-
-internal sealed class BluetoothLEDeviceService : IBluetoothService
-{
-    public async Task<List<DeviceInformation>> ListDevicesAsync()
-    {
-        var aqsFilter = BluetoothLEDevice.GetDeviceSelector();
-        var devices = await DeviceInformation.FindAllAsync(aqsFilter);
-        return devices.ToList();
-
-    }
-
-    public async Task<string?> FindDeviceIdAsync(string deviceName)
-    {
-        var aqsFilter = BluetoothLEDevice.GetDeviceSelectorFromDeviceName(deviceName);
-        var devices = await DeviceInformation.FindAllAsync(aqsFilter);
-        if (devices is null) return null;
-
-        foreach (var device in devices)
-        {
-            if (device?.Name == deviceName) return device.Id;
-
-        }
-        return null;
-    }
-
-    public async Task<int> CheckBatteryLevelAsync(string deviceId)
-    {
-        try
-        {
-            var device = await BluetoothLEDevice.FromIdAsync(deviceId);
-
-            var batteryServices = await device.GetGattServicesForUuidAsync(GattServiceUuids.Battery);
-            if (batteryServices != null)
-            {
-                var batteryService = batteryServices.Services[0];
-                var batteryLevelCharacteristic = await batteryService.GetCharacteristicsForUuidAsync(GattCharacteristicUuids.BatteryLevel);
-                var readResult = batteryLevelCharacteristic.Characteristics[0];
-                if (readResult != null)
-                {
-                    var value = await readResult.ReadValueAsync(BluetoothCacheMode.Uncached);
-                    if (value != null && value.Status == GattCommunicationStatus.Success)
-                    {
-                        byte[] valueBytes = value.Value.ToArray();
-                        if (valueBytes.Length > 0)
-                        {
-                            int batteryLevel = valueBytes[0];
-                            return batteryLevel;
-                        }
-                    }
-
-                }
-            }
-            throw new Exception($"Failed to read battery level from the device with id: {deviceId}."); // TODO : Custom exception
-        }
-        catch (ArgumentException ex)
-        {
-            throw new Exception($"The device ID: {deviceId} is invalid or the device is not a Bluetooth LE device.", ex);
-        }
-    }
-}
-
 public sealed class BluetoothService
 {
+    private readonly IBluetoothService _classicDevices = new BluetoothClassicDevices();
+    private readonly IBluetoothService _leDevices = new BluetoothLEDevices();
 
     public BluetoothService() => InitializeDeviceWatcher();
 
     private const string BTDeviceFriendlyName = "Baseus Bowie D05";
-    private DeviceWatcher _deviceWatcher;
+    private DeviceWatcher? _deviceWatcher;
 
     private void InitializeDeviceWatcher()
     {
-        string aqsFilter = $"System.Devices.Aep.DeviceContainer.Category:\"{{65A0EBA6-5783-4741-9027-33EFA8D2742C}}\" AND System.Devices.Aep.Bluetooth.Le.IsConnectable:System.StructuredQueryType.Boolean#True AND System.ItemNameDisplay:~\"{BTDeviceFriendlyName}\"";
-        string[] requestedProperties = { "System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected" };
+        //string aqsFilter = $"System.Devices.Aep.DeviceContainer.Category:\"{{65A0EBA6-5783-4741-9027-33EFA8D2742C}}\" AND System.Devices.Aep.Bluetooth.Le.IsConnectable:System.StructuredQueryType.Boolean#True AND System.ItemNameDisplay:~\"{BTDeviceFriendlyName}\"";
+        //string[] requestedProperties = { "System.Devices.Aep.DeviceAddress", "System.Devices.Aep.IsConnected" };
 
-        _deviceWatcher = DeviceInformation.CreateWatcher(aqsFilter, requestedProperties, DeviceInformationKind.AssociationEndpoint);
+        //_deviceWatcher = DeviceInformation.CreateWatcher(aqsFilter, requestedProperties, DeviceInformationKind.AssociationEndpoint);
 
-        _deviceWatcher.Added += DeviceWatcher_Added;
-        _deviceWatcher.Updated += DeviceWatcher_Updated;
-        _deviceWatcher.Removed += DeviceWatcher_Removed;
+        //_deviceWatcher.Added += DeviceWatcher_Added;
+        //_deviceWatcher.Updated += DeviceWatcher_Updated;
+        //_deviceWatcher.Removed += DeviceWatcher_Removed;
 
-        _deviceWatcher.Start();
+        //_deviceWatcher.Start();
     }
 
-    private static string GetDeviceAqsFilter(string deviceName)
+    public async Task<IReadOnlyList<DeviceInformation>> ListDevicesAsync()
     {
-        return "System.Devices.Aep.DeviceContainer.Category:\"{{65A0EBA6-5783-4741-9027-33EFA8D2742C}}\""
-            + "AND System.Devices.Aep.Bluetooth.Le.IsConnectable:System.StructuredQueryType.Boolean#True"
-            + $"AND System.ItemNameDisplay:~\"{deviceName}\"";
+        var classicDevices = await _classicDevices.ListDevicesAsync();
+        var leDevices = await _leDevices.ListDevicesAsync();
+
+        return classicDevices
+            .Concat(leDevices)
+            .GroupBy(d => d.Id)
+            .Select(g => g.First())
+            .ToList();
     }
 
-    /*
-        private async Task CheckBatteryLevelForAllDevicesAsync()
+    public async Task<string?> FindDeviceIdAsync(string deviceName)
+    {
+        var leDeviceId = await _leDevices.FindDeviceIdAsync(deviceName);
+        if (!string.IsNullOrWhiteSpace(leDeviceId))
         {
-            var devices = await DeviceInformation.FindAllAsync(deviceWatcher.GetAqsFilter());
-            foreach (var device in devices)
-            {
-                await CheckBatteryLevelAsync(device.Id);
-            }
+            return leDeviceId;
         }
 
-    */
-
-    private void DeviceWatcher_Added(DeviceWatcher sender, DeviceInformation args)
-    {
-        CheckBatteryLevelAsync(args.Id);
+        return await _classicDevices.FindDeviceIdAsync(deviceName);
     }
 
-    private void DeviceWatcher_Updated(DeviceWatcher sender, DeviceInformationUpdate args)
-    {
-        CheckBatteryLevelAsync(args.Id);
-    }
+    private async void DeviceWatcher_Added(DeviceWatcher sender, DeviceInformation args) =>
+        await CheckBatteryLevelAsync(args.Id);
+
+    private async void DeviceWatcher_Updated(DeviceWatcher sender, DeviceInformationUpdate args) =>
+        await CheckBatteryLevelAsync(args.Id);
 
     private void DeviceWatcher_Removed(DeviceWatcher sender, DeviceInformationUpdate args)
     {
         // Handle device removal if needed
     }
 
+    public async Task<byte> GetDeviceBatteryLevel(string deviceId)
+    {
+        if (string.IsNullOrWhiteSpace(deviceId))
+        {
+            throw new ArgumentException("Device ID cannot be null or empty.", nameof(deviceId));
+        }
+        IBluetoothService service = _classicDevices;
+        var isLeDevice = await IsBluetoothLeDeviceAsync(deviceId);
+        if (isLeDevice)
+        {
+            service = _leDevices;
+        }
+        try
+        {
+            var battery = await service.CheckBatteryLevelAsync(deviceId);
+            return battery.BatteryLevel;
+        }
+        catch (BluetoothException ex)
+        {
+            Console.WriteLine($"Bluetooth error reading battery level for {deviceId}: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unexpected error reading battery level for {deviceId}: {ex.Message}");
+            throw;
+        }
+    }
 
-    
+
     
     /*
     private void UpdateBatteryLevel(string batteryLevel)
@@ -202,42 +129,45 @@ public sealed class BluetoothService
     }
     */
 
-    static class ReadWrite
+    private async Task CheckBatteryLevelAsync(string deviceId)
     {
-        public static async Task Read(StreamSocket socket, CancellationTokenSource source)
+        if (string.IsNullOrWhiteSpace(deviceId))
         {
-            IBuffer buffer = new Windows.Storage.Streams.Buffer(1024);
-            uint bytesRead = 1024;
-
-            IBuffer result = await socket.InputStream.ReadAsync(buffer, bytesRead, InputStreamOptions.Partial);
-            await Write(socket, "OK");
-
-            DataReader reader = DataReader.FromBuffer(result);
-            var output = reader.ReadString(result.Length);
-
-            if (output.Length != 0)
-            {
-                Console.WriteLine("Recieved :" + output.Replace("\r", " "));
-                if (output.Contains("IPHONEACCEV"))
-                {
-                    try
-                    {
-                        var batteryCmd = output.Substring(output.IndexOf("IPHONEACCEV"));
-                        Console.WriteLine("Battery level :" + (Int32.Parse(batteryCmd.Substring(batteryCmd.LastIndexOf(",") + 1)) + 1) * 10);
-                        source.Cancel();
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine("Could not retrieve " + e.Message);
-                    }
-                }
-            }
+            return;
         }
 
-        public static async Task Write(StreamSocket socket, string str)
+        IBluetoothService service = _classicDevices;
+        var isLeDevice = await IsBluetoothLeDeviceAsync(deviceId);
+        if (isLeDevice)
         {
-            var bytesWrite = CryptographicBuffer.ConvertStringToBinary("\r\n" + str + "\r\n", BinaryStringEncoding.Utf8);
-            await socket.OutputStream.WriteAsync(bytesWrite);
+            service = _leDevices;
+        }
+
+        try
+        {
+            var battery = await service.CheckBatteryLevelAsync(deviceId);
+            Console.WriteLine($"Battery level for {battery.DeviceId}: {battery.BatteryLevel}%");
+        }
+        catch (BluetoothException ex)
+        {
+            Console.WriteLine($"Bluetooth error reading battery level for {deviceId}: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Unexpected error reading battery level for {deviceId}: {ex.Message}");
+        }
+    }
+
+    private static async Task<bool> IsBluetoothLeDeviceAsync(string deviceId)
+    {
+        try
+        {
+            using BluetoothLEDevice? device = await BluetoothLEDevice.FromIdAsync(deviceId);
+            return device is not null;
+        }
+        catch
+        {
+            return false;
         }
     }
 }

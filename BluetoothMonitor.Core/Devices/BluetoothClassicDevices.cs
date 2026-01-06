@@ -5,7 +5,7 @@ using Windows.Devices.Enumeration;
 
 namespace BluetoothMonitor.Core.Devices
 {
-    internal class BluetoothClassicDevices : IBluetoothService
+    public sealed class BluetoothClassicDevices : IBluetoothService
     {
         private static readonly DEVPROPKEY DEVPKEY_DEVICE_AEP_ID_GUID = new()
         {
@@ -44,11 +44,6 @@ namespace BluetoothMonitor.Core.Devices
             return null;
         }
 
-        public IReadOnlyDictionary<string, ClassicDeviceBatteryLevel> GetAll()
-        {
-            return GetAllInternal(deviceId: null);
-        }
-
         public async Task<IReadOnlyList<DeviceInformation>> ListDevicesAsync()
         {
             var aqsFilter = BluetoothDevice.GetDeviceSelectorFromPairingState(true);
@@ -58,67 +53,72 @@ namespace BluetoothMonitor.Core.Devices
 
         public bool TryGetBatteryLevel(string deviceId, out ClassicDeviceBatteryLevel device)
         {
-            if (GetAllInternal(deviceId).TryGetValue(deviceId, out var innerDevice))
+            foreach (var candidate in EnumerateClassicDeviceBatteryLevels())
             {
-                device = innerDevice;
-                return true;
+                if (candidate.Id == deviceId)
+                {
+                    device = candidate;
+                    return true;
+                }
             }
             device = new(deviceId, 0);
             return false;
         }
 
-        private IReadOnlyDictionary<string, ClassicDeviceBatteryLevel> GetAllInternal(string? deviceId = null)
+        private IEnumerable<ClassicDeviceBatteryLevel> EnumerateClassicDeviceBatteryLevels()
         {
-            Dictionary<string, ClassicDeviceBatteryLevel> allInternal = new();
             var deviceInfoPtr = IntPtr.Zero;
+            HashSet<string> seenDeviceIds = new();
             try
             {
                 deviceInfoPtr = SetupAPI.SetupDiGetClassDevs(IntPtr.Zero, null, IntPtr.Zero, DeviceFiter.AllClasses);
-                var spDevinfoData = new SP_DEVINFO_DATA();
+                var spDevinfoData = new SP_DEVINFO_DATA
+                {
+                    cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>()
+                };
                 var memberIndex = 0;
-                spDevinfoData.cbSize = Marshal.SizeOf<SP_DEVINFO_DATA>();
                 while (SetupAPI.SetupDiEnumDeviceInfo(deviceInfoPtr, memberIndex++, ref spDevinfoData))
                 {
-                    try
+                    var device = CreateBatteryLevel(deviceInfoPtr, ref spDevinfoData);
+                    if (device is not null && seenDeviceIds.Add(device.Id))
                     {
-                        var deviceIdProp = SetupAPI.GetStringProperty(deviceInfoPtr, ref spDevinfoData, DEVPKEY_DEVICE_AEP_ID_GUID);
-                        if (string.IsNullOrEmpty(deviceIdProp) || allInternal.ContainsKey(deviceIdProp))
-                        {
-                            continue;
-                        }
-                        var batteryLevelProp = SetupAPI.GetByteProperty(deviceInfoPtr, ref spDevinfoData, DEVPKEY_DEVICE_BATTERY_GUID);
-                        if (!batteryLevelProp.HasValue || batteryLevelProp.Value < 0)
-                        {
-                            continue;
-                        }
-                        ClassicDeviceBatteryLevel systemChargableDevice = new(deviceIdProp, batteryLevelProp.Value);
-
-                        if (deviceId == null)
-                            allInternal.Add(deviceIdProp, systemChargableDevice);
-                        else if (deviceIdProp == deviceId)
-                        {
-                            allInternal.Add(deviceIdProp, systemChargableDevice);
-                            break;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // Ignore individual device errors
+                        yield return device;
                     }
                 }
-            }
-            catch
-            {
-                throw;
             }
             finally
             {
                 if (deviceInfoPtr != IntPtr.Zero)
+                {
                     SetupAPI.SetupDiDestroyDeviceInfoList(deviceInfoPtr);
+                }
             }
-            return allInternal;
+        }
+
+        private ClassicDeviceBatteryLevel? CreateBatteryLevel(IntPtr deviceInfoPtr, ref SP_DEVINFO_DATA spDevinfoData)
+        {
+            try
+            {
+                var deviceIdProp = SetupAPI.GetStringProperty(deviceInfoPtr, ref spDevinfoData, DEVPKEY_DEVICE_AEP_ID_GUID);
+                if (string.IsNullOrEmpty(deviceIdProp))
+                {
+                    return null;
+                }
+
+                var batteryLevelProp = SetupAPI.GetByteProperty(deviceInfoPtr, ref spDevinfoData, DEVPKEY_DEVICE_BATTERY_GUID);
+                if (!batteryLevelProp.HasValue || batteryLevelProp.Value < 0)
+                {
+                    return null;
+                }
+
+                return new ClassicDeviceBatteryLevel(deviceIdProp, batteryLevelProp.Value);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 
-    internal record ClassicDeviceBatteryLevel (string Id, byte Charge);
+    public record ClassicDeviceBatteryLevel (string Id, byte Charge);
 }
