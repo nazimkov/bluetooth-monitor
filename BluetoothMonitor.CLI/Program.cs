@@ -11,7 +11,7 @@ using Windows.Security.Cryptography;
 using Windows.Networking.Sockets;
 using Windows.Devices.Bluetooth.GenericAttributeProfile;
 
-namespace BluetoothBatteryReader
+namespace BluetoothMonitor.CLI
 {
     enum DeviceKind { Unknown, BLE, Classic, Dual }
 
@@ -106,6 +106,18 @@ namespace BluetoothBatteryReader
                     Console.WriteLine("GATT check failed: " + ex.Message);
                 }
 
+
+                Console.WriteLine("Reading charge from Setup API...");
+
+                short charge = GetDeviceCharge(blDevice.DeviceId);
+
+                Console.WriteLine($"Charge level (Setup API): {(charge >= 0 ? charge + "%" : "Unknown")}");
+
+                if (charge >= 0)
+                {
+                    return;
+                }
+
                 Console.WriteLine("Discovering Rfcomm services..");
                 RfcommDeviceServicesResult rfcommResult = await blDevice.GetRfcommServicesAsync();
                 if (rfcommResult.Services.Count == 0)
@@ -158,6 +170,16 @@ namespace BluetoothBatteryReader
             {
                 Exit();
             }
+        }
+
+        static short GetDeviceCharge(string id)
+        {
+            var btClassic = new BluetoothClassicDevices();
+            if (btClassic.TryGetBatteryLevel(id, out var device))
+            {
+                return device.Charge;
+            }
+            return -1;
         }
 
         // Probe device by sending a set of common commands over RFCOMM/SPP
