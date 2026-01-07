@@ -2,9 +2,6 @@ using BluetoothMonitor.Core;
 using BluetoothMonitor.Core.Devices;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
-using Windows.Networking.Sockets;
-using Windows.Security.Cryptography;
-using Windows.Storage.Streams;
 
 namespace BluetoothMonitor;
 
@@ -15,8 +12,8 @@ namespace BluetoothMonitor;
 
 public sealed class BluetoothService
 {
-    private readonly IBluetoothService _classicDevices = new BluetoothClassicDevices();
-    private readonly IBluetoothService _leDevices = new BluetoothLEDevices();
+    private readonly IBluetoothDevices _classicDevices = new BluetoothClassicDevices();
+    private readonly IBluetoothDevices _leDevices = new BluetoothLEDevices();
 
     public BluetoothService() => InitializeDeviceWatcher();
 
@@ -77,7 +74,7 @@ public sealed class BluetoothService
         {
             throw new ArgumentException("Device ID cannot be null or empty.", nameof(deviceId));
         }
-        IBluetoothService service = _classicDevices;
+        IBluetoothDevices service = _classicDevices;
         var isLeDevice = await IsBluetoothLeDeviceAsync(deviceId);
         if (isLeDevice)
         {
@@ -101,7 +98,7 @@ public sealed class BluetoothService
     }
 
 
-    
+
     /*
     private void UpdateBatteryLevel(string batteryLevel)
     {
@@ -136,7 +133,7 @@ public sealed class BluetoothService
             return;
         }
 
-        IBluetoothService service = _classicDevices;
+        IBluetoothDevices service = _classicDevices;
         var isLeDevice = await IsBluetoothLeDeviceAsync(deviceId);
         if (isLeDevice)
         {

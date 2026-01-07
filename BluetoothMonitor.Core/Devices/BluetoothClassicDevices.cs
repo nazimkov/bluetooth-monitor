@@ -1,18 +1,18 @@
-﻿using BluetoothMonitor.Core.Utils;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
+using BluetoothMonitor.Core.Utils;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
 
 namespace BluetoothMonitor.Core.Devices
 {
-    public sealed class BluetoothClassicDevices : IBluetoothService
+    public sealed class BluetoothClassicDevices : IBluetoothDevices
     {
         private static readonly DEVPROPKEY DEVPKEY_DEVICE_AEP_ID_GUID = new()
         {
             fmtid = new Guid("3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF"),
             pid = 8
         };
-        private static readonly DEVPROPKEY DEVPKEY_DEVICE_BATTERY_GUID = new ()
+        private static readonly DEVPROPKEY DEVPKEY_DEVICE_BATTERY_GUID = new()
         {
             fmtid = new Guid("104EA319-6EE2-4701-BD47-8DDBF425BBE5"),
             pid = 2
@@ -21,7 +21,7 @@ namespace BluetoothMonitor.Core.Devices
         public Task<DeviceBatteryLevel> CheckBatteryLevelAsync(string deviceId)
         {
             if (TryGetBatteryLevel(deviceId, out var device))
-            { 
+            {
                 return Task.FromResult(new DeviceBatteryLevel(
                    device.Id,
                    device.Charge
@@ -51,7 +51,7 @@ namespace BluetoothMonitor.Core.Devices
             return devices;
         }
 
-        public bool TryGetBatteryLevel(string deviceId, out ClassicDeviceBatteryLevel device)
+        private bool TryGetBatteryLevel(string deviceId, out ClassicDeviceBatteryLevel device)
         {
             foreach (var candidate in EnumerateClassicDeviceBatteryLevels())
             {
@@ -120,5 +120,5 @@ namespace BluetoothMonitor.Core.Devices
         }
     }
 
-    public record ClassicDeviceBatteryLevel (string Id, byte Charge);
+    internal record ClassicDeviceBatteryLevel(string Id, byte Charge);
 }

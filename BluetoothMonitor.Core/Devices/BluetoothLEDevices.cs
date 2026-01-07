@@ -5,7 +5,7 @@ using Windows.Storage.Streams;
 
 namespace BluetoothMonitor.Core.Devices
 {
-    public sealed class BluetoothLEDevices : IBluetoothService
+    public sealed class BluetoothLEDevices : IBluetoothDevices
     {
         public async Task<IReadOnlyList<DeviceInformation>> ListDevicesAsync()
         {

@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace BluetoothMonitor.Core
+﻿namespace BluetoothMonitor.Core
 {
     public class BluetoothException : Exception
     {
@@ -13,10 +11,6 @@ namespace BluetoothMonitor.Core
         }
 
         public BluetoothException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-        protected BluetoothException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }
