@@ -5,40 +5,58 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Run
 
 ```bash
-# Restore and build the whole solution
-dotnet build BluetoothMonitor.sln
+# Restore and build the whole solution (x64 only — the WinUI app is not AnyCPU)
+dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64
 
-# Run the tray app (WinForms)
-dotnet run --project BluetoothMonitor/BluetoothMonitor.csproj
-
-# Release build, x64 (matches solution platforms)
-dotnet build BluetoothMonitor.sln -c Release -p:Platform=x64
+# Run the tray app (launches the WinUI 3 window and sits in the system tray)
+dotnet run --project BluetoothMonitor.App -c Debug -r win-x64
 ```
 
-There is no test project in the solution.
-
-Target framework is `net8.0-windows10.0.22621.0` — builds require the Windows 10 22621 SDK and only run on Windows. The `BluetoothMonitor.Core` project pulls in WinRT APIs (`Windows.Devices.Bluetooth`, GATT, `DeviceInformation`) via the Windows target framework, not a NuGet package.
+There are no tests. The app targets `net8.0-windows10.0.22621.0` so it requires the Windows 10 22621 SDK and a Windows host. The WinUI project is packaged (MSIX) — first build will auto-generate a `BluetoothMonitor.App_TemporaryKey.pfx` signing cert.
 
 ## Architecture
 
-Two projects:
+Two projects, both `net8.0-windows10.0.22621.0`:
 
-- **`BluetoothMonitor.Core`** — reusable library. Defines `IBluetoothDevices` (list / find by name / read battery) with two implementations under `Devices/`:
-  - `BluetoothLEDevices` uses WinRT `BluetoothLEDevice` + the GATT Battery service/characteristic (`GattServiceUuids.Battery`, `GattCharacteristicUuids.BatteryLevel`) to read battery over BLE.
-  - `BluetoothClassicDevices` uses P/Invoke into `setupapi.dll` (wrappers in `Utils/SetupAPI.cs`) to enumerate devices and read the `DEVPKEY_DEVICE_BATTERY` property. This is the only reliable way to read battery for Classic BR/EDR devices on Windows — GATT is not available for them.
-  - Failures inside an implementation are wrapped in `BluetoothException`; the success shape is the `DeviceBatteryLevel(string DeviceId, byte BatteryLevel)` record. Note the Core project also contains an `internal` `BluetoothService` skeleton that is currently unused.
+- **`BluetoothMonitor.Core`** — class library that owns all Bluetooth-battery reads. **Do not modify unless the change is purely additive; the App layer owns all UI/product logic.** Key types:
+  - `IBluetoothDevices` contract with `ListDevicesAsync`, `FindDeviceIdAsync`, `CheckBatteryLevelAsync` returning `DeviceBatteryLevel(string, byte)`.
+  - `BluetoothLEDevices` — WinRT `BluetoothLEDevice.FromIdAsync` + GATT Battery service/characteristic. Only path that works for LE devices; won't work for Classic.
+  - `BluetoothClassicDevices` — P/Invoke into `setupapi.dll` (wrappers in `Utils/SetupAPI.cs`) to read the `DEVPKEY_DEVICE_BATTERY` property. Only path that works for Classic BR/EDR devices; the GATT battery characteristic is not available for them.
+  - `BluetoothException` wraps all failure paths.
 
-- **`BluetoothMonitor`** — WinForms tray app (`OutputType=WinExe`, `UseWindowsForms=true`). `Program.cs` → `Form1` (empty partial) + `Form1.Designer.cs` (all real UI/handler code). The form has no visible window; its only surface is a `NotifyIcon` in the system tray whose double-click handler queries battery and shows a `MessageBox`. `BluetoothService` in this project is the composition root: it owns one `BluetoothClassicDevices` + one `BluetoothLEDevices`, merges `ListDevicesAsync` results by `Id`, prefers the LE implementation for `FindDeviceIdAsync`, and dispatches `GetDeviceBatteryLevel` by probing `BluetoothLEDevice.FromIdAsync(deviceId)` — if it returns a device, use LE; otherwise fall back to Classic.
+- **`BluetoothMonitor.App`** — WinUI 3 packaged app (MSIX, `WindowsPackageType=MSIX`, `Platforms=x64`). Built around the "Battcheck" Claude-Design mockup. Structure:
+  - `Program.cs` wires `Application.Start` with a single-instance redirection check before any XAML loads. `App.xaml.cs` hosts the DI container, settings load, AppNotifications registration, main-window bootstrap, and tray-icon init.
+  - `MainWindow` is a 920×640 Mica window with `ExtendsContentIntoTitleBar`, a `NavigationView` sidebar (Devices / Notifications / General / About), and close-to-tray behavior gated on `SettingsModel.KeepRunningInBackground`.
+  - `Services/BluetoothFacade` is the composition root replacing the old WinForms `BluetoothService`: it owns one `BluetoothClassicDevices` + one `BluetoothLEDevices`, dispatches battery reads by probing `BluetoothLEDevice.FromIdAsync` (LE first, Classic fallback), and caches that result per device id so polling doesn't re-probe every tick.
+  - `Services/DeviceCatalog` is the single source of truth for live device state. Devices page and tray flyout both bind to `DeviceCatalog.Devices`.
+  - `Services/BatteryPollingService` owns a `DispatcherQueueTimer` keyed to `SettingsModel.RefreshIntervalSeconds`. It raises `BatteryUpdated` events; `DeviceCatalog` + `TrayIconService` + `DevicesViewModel` subscribe. Threshold-crossing logic fires low + critical toasts with hysteresis (low-notified flag resets when level climbs ≥ threshold+5).
+  - `Services/JsonSettingsService` persists to `%LOCALAPPDATA%\Battcheck\settings.json` with a 500ms debounce.
+  - `Services/TrayIconService` wraps `H.NotifyIcon.Core.TrayIconWithContextMenu`. Icon .ico swaps by level bucket (connected / low / critical / offline). MenuFlyout: Show, Rescan, Settings, Exit.
+  - `Services/AppNotificationService` uses `AppNotificationBuilder` — MSIX package identity means action-button callbacks work without COM activator setup.
+  - `Services/StartupTaskService` calls `Windows.ApplicationModel.StartupTask.GetAsync("BattcheckStartup")` — that StartupTask is declared in `Package.appxmanifest`. Relies on MSIX identity.
+  - Custom controls (`BatteryRing`, `BatteryBar`, `HeroCard`, `DeviceRow`) implement the design's hero + list UI. `BatteryRing` draws a percent arc with `ArcSegment` (WinUI's `Ellipse` does not support stroke-dasharray).
 
-### Gotchas when modifying the app
+### Design → WinUI mapping (quick reference)
 
-- The target device is hardcoded as `DeviceName = "Baseus Bowie D05"` in `Form1.Designer.cs` and again (unused) as `BTDeviceFriendlyName` in `BluetoothService.cs`. Changing the monitored device means editing `Form1.Designer.cs`.
-- `InitializeTimer` sets up a 5-minute poll, but `Timer_Tick` currently does nothing — the commented-out `CheckBatteryLevelForAllDevicesAsync` / `UpdateBatteryLevel` block in `BluetoothService.cs` is the intended periodic-update / low-battery-balloon path and is the obvious place to wire real behavior.
-- `InitializeDeviceWatcher` in `BluetoothService.cs` is entirely commented out; `DeviceWatcher_Added/Updated/Removed` handlers exist but are never subscribed. If you re-enable the watcher, also wire up the `_deviceWatcher` field.
-- The notify icon loads from a relative path (`assets\cake_slice_dessert_food_icon.ico`). `BluetoothMonitor.csproj` copies `assets\*.*` to the output dir with `CopyToOutputDirectory=Always` — keep this if you add new assets, otherwise the app will throw at startup.
-- Platform list in the `.sln` is `AnyCPU;x64`. The Core project is AnyCPU-only (x64 maps to AnyCPU in solution config), so only the app project has a real x64 build.
-- `BluetoothMonitor.sln` previously contained `BluetoothMonitor.CLI`, `BluetoothMonitor.Desktop` (WPF), and `BluetoothMonitor.WinUI` projects. Their files are deleted on disk (see `git status`) but you may still see references in older commits — the current shipping surface is only the WinForms tray app.
+- Mockup's CSS vars → `Styles/Colors.xaml` with Light/Dark `ThemeDictionaries`. Consumers bind `{ThemeResource BattcheckAccentBrush}` etc.
+- Mockup's settings rows → `CommunityToolkit.WinUI.Controls.SettingsCard`.
+- Mockup's banners → `InfoBar` with Severity mapping info/warn/danger → Informational/Warning/Error.
+- Mockup's window chrome → `MicaBackdrop` + `ExtendsContentIntoTitleBar`; caption buttons are drawn by Windows.
+- Mockup's tray badge → not rendered in-app; the OS tray renders our .ico set with numeric text in tooltip.
 
-## Planned: migrate UI to WinUI 3
+### Intentionally scoped out of V1 (design-vs-backend gaps)
 
-The current WinForms front end (`BluetoothMonitor` project) is being replaced with a WinUI 3 app. New UI work should target WinUI 3, not WinForms. `BluetoothMonitor.Core` stays as-is — only the shell/host project changes. When building the replacement, keep the same tray-icon UX and reuse `IBluetoothDevices` / `BluetoothService` composition rather than rewriting the Bluetooth logic.
+- L/R/case sub-batteries for earbuds (Core returns a single byte — hero shows one ring).
+- Codec display (Windows does not expose A2DP negotiated codec).
+- DND / Focus-assist silencing (no public Windows API). The toggle row is rendered but disabled with an explanatory tooltip.
+- "Find a setting" sidebar search (disabled `AutoSuggestBox` placeholder).
+- "Check for updates" (shows an `InfoBar` "no update server configured").
+- "Pair new" in-app pairing (deep-links to `ms-settings:bluetooth?&pair` instead).
+
+### Gotchas
+
+- **WinUI is x64 only.** The Core library builds for AnyCPU and maps `x64` → `AnyCPU` in the sln. The App maps `Any CPU` → `x64` (no build) so the sln's AnyCPU row is effectively "just build Core".
+- Polling tick is created with `DispatcherQueue.GetForCurrentThread()` — it must start on the UI thread. That happens via `App.OnLaunched` calling `polling.StartAsync`.
+- `JsonSettingsService.Update` raises `Changed` synchronously; multiple subscribers must not block. The polling service reuses the same event to re-arm its timer interval.
+- `H.NotifyIcon.WinUI` tray icon is created programmatically (not in XAML) so it survives DI lifetime cleanly. Icon .ico files are loaded from the app's output `Assets\` folder.
+- MSIX identity is load-bearing for the `StartupTask` API and for interactive-button toasts. Do not switch to unpackaged without rewriting `StartupTaskService` (HKCU Run key) and pruning `AppNotificationBuilder` buttons.

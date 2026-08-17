@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="BluetoothMonitor.App.Views.NotificationsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctkc="using:CommunityToolkit.WinUI.Controls"
+    xmlns:models="using:BluetoothMonitor.App.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ScrollViewer Padding="32,24,32,32">
+        <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
+            <TextBlock Text="Notifications" Style="{StaticResource BattcheckPageTitle}" />
+            <TextBlock Text="Get a heads up before your headphones die." Style="{StaticResource BattcheckPageSub}" />
+
+            <TextBlock Text="Low battery alert" Style="{StaticResource BattcheckSectionTitle}" />
+
+            <ctkc:SettingsCard Header="Warn me when battery drops below"
+                               Description="{x:Bind ViewModel.Threshold, Mode=OneWay}">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Slider Minimum="5"
+                            Maximum="50"
+                            StepFrequency="5"
+                            TickFrequency="5"
+                            Width="160"
+                            Value="{x:Bind ViewModel.Threshold, Mode=TwoWay}" />
+                    <TextBlock Text="{x:Bind ViewModel.Threshold, Mode=OneWay}"
+                               FontWeight="SemiBold"
+                               MinWidth="36"
+                               VerticalAlignment="Center" />
+                    <TextBlock Text="%" VerticalAlignment="Center" />
+                </StackPanel>
+            </ctkc:SettingsCard>
+
+            <ctkc:SettingsCard Header="Notification style"
+                               Description="How Battcheck lets you know.">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <ComboBox SelectedIndex="{x:Bind ViewModel.NotificationStyleIndex, Mode=TwoWay}"
+                          MinWidth="180">
+                    <ComboBoxItem Content="Banner + sound" />
+                    <ComboBoxItem Content="Banner only" />
+                    <ComboBoxItem Content="Sound only" />
+                    <ComboBoxItem Content="Silent" />
+                </ComboBox>
+            </ctkc:SettingsCard>
+
+            <ctkc:SettingsCard Header="Alert sound"
+                               Description="Played through your system speakers, not the headset.">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE767;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <ComboBox SelectedItem="{x:Bind ViewModel.AlertSound, Mode=TwoWay}" MinWidth="160">
+                        <x:String>Gentle</x:String>
+                        <x:String>Ping</x:String>
+                        <x:String>Alert</x:String>
+                        <x:String>None</x:String>
+                    </ComboBox>
+                    <Button Content="Preview" Command="{x:Bind ViewModel.PreviewSoundCommand}" />
+                </StackPanel>
+            </ctkc:SettingsCard>
+
+            <TextBlock Text="Advanced" Style="{StaticResource BattcheckSectionTitle}" />
+
+            <ctkc:SettingsCard Header="Critical alert under 5%"
+                               Description="Send an extra urgent notification that can't be suppressed.">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.CriticalAlertUnder5, Mode=TwoWay}" />
+            </ctkc:SettingsCard>
+
+            <ctkc:SettingsCard Header="Silence during Do Not Disturb"
+                               Description="Coming in a future release — Windows doesn't expose Focus assist state yet."
+                               IsEnabled="False"
+                               ToolTipService.ToolTip="Windows Focus-assist state is not exposed to apps in the current OS build.">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SilenceDuringDnd, Mode=TwoWay}" IsEnabled="False" />
+            </ctkc:SettingsCard>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
