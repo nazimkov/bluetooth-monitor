@@ -21,12 +21,12 @@ public partial class App : Application
         UnhandledException += OnUnhandledException;
     }
 
-    protected override void OnLaunched(LaunchActivatedEventArgs args)
+    protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
         Services = ConfigureServices();
 
         var settings = Services.GetRequiredService<ISettingsService>();
-        settings.LoadAsync().GetAwaiter().GetResult();
+        await settings.LoadAsync();
 
         AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
         AppNotificationManager.Default.Register();
