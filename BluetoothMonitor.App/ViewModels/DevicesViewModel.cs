@@ -99,7 +99,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void SelectDevice(DeviceItemViewModel? device)
     {
-        if (device is null || !device.IsConnected) return;
+        if (device is null) return;
         _settings.Update(s => s.SelectedDeviceId = device.Id);
     }
 
