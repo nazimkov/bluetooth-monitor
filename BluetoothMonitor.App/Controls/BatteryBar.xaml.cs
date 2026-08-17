@@ -31,6 +31,7 @@ public sealed partial class BatteryBar : UserControl
 
     private void UpdateWidth()
     {
+        Bindings?.Update();
         if (FillBorder is null) return;
         var pct = Math.Clamp(PercentLevel / 100.0, 0.0, 1.0);
         FillBorder.Width = 140 * pct;

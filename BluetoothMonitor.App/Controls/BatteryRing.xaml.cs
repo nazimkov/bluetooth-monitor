@@ -58,6 +58,7 @@ public sealed partial class BatteryRing : UserControl
 
     private void RedrawArc()
     {
+        Bindings?.Update();
         if (ArcPath is null) return;
 
         double size = Size;

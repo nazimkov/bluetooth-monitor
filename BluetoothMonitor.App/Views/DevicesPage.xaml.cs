@@ -15,6 +15,15 @@ public sealed partial class DevicesPage : Page
     {
         ViewModel = App.Current.Services.GetRequiredService<DevicesViewModel>();
         InitializeComponent();
+        Loaded += DevicesPage_Loaded;
+    }
+
+    private void DevicesPage_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (ViewModel.PollNowCommand.CanExecute(null))
+        {
+            ViewModel.PollNowCommand.Execute(null);
+        }
     }
 
     private void DeviceRow_Tapped(object sender, TappedRoutedEventArgs e)
