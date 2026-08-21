@@ -47,38 +47,55 @@
                         IsPaneToggleButtonVisible="False"
                         IsSettingsVisible="False"
                         OpenPaneLength="240"
+                        AutomationProperties.AutomationId="RootNav"
                         SelectionChanged="RootNav_SelectionChanged">
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox x:Name="NavSearch"
                                 PlaceholderText="Find a setting"
                                 IsEnabled="False"
                                 ToolTipService.ToolTip="Search is coming in a future release"
-                                QueryIcon="Find" />
+                                QueryIcon="Find"
+                                AutomationProperties.AutomationId="NavSearch" />
             </NavigationView.AutoSuggestBox>
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Name="NavDevices" Content="Devices" Tag="devices" IsSelected="True">
+                <NavigationViewItem x:Name="NavDevices"
+                                    Content="Devices"
+                                    Tag="devices"
+                                    IsSelected="True"
+                                    AutomationProperties.AutomationId="NavDevices">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE702;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="NavNotifications" Content="Notifications" Tag="notifications">
+                <NavigationViewItem x:Name="NavNotifications"
+                                    Content="Notifications"
+                                    Tag="notifications"
+                                    AutomationProperties.AutomationId="NavNotifications">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="NavGeneral" Content="General" Tag="general">
+                <NavigationViewItem x:Name="NavGeneral"
+                                    Content="General"
+                                    Tag="general"
+                                    AutomationProperties.AutomationId="NavGeneral">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Name="NavAbout" Content="About" Tag="about">
+                <NavigationViewItem x:Name="NavAbout"
+                                    Content="About"
+                                    Tag="about"
+                                    AutomationProperties.AutomationId="NavAbout">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE946;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
 
-            <Frame x:Name="ContentFrame" IsNavigationStackEnabled="False" />
+            <Frame x:Name="ContentFrame"
+                   IsNavigationStackEnabled="False"
+                   AutomationProperties.AutomationId="ContentFrame" />
         </NavigationView>
     </Grid>
 </Window>

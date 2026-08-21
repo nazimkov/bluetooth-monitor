@@ -120,6 +120,12 @@ ipch/
 
 # Visual Studio Trace Files
 *.e2e
+# Keep the FlaUI E2E test project (name ends in .E2E, matches the rule above)
+!BluetoothMonitor.E2E/
+!BluetoothMonitor.E2E/**
+BluetoothMonitor.E2E/**/[Bb]in/
+BluetoothMonitor.E2E/**/[Oo]bj/
+BluetoothMonitor.E2E/**/x64/
 
 # TFS 2012 Local Workspace
 $tf/

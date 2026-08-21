@@ -1,3 +1,4 @@
+using BluetoothMonitor.App.Services.Test;
 using Microsoft.Windows.AppLifecycle;
 
 namespace BluetoothMonitor.App.Services;
@@ -7,7 +8,10 @@ public sealed class AppInstanceService : ISingleInstanceService
     public bool RedirectIfNotPrimary()
     {
         var args = AppInstance.GetCurrent().GetActivatedEventArgs();
-        var instance = AppInstance.FindOrRegisterForKey("BluetoothMonitor.App");
+        var key = E2ETestHost.IsEnabled
+            ? E2ETestHost.InstanceKey
+            : "BluetoothMonitor.App";
+        var instance = AppInstance.FindOrRegisterForKey(key);
         if (instance.IsCurrent)
         {
             instance.Activated += (_, e) =>

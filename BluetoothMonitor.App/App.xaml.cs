@@ -1,5 +1,6 @@
 using System;
 using BluetoothMonitor.App.Services;
+using BluetoothMonitor.App.Services.Test;
 using BluetoothMonitor.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Xaml;
@@ -28,8 +29,11 @@ public partial class App : Application
         var settings = Services.GetRequiredService<ISettingsService>();
         await settings.LoadAsync();
 
-        AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
-        AppNotificationManager.Default.Register();
+        if (!E2ETestHost.IsEnabled)
+        {
+            AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
+            AppNotificationManager.Default.Register();
+        }
 
         var instance = Services.GetRequiredService<ISingleInstanceService>();
         _ = instance.RedirectIfNotPrimary();
@@ -47,15 +51,35 @@ public partial class App : Application
     private static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
+        var e2e = E2ETestHost.IsEnabled;
 
-        services.AddSingleton<ISettingsService, JsonSettingsService>();
-        services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
+        if (e2e && E2ETestHost.SettingsDirectory is { Length: > 0 } settingsDir)
+        {
+            services.AddSingleton<ISettingsService>(_ => new JsonSettingsService(settingsDir));
+        }
+        else
+        {
+            services.AddSingleton<ISettingsService, JsonSettingsService>();
+        }
+
+        if (e2e)
+        {
+            services.AddSingleton<IBluetoothFacade, FakeBluetoothFacade>();
+            services.AddSingleton<INotificationService, NoOpNotificationService>();
+            services.AddSingleton<IStartupService, NoOpStartupService>();
+            services.AddSingleton<ITrayIconService, NoOpTrayIconService>();
+        }
+        else
+        {
+            services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
+            services.AddSingleton<INotificationService, AppNotificationService>();
+            services.AddSingleton<IStartupService, StartupTaskService>();
+            services.AddSingleton<ITrayIconService, TrayIconService>();
+        }
+
         services.AddSingleton<IDeviceCatalog, DeviceCatalog>();
         services.AddSingleton<IBatteryPollingService, BatteryPollingService>();
-        services.AddSingleton<INotificationService, AppNotificationService>();
-        services.AddSingleton<IStartupService, StartupTaskService>();
         services.AddSingleton<ISingleInstanceService, AppInstanceService>();
-        services.AddSingleton<ITrayIconService, TrayIconService>();
 
         services.AddSingleton<MainViewModel>();
         services.AddTransient<DevicesViewModel>();

@@ -7,11 +7,14 @@
     xmlns:models="using:BluetoothMonitor.App.Models"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    AutomationProperties.AutomationId="NotificationsPage">
 
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
-            <TextBlock Text="Notifications" Style="{StaticResource BattcheckPageTitle}" />
+            <TextBlock Text="Notifications"
+                       Style="{StaticResource BattcheckPageTitle}"
+                       AutomationProperties.AutomationId="NotificationsPageTitle" />
             <TextBlock Text="Get a heads up before your headphones die." Style="{StaticResource BattcheckPageSub}" />
 
             <TextBlock Text="Low battery alert" Style="{StaticResource BattcheckSectionTitle}" />
@@ -27,11 +30,13 @@
                             StepFrequency="5"
                             TickFrequency="5"
                             Width="160"
-                            Value="{x:Bind ViewModel.Threshold, Mode=TwoWay}" />
+                            Value="{x:Bind ViewModel.Threshold, Mode=TwoWay}"
+                            AutomationProperties.AutomationId="LowBatteryThresholdSlider" />
                     <TextBlock Text="{x:Bind ViewModel.Threshold, Mode=OneWay}"
                                FontWeight="SemiBold"
                                MinWidth="36"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center"
+                               AutomationProperties.AutomationId="LowBatteryThresholdValue" />
                     <TextBlock Text="%" VerticalAlignment="Center" />
                 </StackPanel>
             </ctkc:SettingsCard>
@@ -42,7 +47,8 @@
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <ComboBox SelectedIndex="{x:Bind ViewModel.NotificationStyleIndex, Mode=TwoWay}"
-                          MinWidth="180">
+                          MinWidth="180"
+                          AutomationProperties.AutomationId="NotificationStyleCombo">
                     <ComboBoxItem Content="Banner + sound" />
                     <ComboBoxItem Content="Banner only" />
                     <ComboBoxItem Content="Sound only" />
@@ -56,13 +62,17 @@
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE767;" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <StackPanel Orientation="Horizontal" Spacing="8">
-                    <ComboBox SelectedItem="{x:Bind ViewModel.AlertSound, Mode=TwoWay}" MinWidth="160">
+                    <ComboBox SelectedItem="{x:Bind ViewModel.AlertSound, Mode=TwoWay}"
+                              MinWidth="160"
+                              AutomationProperties.AutomationId="AlertSoundCombo">
                         <x:String>Gentle</x:String>
                         <x:String>Ping</x:String>
                         <x:String>Alert</x:String>
                         <x:String>None</x:String>
                     </ComboBox>
-                    <Button Content="Preview" Command="{x:Bind ViewModel.PreviewSoundCommand}" />
+                    <Button Content="Preview"
+                            Command="{x:Bind ViewModel.PreviewSoundCommand}"
+                            AutomationProperties.AutomationId="PreviewSoundButton" />
                 </StackPanel>
             </ctkc:SettingsCard>
 
@@ -73,7 +83,8 @@
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.CriticalAlertUnder5, Mode=TwoWay}" />
+                <ToggleSwitch IsOn="{x:Bind ViewModel.CriticalAlertUnder5, Mode=TwoWay}"
+                              AutomationProperties.AutomationId="CriticalAlertToggle" />
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard Header="Silence during Do Not Disturb"
@@ -83,7 +94,9 @@
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.SilenceDuringDnd, Mode=TwoWay}" IsEnabled="False" />
+                <ToggleSwitch IsOn="{x:Bind ViewModel.SilenceDuringDnd, Mode=TwoWay}"
+                              IsEnabled="False"
+                              AutomationProperties.AutomationId="SilenceDndToggle" />
             </ctkc:SettingsCard>
         </StackPanel>
     </ScrollViewer>

@@ -1,4 +1,5 @@
 using System;
+using BluetoothMonitor.App.Services.Test;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
@@ -32,7 +33,9 @@ public static class Program
     private static bool DecideRedirection()
     {
         var activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
-        var key = "BluetoothMonitor.App";
+        var key = E2ETestHost.IsEnabled
+            ? E2ETestHost.InstanceKey
+            : "BluetoothMonitor.App";
         var instance = AppInstance.FindOrRegisterForKey(key);
 
         if (instance.IsCurrent)

@@ -6,11 +6,14 @@
     xmlns:ctkc="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    AutomationProperties.AutomationId="GeneralPage">
 
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
-            <TextBlock Text="General" Style="{StaticResource BattcheckPageTitle}" />
+            <TextBlock Text="General"
+                       Style="{StaticResource BattcheckPageTitle}"
+                       AutomationProperties.AutomationId="GeneralPageTitle" />
             <TextBlock Text="App behavior and appearance." Style="{StaticResource BattcheckPageSub}" />
 
             <TextBlock Text="Startup" Style="{StaticResource BattcheckSectionTitle}" />
@@ -20,7 +23,8 @@
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.StartAtSignIn, Mode=TwoWay}" />
+                <ToggleSwitch IsOn="{x:Bind ViewModel.StartAtSignIn, Mode=TwoWay}"
+                              AutomationProperties.AutomationId="StartAtSignInToggle" />
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard Header="Keep running in the background"
@@ -28,7 +32,8 @@
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE968;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.KeepRunningInBackground, Mode=TwoWay}" />
+                <ToggleSwitch IsOn="{x:Bind ViewModel.KeepRunningInBackground, Mode=TwoWay}"
+                              AutomationProperties.AutomationId="KeepRunningToggle" />
             </ctkc:SettingsCard>
 
             <TextBlock Text="Polling" Style="{StaticResource BattcheckSectionTitle}" />
@@ -38,7 +43,9 @@
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ComboBox SelectedIndex="{x:Bind ViewModel.RefreshIndex, Mode=TwoWay}" MinWidth="180">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.RefreshIndex, Mode=TwoWay}"
+                          MinWidth="180"
+                          AutomationProperties.AutomationId="RefreshIntervalCombo">
                     <ComboBoxItem Content="Every 15 seconds" />
                     <ComboBoxItem Content="Every 30 seconds" />
                     <ComboBoxItem Content="Every minute" />
@@ -54,7 +61,9 @@
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ComboBox SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}" MinWidth="140">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}"
+                          MinWidth="140"
+                          AutomationProperties.AutomationId="ThemeCombo">
                     <ComboBoxItem Content="System" />
                     <ComboBoxItem Content="Light" />
                     <ComboBoxItem Content="Dark" />

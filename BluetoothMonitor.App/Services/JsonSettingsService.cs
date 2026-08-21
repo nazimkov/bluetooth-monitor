@@ -23,11 +23,19 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
     private CancellationTokenSource? _debounceCts;
 
     public JsonSettingsService()
+        : this(Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "Battcheck"))
     {
-        var dir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Battcheck");
-        Directory.CreateDirectory(dir);
-        _filePath = Path.Combine(dir, "settings.json");
     }
+
+    public JsonSettingsService(string directory)
+    {
+        Directory.CreateDirectory(directory);
+        _filePath = Path.Combine(directory, "settings.json");
+    }
+
+    public string FilePath => _filePath;
 
     public SettingsModel Current => _current;
     public event EventHandler? Changed;

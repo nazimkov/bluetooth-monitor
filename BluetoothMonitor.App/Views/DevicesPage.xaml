@@ -8,7 +8,8 @@
     xmlns:vm="using:BluetoothMonitor.App.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    AutomationProperties.AutomationId="DevicesPage">
 
     <Page.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVisConv" />
@@ -16,7 +17,9 @@
 
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
-            <TextBlock Text="Devices" Style="{StaticResource BattcheckPageTitle}" />
+            <TextBlock Text="Devices"
+                       Style="{StaticResource BattcheckPageTitle}"
+                       AutomationProperties.AutomationId="DevicesPageTitle" />
             <TextBlock Text="Choose which Bluetooth audio device Battcheck shows in your system tray."
                        Style="{StaticResource BattcheckPageSub}" />
 
@@ -24,10 +27,12 @@
                      Severity="Error"
                      Title="Bluetooth is turned off on this PC"
                      Message="Turn on Bluetooth in Windows Quick Settings to see paired devices."
-                     IsClosable="False">
+                     IsClosable="False"
+                     AutomationProperties.AutomationId="BluetoothOffInfoBar">
                 <InfoBar.ActionButton>
                     <Button Content="Open Bluetooth settings"
-                            Command="{x:Bind ViewModel.OpenBluetoothSettingsCommand}" />
+                            Command="{x:Bind ViewModel.OpenBluetoothSettingsCommand}"
+                            AutomationProperties.AutomationId="OpenBluetoothSettingsButton" />
                 </InfoBar.ActionButton>
             </InfoBar>
 
@@ -35,17 +40,20 @@
                      Severity="Error"
                      Title="Battery is critically low"
                      Message="Charge soon to avoid disconnection."
-                     IsClosable="False" />
+                     IsClosable="False"
+                     AutomationProperties.AutomationId="CriticalBatteryInfoBar" />
 
             <InfoBar IsOpen="{x:Bind ViewModel.IsLowBattery, Mode=OneWay}"
                      Severity="Warning"
                      Title="Low battery"
                      Message="Your monitored device is under the low-battery threshold."
-                     IsClosable="False" />
+                     IsClosable="False"
+                     AutomationProperties.AutomationId="LowBatteryInfoBar" />
 
             <TextBlock Text="Currently monitoring" Style="{StaticResource BattcheckSectionTitle}" />
             <controls:HeroCard Device="{x:Bind ViewModel.SelectedDevice, Mode=OneWay}"
-                               RefreshCommand="{x:Bind ViewModel.PollNowCommand}" />
+                               RefreshCommand="{x:Bind ViewModel.PollNowCommand}"
+                               AutomationProperties.AutomationId="HeroCard" />
 
             <Grid Margin="0,28,0,8">
                 <Grid.ColumnDefinitions>
@@ -57,16 +65,19 @@
                     <TextBlock Text="{x:Bind ViewModel.Devices.Count, Mode=OneWay}"
                                VerticalAlignment="Center"
                                Foreground="{ThemeResource TextFillColorTertiaryBrush}"
-                               FontSize="12" />
+                               FontSize="12"
+                               AutomationProperties.AutomationId="DeviceCount" />
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
-                    <Button Command="{x:Bind ViewModel.RefreshCommand}">
+                    <Button Command="{x:Bind ViewModel.RefreshCommand}"
+                            AutomationProperties.AutomationId="RescanButton">
                         <StackPanel Orientation="Horizontal" Spacing="6">
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72C;" FontSize="14" />
                             <TextBlock Text="Rescan" />
                         </StackPanel>
                     </Button>
-                    <Button Command="{x:Bind ViewModel.PairNewCommand}">
+                    <Button Command="{x:Bind ViewModel.PairNewCommand}"
+                            AutomationProperties.AutomationId="PairNewButton">
                         <StackPanel Orientation="Horizontal" Spacing="6">
                             <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE710;" FontSize="14" />
                             <TextBlock Text="Pair new" />
@@ -75,7 +86,8 @@
                 </StackPanel>
             </Grid>
 
-            <Border Style="{StaticResource BattcheckCard}">
+            <Border Style="{StaticResource BattcheckCard}"
+                    AutomationProperties.AutomationId="DeviceList">
                 <ItemsRepeater ItemsSource="{x:Bind ViewModel.Devices}">
                     <ItemsRepeater.ItemTemplate>
                         <DataTemplate x:DataType="vm:DeviceItemViewModel">
@@ -88,7 +100,8 @@
             <StackPanel HorizontalAlignment="Center"
                         Spacing="12"
                         Margin="0,40,0,40"
-                        Visibility="{x:Bind ViewModel.HasNoDevices, Mode=OneWay, Converter={StaticResource BoolToVisConv}}">
+                        Visibility="{x:Bind ViewModel.HasNoDevices, Mode=OneWay, Converter={StaticResource BoolToVisConv}}"
+                        AutomationProperties.AutomationId="EmptyDevicesState">
                 <Border Width="88" Height="88" CornerRadius="44"
                         BorderThickness="1" BorderBrush="{ThemeResource BattcheckCardBorderStrongBrush}"
                         Background="{ThemeResource BattcheckSurfaceBrush}"
@@ -110,7 +123,8 @@
                 <Button Style="{StaticResource AccentButtonStyle}"
                         Content="Pair new device"
                         HorizontalAlignment="Center"
-                        Command="{x:Bind ViewModel.PairNewCommand}" />
+                        Command="{x:Bind ViewModel.PairNewCommand}"
+                        AutomationProperties.AutomationId="EmptyPairNewButton" />
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
