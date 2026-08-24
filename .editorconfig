@@ -463,7 +463,7 @@ dotnet_diagnostic.CA5381.severity = warning
 # Do Not Use Digital Signature Algorithm (DSA)
 dotnet_diagnostic.CA5384.severity = warning
 
-# Use Rivest–Shamir–Adleman (RSA) Algorithm With Sufficient Key Size
+# Use Rivestï¿½Shamirï¿½Adleman (RSA) Algorithm With Sufficient Key Size
 dotnet_diagnostic.CA5385.severity = warning
 
 # Do not use insecure randomness

@@ -1,8 +1,4 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Build & Run
+# Build & Run
 
 ```bash
 # Restore and build the whole solution (x64 only — the WinUI app is not AnyCPU)
@@ -39,7 +35,7 @@ Single-test repro (also printed in `failure.md`):
 dotnet test BluetoothMonitor.E2E -c Debug -p:Platform=x64 --filter FullyQualifiedName~ColdStart_OpensDevices_WithFakeDevices
 ```
 
-## Architecture
+# Architecture
 
 Three projects:
 
@@ -64,7 +60,7 @@ Three projects:
 
 - **`BluetoothMonitor.E2E`** — FlaUI.UIA3 + xUnit; launches the App exe and drives UI via AutomationIds. Serial collection fixture; failure artifacts under `TestResults/e2e/`.
 
-### Design → WinUI mapping (quick reference)
+## Design → WinUI mapping (quick reference)
 
 - Mockup's CSS vars → `Styles/Colors.xaml` with Light/Dark `ThemeDictionaries`. Consumers bind `{ThemeResource BattcheckAccentBrush}` etc.
 - Mockup's settings rows → `CommunityToolkit.WinUI.Controls.SettingsCard`.
@@ -72,7 +68,7 @@ Three projects:
 - Mockup's window chrome → `MicaBackdrop` + `ExtendsContentIntoTitleBar`; caption buttons are drawn by Windows.
 - Mockup's tray badge → not rendered in-app; the OS tray renders our .ico set with numeric text in tooltip.
 
-### Intentionally scoped out of V1 (design-vs-backend gaps)
+## Intentionally scoped out of V1 (design-vs-backend gaps)
 
 - L/R/case sub-batteries for earbuds (Core returns a single byte — hero shows one ring).
 - Codec display (Windows does not expose A2DP negotiated codec).
@@ -81,7 +77,7 @@ Three projects:
 - "Check for updates" (shows an `InfoBar` "no update server configured").
 - "Pair new" in-app pairing (deep-links to `ms-settings:bluetooth?&pair` instead).
 
-### Gotchas
+## Gotchas
 
 - **WinUI is x64 only.** The Core library builds for AnyCPU and maps `x64` → `AnyCPU` in the sln. The App maps `Any CPU` → `x64` (no build) so the sln's AnyCPU row is effectively "just build Core".
 - Polling tick is created with `DispatcherQueue.GetForCurrentThread()` — it must start on the UI thread. That happens via `App.OnLaunched` calling `polling.StartAsync`.
