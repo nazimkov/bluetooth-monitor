@@ -16,6 +16,8 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     private readonly ISettingsService _settings;
     private readonly IDeviceCatalog _catalog;
     private readonly IBatteryPollingService _polling;
+    private readonly Microsoft.UI.Dispatching.DispatcherQueue? _dispatcher =
+        Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
 
     [ObservableProperty]
     private bool _isScanning;
@@ -50,10 +52,19 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
         _polling.BatteryUpdated += OnBatteryUpdated;
         _settings.Changed += OnSettingsChanged;
 
-        _ = Task.Run(async () =>
+        // Run on the UI dispatcher (not a thread-pool thread) so the shared
+        // catalog collection and bound properties (e.g. SelectedDevice) are
+        // mutated on the UI thread. Otherwise, when this ViewModel is
+        // recreated (it's Transient) on tab navigation, the restored
+        // selection can silently fail to reach the UI.
+        if (_dispatcher is not null)
         {
-            await _catalog.RefreshAsync();
-        });
+            _dispatcher.TryEnqueue(async () => await _catalog.RefreshAsync());
+        }
+        else
+        {
+            _ = Task.Run(async () => await _catalog.RefreshAsync());
+        }
     }
 
     private void OnCatalogRefreshed(object? sender, EventArgs e)

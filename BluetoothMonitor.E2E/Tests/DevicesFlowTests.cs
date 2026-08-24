@@ -40,6 +40,44 @@ public sealed class DevicesFlowTests(AppLifecycle app) : E2ETestBase(app)
     }
 
     [Fact]
+    public void SelectDevice_SurvivesTabSwitch()
+    {
+        CaptureOnFailure(
+            nameof(SelectDevice_SurvivesTabSwitch),
+            () =>
+            {
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+
+                Devices.SelectDevice("e2e-earbuds");
+                UiWait.WaitUntil(
+                    () =>
+                        Devices
+                            .HeroDeviceName()
+                            .Contains("E2E Earbuds", StringComparison.OrdinalIgnoreCase),
+                    TimeSpan.FromSeconds(10),
+                    $"Hero did not show E2E Earbuds (was '{Devices.HeroDeviceName()}')."
+                );
+
+                Shell.GoToNotifications();
+                Notifications.WaitUntilLoaded();
+
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+
+                UiWait.WaitUntil(
+                    () =>
+                        Devices
+                            .HeroDeviceName()
+                            .Contains("E2E Earbuds", StringComparison.OrdinalIgnoreCase),
+                    TimeSpan.FromSeconds(10),
+                    $"Selection was lost after switching tabs (hero was '{Devices.HeroDeviceName()}')."
+                );
+            }
+        );
+    }
+
+    [Fact]
     public void Rescan_KeepsFakeDevices()
     {
         CaptureOnFailure(
