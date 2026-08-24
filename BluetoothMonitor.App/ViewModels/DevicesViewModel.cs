@@ -17,16 +17,29 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     private readonly IDeviceCatalog _catalog;
     private readonly IBatteryPollingService _polling;
 
-    [ObservableProperty] private bool _isScanning;
-    [ObservableProperty] private DeviceItemViewModel? _selectedDevice;
-    [ObservableProperty] private bool _isBluetoothOff;
-    [ObservableProperty] private bool _isLowBattery;
-    [ObservableProperty] private bool _isCriticalBattery;
+    [ObservableProperty]
+    private bool _isScanning;
+
+    [ObservableProperty]
+    private DeviceItemViewModel? _selectedDevice;
+
+    [ObservableProperty]
+    private bool _isBluetoothOff;
+
+    [ObservableProperty]
+    private bool _isLowBattery;
+
+    [ObservableProperty]
+    private bool _isCriticalBattery;
 
     public ObservableCollection<DeviceItemViewModel> Devices => _catalog.Devices;
     public bool HasNoDevices => Devices.Count == 0 && !IsBluetoothOff;
 
-    public DevicesViewModel(ISettingsService settings, IDeviceCatalog catalog, IBatteryPollingService polling)
+    public DevicesViewModel(
+        ISettingsService settings,
+        IDeviceCatalog catalog,
+        IBatteryPollingService polling
+    )
     {
         _settings = settings;
         _catalog = catalog;
@@ -62,7 +75,8 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     private void ApplySelection()
     {
         var id = _settings.Current.SelectedDeviceId;
-        foreach (var d in Devices) d.IsMonitored = false;
+        foreach (var d in Devices)
+            d.IsMonitored = false;
         var match = _catalog.FindById(id);
         if (match is not null)
         {
@@ -74,7 +88,8 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     private void UpdateBatteryBanners(byte? level)
     {
         var threshold = _settings.Current.LowBatteryThreshold;
-        IsCriticalBattery = level.HasValue && level.Value <= 5 && _settings.Current.CriticalAlertUnder5;
+        IsCriticalBattery =
+            level.HasValue && level.Value <= 5 && _settings.Current.CriticalAlertUnder5;
         IsLowBattery = level.HasValue && level.Value <= threshold && level.Value > 5;
     }
 
@@ -99,7 +114,8 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private void SelectDevice(DeviceItemViewModel? device)
     {
-        if (device is null) return;
+        if (device is null)
+            return;
         _settings.Update(s => s.SelectedDeviceId = device.Id);
     }
 

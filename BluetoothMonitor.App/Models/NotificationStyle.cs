@@ -5,5 +5,5 @@ public enum NotificationStyle
     BannerAndSound,
     BannerOnly,
     SoundOnly,
-    Silent
+    Silent,
 }

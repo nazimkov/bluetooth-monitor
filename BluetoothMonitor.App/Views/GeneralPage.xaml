@@ -7,45 +7,62 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    AutomationProperties.AutomationId="GeneralPage">
-
+    AutomationProperties.AutomationId="GeneralPage"
+>
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
-            <TextBlock Text="General"
-                       Style="{StaticResource BattcheckPageTitle}"
-                       AutomationProperties.AutomationId="GeneralPageTitle" />
-            <TextBlock Text="App behavior and appearance." Style="{StaticResource BattcheckPageSub}" />
+            <TextBlock
+                Text="General"
+                Style="{StaticResource BattcheckPageTitle}"
+                AutomationProperties.AutomationId="GeneralPageTitle"
+            />
+            <TextBlock
+                Text="App behavior and appearance."
+                Style="{StaticResource BattcheckPageSub}"
+            />
 
             <TextBlock Text="Startup" Style="{StaticResource BattcheckSectionTitle}" />
 
-            <ctkc:SettingsCard Header="Start Battcheck when I sign in"
-                               Description="Launches silently and sits in the system tray.">
+            <ctkc:SettingsCard
+                Header="Start Battcheck when I sign in"
+                Description="Launches silently and sits in the system tray."
+            >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.StartAtSignIn, Mode=TwoWay}"
-                              AutomationProperties.AutomationId="StartAtSignInToggle" />
+                <ToggleSwitch
+                    IsOn="{x:Bind ViewModel.StartAtSignIn, Mode=TwoWay}"
+                    AutomationProperties.AutomationId="StartAtSignInToggle"
+                />
             </ctkc:SettingsCard>
 
-            <ctkc:SettingsCard Header="Keep running in the background"
-                               Description="Closing the window will minimize to tray instead of quitting.">
+            <ctkc:SettingsCard
+                Header="Keep running in the background"
+                Description="Closing the window will minimize to tray instead of quitting."
+            >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE968;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ToggleSwitch IsOn="{x:Bind ViewModel.KeepRunningInBackground, Mode=TwoWay}"
-                              AutomationProperties.AutomationId="KeepRunningToggle" />
+                <ToggleSwitch
+                    IsOn="{x:Bind ViewModel.KeepRunningInBackground, Mode=TwoWay}"
+                    AutomationProperties.AutomationId="KeepRunningToggle"
+                />
             </ctkc:SettingsCard>
 
             <TextBlock Text="Polling" Style="{StaticResource BattcheckSectionTitle}" />
 
-            <ctkc:SettingsCard Header="Refresh interval"
-                               Description="How often Battcheck reads the battery level. Lower values use slightly more battery on your PC.">
+            <ctkc:SettingsCard
+                Header="Refresh interval"
+                Description="How often Battcheck reads the battery level. Lower values use slightly more battery on your PC."
+            >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ComboBox SelectedIndex="{x:Bind ViewModel.RefreshIndex, Mode=TwoWay}"
-                          MinWidth="180"
-                          AutomationProperties.AutomationId="RefreshIntervalCombo">
+                <ComboBox
+                    SelectedIndex="{x:Bind ViewModel.RefreshIndex, Mode=TwoWay}"
+                    MinWidth="180"
+                    AutomationProperties.AutomationId="RefreshIntervalCombo"
+                >
                     <ComboBoxItem Content="Every 15 seconds" />
                     <ComboBoxItem Content="Every 30 seconds" />
                     <ComboBoxItem Content="Every minute" />
@@ -56,14 +73,15 @@
 
             <TextBlock Text="Appearance" Style="{StaticResource BattcheckSectionTitle}" />
 
-            <ctkc:SettingsCard Header="Theme"
-                               Description="Match Windows, or pick a fixed theme.">
+            <ctkc:SettingsCard Header="Theme" Description="Match Windows, or pick a fixed theme.">
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <ComboBox SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}"
-                          MinWidth="140"
-                          AutomationProperties.AutomationId="ThemeCombo">
+                <ComboBox
+                    SelectedIndex="{x:Bind ViewModel.ThemeIndex, Mode=TwoWay}"
+                    MinWidth="140"
+                    AutomationProperties.AutomationId="ThemeCombo"
+                >
                     <ComboBoxItem Content="System" />
                     <ComboBoxItem Content="Light" />
                     <ComboBoxItem Content="Dark" />

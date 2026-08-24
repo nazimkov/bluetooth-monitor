@@ -15,14 +15,12 @@ public static class E2ETestHost
     public static bool IsEnabled =>
         string.Equals(Environment.GetEnvironmentVariable(EnvFlag), "1", StringComparison.Ordinal);
 
-    public static string? SettingsDirectory =>
-        Environment.GetEnvironmentVariable(EnvSettingsDir);
+    public static string? SettingsDirectory => Environment.GetEnvironmentVariable(EnvSettingsDir);
 
     public static string InstanceKey =>
         Environment.GetEnvironmentVariable(EnvInstanceKey) is { Length: > 0 } key
             ? key
             : "BluetoothMonitor.App.E2E";
 
-    public static string? DevicesJson =>
-        Environment.GetEnvironmentVariable(EnvDevicesJson);
+    public static string? DevicesJson => Environment.GetEnvironmentVariable(EnvDevicesJson);
 }

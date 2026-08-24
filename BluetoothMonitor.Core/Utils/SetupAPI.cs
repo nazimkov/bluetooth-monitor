@@ -18,10 +18,11 @@ namespace BluetoothMonitor.Core.Utils
         /// </returns>
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr SetupDiGetClassDevs(
-           IntPtr ClassGuid,
-           [MarshalAs(UnmanagedType.LPWStr)] string? Enumerator,
-           IntPtr hwndParent,
-           DeviceFiter Flags);
+            IntPtr ClassGuid,
+            [MarshalAs(UnmanagedType.LPWStr)] string? Enumerator,
+            IntPtr hwndParent,
+            DeviceFiter Flags
+        );
 
         /// <summary>
         /// Destroys a device information set and frees associated memory.
@@ -44,9 +45,10 @@ namespace BluetoothMonitor.Core.Utils
         /// </returns>
         [DllImport("setupapi.dll", SetLastError = true)]
         public static extern bool SetupDiEnumDeviceInfo(
-           IntPtr DeviceInfoSet,
-           int MemberIndex,
-           ref SP_DEVINFO_DATA DeviceInfoData);
+            IntPtr DeviceInfoSet,
+            int MemberIndex,
+            ref SP_DEVINFO_DATA DeviceInfoData
+        );
 
         /// <summary>
         /// Retrieves a device property identified by a DEVPROPKEY. This overload is used to retrieve a raw buffer.
@@ -63,14 +65,15 @@ namespace BluetoothMonitor.Core.Utils
         /// <returns>True on success; false on failure.</returns>
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern bool SetupDiGetDeviceProperty(
-          IntPtr DeviceInfoSet,
-          ref SP_DEVINFO_DATA DeviceInfoData,
-          ref DEVPROPKEY PropertyKey,
-          out int PropertyType,
-          IntPtr PropertyBuffer,
-          int PropertyBufferSize,
-          out int RequiredSize,
-          int Flags);
+            IntPtr DeviceInfoSet,
+            ref SP_DEVINFO_DATA DeviceInfoData,
+            ref DEVPROPKEY PropertyKey,
+            out int PropertyType,
+            IntPtr PropertyBuffer,
+            int PropertyBufferSize,
+            out int RequiredSize,
+            int Flags
+        );
 
         /// <summary>
         /// Retrieves a device property into a 2-byte buffer (useful for properties that are a 16-bit integer).
@@ -78,14 +81,15 @@ namespace BluetoothMonitor.Core.Utils
         /// </summary>
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern bool SetupDiGetDeviceProperty(
-          IntPtr DeviceInfoSet,
-          ref SP_DEVINFO_DATA DeviceInfoData,
-          ref DEVPROPKEY PropertyKey,
-          out int PropertyType,
-          out ushort PropertyBuffer,
-          int PropertyBufferSize,
-          out int RequiredSize,
-          int Flags);
+            IntPtr DeviceInfoSet,
+            ref SP_DEVINFO_DATA DeviceInfoData,
+            ref DEVPROPKEY PropertyKey,
+            out int PropertyType,
+            out ushort PropertyBuffer,
+            int PropertyBufferSize,
+            out int RequiredSize,
+            int Flags
+        );
 
         /// <summary>
         /// Retrieves a device property into a 1-byte buffer (useful for properties that are a single byte).
@@ -93,14 +97,15 @@ namespace BluetoothMonitor.Core.Utils
         /// </summary>
         [DllImport("setupapi.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern bool SetupDiGetDeviceProperty(
-          IntPtr DeviceInfoSet,
-          ref SP_DEVINFO_DATA DeviceInfoData,
-          ref DEVPROPKEY PropertyKey,
-          out int PropertyType,
-          out byte PropertyBuffer,
-          int PropertyBufferSize,
-          out int RequiredSize,
-          int Flags);
+            IntPtr DeviceInfoSet,
+            ref SP_DEVINFO_DATA DeviceInfoData,
+            ref DEVPROPKEY PropertyKey,
+            out int PropertyType,
+            out byte PropertyBuffer,
+            int PropertyBufferSize,
+            out int RequiredSize,
+            int Flags
+        );
 
         /// <summary>
         /// Helper to read a Unicode string property from a device using <see cref="SetupDiGetDeviceProperty"/>.
@@ -111,19 +116,40 @@ namespace BluetoothMonitor.Core.Utils
         /// <param name="pk">Property key to read.</param>
         /// <returns>Property string value, or null if the property is not present or an error occurs.</returns>
         public static string? GetStringProperty(
-          IntPtr hdevinfo,
-          ref SP_DEVINFO_DATA data,
-          DEVPROPKEY pk)
+            IntPtr hdevinfo,
+            ref SP_DEVINFO_DATA data,
+            DEVPROPKEY pk
+        )
         {
             try
             {
-                SetupDiGetDeviceProperty(hdevinfo, ref data, ref pk, out int PropertyType, IntPtr.Zero, 0, out int RequiredSize, 0);
+                SetupDiGetDeviceProperty(
+                    hdevinfo,
+                    ref data,
+                    ref pk,
+                    out int PropertyType,
+                    IntPtr.Zero,
+                    0,
+                    out int RequiredSize,
+                    0
+                );
                 if (RequiredSize <= 0)
                     return null;
                 IntPtr num = Marshal.AllocCoTaskMem(RequiredSize);
                 try
                 {
-                    if (!SetupDiGetDeviceProperty(hdevinfo, ref data, ref pk, out PropertyType, num, RequiredSize, out RequiredSize, 0))
+                    if (
+                        !SetupDiGetDeviceProperty(
+                            hdevinfo,
+                            ref data,
+                            ref pk,
+                            out PropertyType,
+                            num,
+                            RequiredSize,
+                            out RequiredSize,
+                            0
+                        )
+                    )
                         throw new Win32Exception(Marshal.GetLastWin32Error());
                     // RequiredSize is in bytes and includes the terminating null; convert to characters and remove terminator
                     return Marshal.PtrToStringUni(num, RequiredSize / 2 - 1);
@@ -144,13 +170,25 @@ namespace BluetoothMonitor.Core.Utils
         /// Uses the 2-byte overload of <see cref="SetupDiGetDeviceProperty"/>.
         /// </summary>
         public static ushort? GetUshortProperty(
-          IntPtr hdevinfo,
-          ref SP_DEVINFO_DATA data,
-          DEVPROPKEY pk)
+            IntPtr hdevinfo,
+            ref SP_DEVINFO_DATA data,
+            DEVPROPKEY pk
+        )
         {
             try
             {
-                if (SetupDiGetDeviceProperty(hdevinfo, ref data, ref pk, out int _, out ushort PropertyBuffer, 2, out int _, 0))
+                if (
+                    SetupDiGetDeviceProperty(
+                        hdevinfo,
+                        ref data,
+                        ref pk,
+                        out int _,
+                        out ushort PropertyBuffer,
+                        2,
+                        out int _,
+                        0
+                    )
+                )
                 {
                     return new ushort?(PropertyBuffer);
                 }
@@ -170,13 +208,25 @@ namespace BluetoothMonitor.Core.Utils
         /// Uses the 1-byte overload of <see cref="SetupDiGetDeviceProperty"/>.
         /// </summary>
         public static byte? GetByteProperty(
-          IntPtr hdevinfo,
-          ref SP_DEVINFO_DATA data,
-          DEVPROPKEY pk)
+            IntPtr hdevinfo,
+            ref SP_DEVINFO_DATA data,
+            DEVPROPKEY pk
+        )
         {
             try
             {
-                if (SetupDiGetDeviceProperty(hdevinfo, ref data, ref pk, out int _, out byte PropertyBuffer, 1, out int _, 0))
+                if (
+                    SetupDiGetDeviceProperty(
+                        hdevinfo,
+                        ref data,
+                        ref pk,
+                        out int _,
+                        out byte PropertyBuffer,
+                        1,
+                        out int _,
+                        0
+                    )
+                )
                 {
                     return new byte?(PropertyBuffer);
                 }
@@ -203,14 +253,17 @@ namespace BluetoothMonitor.Core.Utils
         /// Size, in bytes, of this structure. Initialize this to <c>Marshal.SizeOf(typeof(SP_DEVINFO_DATA))</c> before calling enumeration functions.
         /// </summary>
         public int cbSize;
+
         /// <summary>
         /// Device setup class GUID for the device.
         /// </summary>
         public Guid ClassGuid;
+
         /// <summary>
         /// Device instance (DevInst) as maintained by the configuration manager.
         /// </summary>
         public int DevInst;
+
         /// <summary>
         /// Reserved. Do not use.
         /// </summary>

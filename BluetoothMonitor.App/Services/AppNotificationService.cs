@@ -8,7 +8,8 @@ public sealed class AppNotificationService : INotificationService
 {
     public void ShowLowBattery(string deviceName, byte level, NotificationStyle style)
     {
-        if (style == NotificationStyle.Silent) return;
+        if (style == NotificationStyle.Silent)
+            return;
 
         var builder = new AppNotificationBuilder()
             .AddText("Low battery")

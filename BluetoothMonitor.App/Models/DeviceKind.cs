@@ -6,5 +6,5 @@ public enum DeviceKind
     OverEar,
     Earbuds,
     Speaker,
-    Handsfree
+    Handsfree,
 }

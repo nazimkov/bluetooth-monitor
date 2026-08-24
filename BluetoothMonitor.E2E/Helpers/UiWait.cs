@@ -11,16 +11,20 @@ public static class UiWait
     public static AutomationElement WaitFor(
         AutomationElement root,
         Func<ConditionFactory, ConditionBase> condition,
-        TimeSpan? timeout = null)
+        TimeSpan? timeout = null
+    )
     {
         var result = Retry.WhileNull(
             () => root.FindFirstDescendant(condition),
             timeout ?? TimeSpan.FromSeconds(20),
-            TimeSpan.FromMilliseconds(200));
+            TimeSpan.FromMilliseconds(200)
+        );
 
         if (!result.Success || result.Result is null)
         {
-            throw new TimeoutException($"Element not found within {(timeout ?? TimeSpan.FromSeconds(20)).TotalSeconds}s.");
+            throw new TimeoutException(
+                $"Element not found within {(timeout ?? TimeSpan.FromSeconds(20)).TotalSeconds}s."
+            );
         }
 
         return result.Result;
@@ -29,12 +33,14 @@ public static class UiWait
     public static void WaitUntil(
         Func<bool> condition,
         TimeSpan? timeout = null,
-        string? description = null)
+        string? description = null
+    )
     {
         var result = Retry.WhileFalse(
             condition,
             timeout ?? TimeSpan.FromSeconds(20),
-            TimeSpan.FromMilliseconds(200));
+            TimeSpan.FromMilliseconds(200)
+        );
 
         if (!result.Success)
         {

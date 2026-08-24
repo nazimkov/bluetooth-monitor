@@ -8,9 +8,7 @@ using Xunit;
 namespace BluetoothMonitor.E2E.Fixtures;
 
 [CollectionDefinition("E2E")]
-public sealed class E2ECollection : ICollectionFixture<AppLifecycle>
-{
-}
+public sealed class E2ECollection : ICollectionFixture<AppLifecycle> { }
 
 public sealed class AppLifecycle : IDisposable
 {
@@ -56,7 +54,10 @@ public sealed class AppLifecycle : IDisposable
         throw new TimeoutException($"settings.json not written to {SettingsFilePath}");
     }
 
-    public async Task WaitForSettingsValueAsync(Func<JsonElement, bool> predicate, TimeSpan? timeout = null)
+    public async Task WaitForSettingsValueAsync(
+        Func<JsonElement, bool> predicate,
+        TimeSpan? timeout = null
+    )
     {
         var deadline = DateTime.UtcNow + (timeout ?? TimeSpan.FromSeconds(10));
         Exception? last = null;
@@ -82,7 +83,9 @@ public sealed class AppLifecycle : IDisposable
             await Task.Delay(150);
         }
 
-        throw new TimeoutException($"settings.json predicate not satisfied. Last error: {last?.Message}");
+        throw new TimeoutException(
+            $"settings.json predicate not satisfied. Last error: {last?.Message}"
+        );
     }
 
     public void Dispose()
@@ -141,9 +144,10 @@ public sealed class AppLifecycle : IDisposable
         if (!File.Exists(ExePath))
         {
             throw new FileNotFoundException(
-                $"Battcheck exe not found at '{ExePath}'. Build the App project first: " +
-                "dotnet build BluetoothMonitor.App -c Debug -p:Platform=x64",
-                ExePath);
+                $"Battcheck exe not found at '{ExePath}'. Build the App project first: "
+                    + "dotnet build BluetoothMonitor.App -c Debug -p:Platform=x64",
+                ExePath
+            );
         }
 
         var startInfo = new ProcessStartInfo
@@ -156,7 +160,8 @@ public sealed class AppLifecycle : IDisposable
         startInfo.Environment["BATTCHECK_E2E_SETTINGS_DIR"] = SettingsDirectory;
         startInfo.Environment["BATTCHECK_E2E_INSTANCE_KEY"] = InstanceKey;
 
-        _process = Process.Start(startInfo)
+        _process =
+            Process.Start(startInfo)
             ?? throw new InvalidOperationException("Failed to start BluetoothMonitor.exe");
 
         var pid = _process.Id;
@@ -172,8 +177,9 @@ public sealed class AppLifecycle : IDisposable
                 if (Process.GetProcessesByName("BluetoothMonitor").Length == 0)
                 {
                     throw new InvalidOperationException(
-                        $"BluetoothMonitor.exe exited early (pid {pid}). " +
-                        "MSIX packaging may block bare-exe launch; check deploy output.");
+                        $"BluetoothMonitor.exe exited early (pid {pid}). "
+                            + "MSIX packaging may block bare-exe launch; check deploy output."
+                    );
                 }
             }
 
@@ -190,9 +196,17 @@ public sealed class AppLifecycle : IDisposable
                     try
                     {
                         var attached = Application.Attach(proc.Id);
-                        var candidate = attached.GetMainWindow(_automation, TimeSpan.FromSeconds(1));
-                        if (candidate is not null &&
-                            candidate.Title.Contains("Battcheck", StringComparison.OrdinalIgnoreCase))
+                        var candidate = attached.GetMainWindow(
+                            _automation,
+                            TimeSpan.FromSeconds(1)
+                        );
+                        if (
+                            candidate is not null
+                            && candidate.Title.Contains(
+                                "Battcheck",
+                                StringComparison.OrdinalIgnoreCase
+                            )
+                        )
                         {
                             _application?.Dispose();
                             _application = attached;
@@ -214,9 +228,11 @@ public sealed class AppLifecycle : IDisposable
                 }
 
                 var desktop = _automation.GetDesktop();
-                window = desktop.FindFirstDescendant(cf =>
+                window = desktop
+                    .FindFirstDescendant(cf =>
                         cf.ByControlType(FlaUI.Core.Definitions.ControlType.Window)
-                            .And(cf.ByName("Battcheck")))
+                            .And(cf.ByName("Battcheck"))
+                    )
                     ?.AsWindow();
                 if (window is not null)
                 {
@@ -231,7 +247,8 @@ public sealed class AppLifecycle : IDisposable
             Thread.Sleep(250);
         }
 
-        MainWindow = window
+        MainWindow =
+            window
             ?? throw new TimeoutException("Main Battcheck window did not appear within 45s.");
 
         MainWindow.SetForeground();
@@ -259,10 +276,42 @@ public sealed class AppLifecycle : IDisposable
         var repoRoot = FindRepoRoot();
         var candidates = new[]
         {
-            Path.Combine(repoRoot, "BluetoothMonitor.App", "bin", "x64", config, tfm, "win-x64", "BluetoothMonitor.exe"),
-            Path.Combine(repoRoot, "BluetoothMonitor.App", "bin", "x64", config, tfm, "BluetoothMonitor.exe"),
-            Path.Combine(repoRoot, "BluetoothMonitor.App", "bin", config, tfm, "win-x64", "BluetoothMonitor.exe"),
-            Path.Combine(repoRoot, "BluetoothMonitor.App", "bin", config, tfm, "BluetoothMonitor.exe"),
+            Path.Combine(
+                repoRoot,
+                "BluetoothMonitor.App",
+                "bin",
+                "x64",
+                config,
+                tfm,
+                "win-x64",
+                "BluetoothMonitor.exe"
+            ),
+            Path.Combine(
+                repoRoot,
+                "BluetoothMonitor.App",
+                "bin",
+                "x64",
+                config,
+                tfm,
+                "BluetoothMonitor.exe"
+            ),
+            Path.Combine(
+                repoRoot,
+                "BluetoothMonitor.App",
+                "bin",
+                config,
+                tfm,
+                "win-x64",
+                "BluetoothMonitor.exe"
+            ),
+            Path.Combine(
+                repoRoot,
+                "BluetoothMonitor.App",
+                "bin",
+                config,
+                tfm,
+                "BluetoothMonitor.exe"
+            ),
         };
 
         foreach (var path in candidates)
@@ -290,7 +339,8 @@ public sealed class AppLifecycle : IDisposable
         }
 
         throw new DirectoryNotFoundException(
-            "Could not locate BluetoothMonitor.sln from " + AppContext.BaseDirectory);
+            "Could not locate BluetoothMonitor.sln from " + AppContext.BaseDirectory
+        );
     }
 
     private static void KillLeftoverProcesses()

@@ -9,7 +9,8 @@ public record BluetoothDeviceInfo(
     string Name,
     DeviceKind Kind,
     string? MacAddress,
-    bool IsConnected);
+    bool IsConnected
+);
 
 public interface IBluetoothFacade
 {

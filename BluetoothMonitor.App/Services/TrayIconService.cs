@@ -24,22 +24,30 @@ public sealed class TrayIconService : ITrayIconService, IDisposable
     public void Initialize()
     {
         _menu = new PopupMenu();
-        _menu.Items.Add(new PopupMenuItem("Show Battcheck", (_, _) => App.Current.MainWindow?.ShowWindow()));
+        _menu.Items.Add(
+            new PopupMenuItem("Show Battcheck", (_, _) => App.Current.MainWindow?.ShowWindow())
+        );
         _menu.Items.Add(new PopupMenuItem("Rescan", (_, _) => _ = _polling.PollOnceAsync()));
-        _menu.Items.Add(new PopupMenuItem("Settings", (_, _) => App.Current.MainWindow?.ShowWindow()));
+        _menu.Items.Add(
+            new PopupMenuItem("Settings", (_, _) => App.Current.MainWindow?.ShowWindow())
+        );
         _menu.Items.Add(new PopupMenuSeparator());
-        _menu.Items.Add(new PopupMenuItem("Exit", (_, _) => App.Current.MainWindow?.ExitApplication()));
+        _menu.Items.Add(
+            new PopupMenuItem("Exit", (_, _) => App.Current.MainWindow?.ExitApplication())
+        );
 
         _icon = new TrayIconWithContextMenu
         {
             ToolTip = $"{_settings.Current.DeviceName}",
-            ContextMenu = _menu
+            ContextMenu = _menu,
         };
         _icon.MessageWindow.MouseEventReceived += (_, args) =>
         {
             if (args.MouseEvent is MouseEvent.IconLeftDoubleClick or MouseEvent.IconLeftMouseUp)
             {
-                App.Current.MainWindow?.DispatcherQueue.TryEnqueue(() => App.Current.MainWindow?.ShowWindow());
+                App.Current.MainWindow?.DispatcherQueue.TryEnqueue(() =>
+                    App.Current.MainWindow?.ShowWindow()
+                );
             }
         };
 
@@ -56,7 +64,8 @@ public sealed class TrayIconService : ITrayIconService, IDisposable
 
     private void ApplyIcon()
     {
-        if (_icon is null) return;
+        if (_icon is null)
+            return;
 
         var fileName = !_lastConnected
             ? "tray-offline.ico"
@@ -65,7 +74,7 @@ public sealed class TrayIconService : ITrayIconService, IDisposable
                 null => "tray-offline.ico",
                 <= 5 => "tray-critical.ico",
                 <= 20 => "tray-low.ico",
-                _ => "tray-connected.ico"
+                _ => "tray-connected.ico",
             };
         var path = Path.Combine(AppContext.BaseDirectory, "Assets", fileName);
         var fallback = Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico");

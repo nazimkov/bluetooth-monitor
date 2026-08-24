@@ -7,8 +7,13 @@ public sealed class EnumMatchToBoolConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, string language)
     {
-        if (value is null || parameter is null) return false;
-        return string.Equals(value.ToString(), parameter.ToString(), StringComparison.OrdinalIgnoreCase);
+        if (value is null || parameter is null)
+            return false;
+        return string.Equals(
+            value.ToString(),
+            parameter.ToString(),
+            StringComparison.OrdinalIgnoreCase
+        );
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, string language)

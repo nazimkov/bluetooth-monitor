@@ -21,31 +21,40 @@ public partial class GeneralViewModel : ObservableObject
         _theme = settings.Current.Theme;
     }
 
-    [ObservableProperty] private bool _startAtSignIn;
-    [ObservableProperty] private bool _keepRunningInBackground;
-    [ObservableProperty] private int _refreshIntervalSeconds;
-    [ObservableProperty] private AppTheme _theme;
+    [ObservableProperty]
+    private bool _startAtSignIn;
+
+    [ObservableProperty]
+    private bool _keepRunningInBackground;
+
+    [ObservableProperty]
+    private int _refreshIntervalSeconds;
+
+    [ObservableProperty]
+    private AppTheme _theme;
 
     public int RefreshIndex
     {
-        get => RefreshIntervalSeconds switch
-        {
-            15 => 0,
-            30 => 1,
-            60 => 2,
-            300 => 3,
-            600 => 4,
-            _ => 2
-        };
-        set => RefreshIntervalSeconds = value switch
-        {
-            0 => 15,
-            1 => 30,
-            2 => 60,
-            3 => 300,
-            4 => 600,
-            _ => 60
-        };
+        get =>
+            RefreshIntervalSeconds switch
+            {
+                15 => 0,
+                30 => 1,
+                60 => 2,
+                300 => 3,
+                600 => 4,
+                _ => 2,
+            };
+        set =>
+            RefreshIntervalSeconds = value switch
+            {
+                0 => 15,
+                1 => 30,
+                2 => 60,
+                3 => 300,
+                4 => 600,
+                _ => 60,
+            };
     }
 
     public int ThemeIndex
@@ -64,8 +73,8 @@ public partial class GeneralViewModel : ObservableObject
         _ = Task.Run(() => _startup.SetEnabledAsync(value));
     }
 
-    partial void OnKeepRunningInBackgroundChanged(bool value)
-        => _settings.Update(s => s.KeepRunningInBackground = value);
+    partial void OnKeepRunningInBackgroundChanged(bool value) =>
+        _settings.Update(s => s.KeepRunningInBackground = value);
 
     partial void OnRefreshIntervalSecondsChanged(int value)
     {

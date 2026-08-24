@@ -7,4 +7,5 @@ public record MonitoredDevice(
     string? MacAddress,
     bool IsConnected,
     byte? BatteryLevel,
-    string LastSeen);
+    string LastSeen
+);

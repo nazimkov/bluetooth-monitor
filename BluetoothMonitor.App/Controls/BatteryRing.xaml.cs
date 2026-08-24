@@ -17,8 +17,11 @@ public sealed partial class BatteryRing : UserControl
     }
 
     public static readonly DependencyProperty PercentLevelProperty = DependencyProperty.Register(
-        nameof(PercentLevel), typeof(byte), typeof(BatteryRing),
-        new PropertyMetadata((byte)0, OnVisualPropertyChanged));
+        nameof(PercentLevel),
+        typeof(byte),
+        typeof(BatteryRing),
+        new PropertyMetadata((byte)0, OnVisualPropertyChanged)
+    );
 
     public byte PercentLevel
     {
@@ -27,8 +30,11 @@ public sealed partial class BatteryRing : UserControl
     }
 
     public static readonly DependencyProperty SizeProperty = DependencyProperty.Register(
-        nameof(Size), typeof(double), typeof(BatteryRing),
-        new PropertyMetadata(80.0, OnVisualPropertyChanged));
+        nameof(Size),
+        typeof(double),
+        typeof(BatteryRing),
+        new PropertyMetadata(80.0, OnVisualPropertyChanged)
+    );
 
     public new double Size
     {
@@ -37,8 +43,11 @@ public sealed partial class BatteryRing : UserControl
     }
 
     public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(
-        nameof(StrokeThickness), typeof(double), typeof(BatteryRing),
-        new PropertyMetadata(6.0, OnVisualPropertyChanged));
+        nameof(StrokeThickness),
+        typeof(double),
+        typeof(BatteryRing),
+        new PropertyMetadata(6.0, OnVisualPropertyChanged)
+    );
 
     public double StrokeThickness
     {
@@ -48,7 +57,10 @@ public sealed partial class BatteryRing : UserControl
 
     public string PercentText => $"{PercentLevel}%";
 
-    private static void OnVisualPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnVisualPropertyChanged(
+        DependencyObject d,
+        DependencyPropertyChangedEventArgs e
+    )
     {
         if (d is BatteryRing ring)
         {
@@ -59,7 +71,8 @@ public sealed partial class BatteryRing : UserControl
     private void RedrawArc()
     {
         Bindings?.Update();
-        if (ArcPath is null) return;
+        if (ArcPath is null)
+            return;
 
         double size = Size;
         double stroke = StrokeThickness;
@@ -82,18 +95,14 @@ public sealed partial class BatteryRing : UserControl
         var start = PolarToPoint(cx, cy, r, startAngle);
         var end = PolarToPoint(cx, cy, r, endAngle);
 
-        var figure = new PathFigure
-        {
-            StartPoint = start,
-            IsClosed = false
-        };
+        var figure = new PathFigure { StartPoint = start, IsClosed = false };
 
         var arcSegment = new ArcSegment
         {
             Point = end,
             Size = new Size(r, r),
             IsLargeArc = angle > 180.0,
-            SweepDirection = SweepDirection.Clockwise
+            SweepDirection = SweepDirection.Clockwise,
         };
         figure.Segments.Add(arcSegment);
 
@@ -109,25 +118,25 @@ public sealed partial class BatteryRing : UserControl
 
     private static PathGeometry CreateFullCircle(double cx, double cy, double r)
     {
-        var figure = new PathFigure
-        {
-            StartPoint = new Point(cx, cy - r),
-            IsClosed = true
-        };
-        figure.Segments.Add(new ArcSegment
-        {
-            Point = new Point(cx, cy + r),
-            Size = new Size(r, r),
-            IsLargeArc = true,
-            SweepDirection = SweepDirection.Clockwise
-        });
-        figure.Segments.Add(new ArcSegment
-        {
-            Point = new Point(cx, cy - r),
-            Size = new Size(r, r),
-            IsLargeArc = true,
-            SweepDirection = SweepDirection.Clockwise
-        });
+        var figure = new PathFigure { StartPoint = new Point(cx, cy - r), IsClosed = true };
+        figure.Segments.Add(
+            new ArcSegment
+            {
+                Point = new Point(cx, cy + r),
+                Size = new Size(r, r),
+                IsLargeArc = true,
+                SweepDirection = SweepDirection.Clockwise,
+            }
+        );
+        figure.Segments.Add(
+            new ArcSegment
+            {
+                Point = new Point(cx, cy - r),
+                Size = new Size(r, r),
+                IsLargeArc = true,
+                SweepDirection = SweepDirection.Clockwise,
+            }
+        );
         var geo = new PathGeometry();
         geo.Figures.Add(figure);
         return geo;

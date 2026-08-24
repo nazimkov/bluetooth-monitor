@@ -16,7 +16,11 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
     private bool _lowNotified;
     private bool _criticalNotified;
 
-    public BatteryPollingService(ISettingsService settings, IBluetoothFacade facade, INotificationService notifications)
+    public BatteryPollingService(
+        ISettingsService settings,
+        IBluetoothFacade facade,
+        INotificationService notifications
+    )
     {
         _settings = settings;
         _facade = facade;
@@ -28,10 +32,13 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
 
     public Task StartAsync(CancellationToken ct)
     {
-        var dq = DispatcherQueue.GetForCurrentThread()
-                 ?? throw new InvalidOperationException("StartAsync must be called on the UI thread.");
+        var dq =
+            DispatcherQueue.GetForCurrentThread()
+            ?? throw new InvalidOperationException("StartAsync must be called on the UI thread.");
         _timer = dq.CreateTimer();
-        _timer.Interval = TimeSpan.FromSeconds(Math.Max(5, _settings.Current.RefreshIntervalSeconds));
+        _timer.Interval = TimeSpan.FromSeconds(
+            Math.Max(5, _settings.Current.RefreshIntervalSeconds)
+        );
         _timer.Tick += (_, _) => _ = PollOnceAsync();
         _timer.IsRepeating = true;
         _timer.Start();
@@ -47,12 +54,14 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
     public async Task PollOnceAsync()
     {
         var id = _settings.Current.SelectedDeviceId;
-        if (string.IsNullOrWhiteSpace(id)) return;
+        if (string.IsNullOrWhiteSpace(id))
+            return;
 
         var level = await _facade.GetBatteryLevelAsync(id);
         BatteryUpdated?.Invoke(this, new BatteryUpdatedEventArgs { DeviceId = id, Level = level });
 
-        if (level is null) return;
+        if (level is null)
+            return;
         HandleThresholds(id, level.Value);
     }
 
@@ -77,7 +86,11 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
             return;
         }
 
-        if (level <= threshold && !_lowNotified && settings.NotificationStyle != NotificationStyle.Silent)
+        if (
+            level <= threshold
+            && !_lowNotified
+            && settings.NotificationStyle != NotificationStyle.Silent
+        )
         {
             _notifications.ShowLowBattery(settings.DeviceName, level, settings.NotificationStyle);
             _lowNotified = true;
@@ -86,8 +99,11 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
 
     private void OnSettingsChanged(object? sender, EventArgs e)
     {
-        if (_timer is null) return;
-        var newInterval = TimeSpan.FromSeconds(Math.Max(5, _settings.Current.RefreshIntervalSeconds));
+        if (_timer is null)
+            return;
+        var newInterval = TimeSpan.FromSeconds(
+            Math.Max(5, _settings.Current.RefreshIntervalSeconds)
+        );
         if (_timer.Interval != newInterval)
         {
             _timer.Stop();

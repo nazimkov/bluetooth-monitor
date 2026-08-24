@@ -10,7 +10,11 @@ public sealed partial class HeroCard : UserControl
     public HeroCard() => InitializeComponent();
 
     public static readonly DependencyProperty DeviceProperty = DependencyProperty.Register(
-        nameof(Device), typeof(DeviceItemViewModel), typeof(HeroCard), new PropertyMetadata(null));
+        nameof(Device),
+        typeof(DeviceItemViewModel),
+        typeof(HeroCard),
+        new PropertyMetadata(null)
+    );
 
     public DeviceItemViewModel? Device
     {
@@ -19,7 +23,11 @@ public sealed partial class HeroCard : UserControl
     }
 
     public static readonly DependencyProperty RefreshCommandProperty = DependencyProperty.Register(
-        nameof(RefreshCommand), typeof(ICommand), typeof(HeroCard), new PropertyMetadata(null));
+        nameof(RefreshCommand),
+        typeof(ICommand),
+        typeof(HeroCard),
+        new PropertyMetadata(null)
+    );
 
     public ICommand? RefreshCommand
     {

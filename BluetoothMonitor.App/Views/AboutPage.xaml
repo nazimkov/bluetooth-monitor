@@ -7,47 +7,63 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    AutomationProperties.AutomationId="AboutPage">
-
+    AutomationProperties.AutomationId="AboutPage"
+>
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
-            <TextBlock Text="About Battcheck"
-                       Style="{StaticResource BattcheckPageTitle}"
-                       AutomationProperties.AutomationId="AboutPageTitle" />
-            <TextBlock Text="A small utility for watching your Bluetooth headset battery."
-                       Style="{StaticResource BattcheckPageSub}" />
+            <TextBlock
+                Text="About Battcheck"
+                Style="{StaticResource BattcheckPageTitle}"
+                AutomationProperties.AutomationId="AboutPageTitle"
+            />
+            <TextBlock
+                Text="A small utility for watching your Bluetooth headset battery."
+                Style="{StaticResource BattcheckPageSub}"
+            />
 
-            <ctkc:SettingsCard Header="Battcheck"
-                               Description="{x:Bind ViewModel.Platform, Mode=OneWay}">
+            <ctkc:SettingsCard
+                Header="Battcheck"
+                Description="{x:Bind ViewModel.Platform, Mode=OneWay}"
+            >
                 <ctkc:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                              Glyph="&#xEBA9;"
-                              Foreground="{ThemeResource BattcheckAccentBrush}" />
+                    <FontIcon
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        Glyph="&#xEBA9;"
+                        Foreground="{ThemeResource BattcheckAccentBrush}"
+                    />
                 </ctkc:SettingsCard.HeaderIcon>
-                <TextBlock Text="{x:Bind ViewModel.Version, Mode=OneWay}"
-                           FontWeight="SemiBold" />
+                <TextBlock Text="{x:Bind ViewModel.Version, Mode=OneWay}" FontWeight="SemiBold" />
             </ctkc:SettingsCard>
 
-            <ctkc:SettingsCard Header="Privacy"
-                               Description="All Bluetooth polling happens locally. No data is sent over the network.">
+            <ctkc:SettingsCard
+                Header="Privacy"
+                Description="All Bluetooth polling happens locally. No data is sent over the network."
+            >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE946;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <Button Content="Privacy policy" Command="{x:Bind ViewModel.OpenPrivacyPolicyCommand}" />
+                <Button
+                    Content="Privacy policy"
+                    Command="{x:Bind ViewModel.OpenPrivacyPolicyCommand}"
+                />
             </ctkc:SettingsCard>
 
-            <ctkc:SettingsCard Header="Check for updates"
-                               Description="Manual check — no auto-updater is wired up yet.">
+            <ctkc:SettingsCard
+                Header="Check for updates"
+                Description="Manual check — no auto-updater is wired up yet."
+            >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <Button Content="Check now" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
             </ctkc:SettingsCard>
 
-            <InfoBar IsOpen="{x:Bind ViewModel.UpdateInfoVisible, Mode=OneWay}"
-                     Severity="Informational"
-                     Title="Update check"
-                     Message="{x:Bind ViewModel.UpdateInfoText, Mode=OneWay}" />
+            <InfoBar
+                IsOpen="{x:Bind ViewModel.UpdateInfoVisible, Mode=OneWay}"
+                Severity="Informational"
+                Title="Update check"
+                Message="{x:Bind ViewModel.UpdateInfoText, Mode=OneWay}"
+            />
         </StackPanel>
     </ScrollViewer>
 </Page>

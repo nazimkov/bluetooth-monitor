@@ -12,12 +12,12 @@ public sealed class BatteryLevelToGlyphConverter : IValueConverter
             byte b => b,
             int i => i,
             double d => (int)d,
-            _ => 100
+            _ => 100,
         };
         var step = Math.Clamp(level / 10, 0, 10);
         return ((char)(0xEBA0 + step)).ToString();
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, string language)
-        => throw new NotImplementedException();
+    public object ConvertBack(object value, Type targetType, object parameter, string language) =>
+        throw new NotImplementedException();
 }

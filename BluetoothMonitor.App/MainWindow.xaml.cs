@@ -50,25 +50,30 @@ public sealed partial class MainWindow : Window
 
     private void ApplyTheme()
     {
-        if (RootGrid is null) return;
+        if (RootGrid is null)
+            return;
         RootGrid.RequestedTheme = _settings.Current.Theme switch
         {
             Models.AppTheme.Light => ElementTheme.Light,
             Models.AppTheme.Dark => ElementTheme.Dark,
-            _ => ElementTheme.Default
+            _ => ElementTheme.Default,
         };
     }
 
-    private void RootNav_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+    private void RootNav_SelectionChanged(
+        NavigationView sender,
+        NavigationViewSelectionChangedEventArgs args
+    )
     {
-        if (args.SelectedItem is not NavigationViewItem item) return;
+        if (args.SelectedItem is not NavigationViewItem item)
+            return;
         Type? page = item.Tag as string switch
         {
             "devices" => typeof(DevicesPage),
             "notifications" => typeof(NotificationsPage),
             "general" => typeof(GeneralPage),
             "about" => typeof(AboutPage),
-            _ => null
+            _ => null,
         };
         if (page is not null && ContentFrame.CurrentSourcePageType != page)
         {
@@ -78,7 +83,8 @@ public sealed partial class MainWindow : Window
 
     private void OnClosed(object sender, WindowEventArgs args)
     {
-        if (_reallyClose) return;
+        if (_reallyClose)
+            return;
         if (_settings.Current.KeepRunningInBackground)
         {
             args.Handled = true;

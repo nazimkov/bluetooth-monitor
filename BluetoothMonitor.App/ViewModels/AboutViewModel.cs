@@ -14,10 +14,17 @@ public partial class AboutViewModel : ObservableObject
         Version = asm.Version?.ToString(3) ?? "1.0.0";
     }
 
-    [ObservableProperty] private string _version = "1.0.0";
-    [ObservableProperty] private string _platform = "Windows 11 22H2 or later";
-    [ObservableProperty] private bool _updateInfoVisible;
-    [ObservableProperty] private string _updateInfoText = string.Empty;
+    [ObservableProperty]
+    private string _version = "1.0.0";
+
+    [ObservableProperty]
+    private string _platform = "Windows 11 22H2 or later";
+
+    [ObservableProperty]
+    private bool _updateInfoVisible;
+
+    [ObservableProperty]
+    private string _updateInfoText = string.Empty;
 
     [RelayCommand]
     private void CheckForUpdates()

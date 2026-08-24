@@ -14,7 +14,7 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
     {
         WriteIndented = true,
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
     };
 
     private readonly string _filePath;
@@ -23,11 +23,12 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
     private CancellationTokenSource? _debounceCts;
 
     public JsonSettingsService()
-        : this(Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "Battcheck"))
-    {
-    }
+        : this(
+            Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "Battcheck"
+            )
+        ) { }
 
     public JsonSettingsService(string directory)
     {

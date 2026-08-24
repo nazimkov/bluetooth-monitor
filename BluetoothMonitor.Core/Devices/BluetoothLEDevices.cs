@@ -18,7 +18,10 @@ namespace BluetoothMonitor.Core.Devices
         {
             if (string.IsNullOrWhiteSpace(deviceName))
             {
-                throw new ArgumentException("Device name cannot be null or empty.", nameof(deviceName));
+                throw new ArgumentException(
+                    "Device name cannot be null or empty.",
+                    nameof(deviceName)
+                );
             }
 
             var selector = BluetoothLEDevice.GetDeviceSelectorFromDeviceName(deviceName);
@@ -54,25 +57,45 @@ namespace BluetoothMonitor.Core.Devices
                     throw new BluetoothException($"Device with ID {deviceId} could not be opened.");
                 }
 
-                var servicesResult = await device.GetGattServicesForUuidAsync(GattServiceUuids.Battery);
-                if (servicesResult.Status != GattCommunicationStatus.Success || servicesResult.Services.Count == 0)
+                var servicesResult = await device.GetGattServicesForUuidAsync(
+                    GattServiceUuids.Battery
+                );
+                if (
+                    servicesResult.Status != GattCommunicationStatus.Success
+                    || servicesResult.Services.Count == 0
+                )
                 {
-                    throw new BluetoothException($"Battery service not available for device {deviceId}. Status: {servicesResult.Status}.");
+                    throw new BluetoothException(
+                        $"Battery service not available for device {deviceId}. Status: {servicesResult.Status}."
+                    );
                 }
 
                 using var batteryService = servicesResult.Services[0];
 
-                var characteristicsResult = await batteryService.GetCharacteristicsForUuidAsync(GattCharacteristicUuids.BatteryLevel);
-                if (characteristicsResult.Status != GattCommunicationStatus.Success || characteristicsResult.Characteristics.Count == 0)
+                var characteristicsResult = await batteryService.GetCharacteristicsForUuidAsync(
+                    GattCharacteristicUuids.BatteryLevel
+                );
+                if (
+                    characteristicsResult.Status != GattCommunicationStatus.Success
+                    || characteristicsResult.Characteristics.Count == 0
+                )
                 {
-                    throw new BluetoothException($"Battery characteristic not available for device {deviceId}. Status: {characteristicsResult.Status}.");
+                    throw new BluetoothException(
+                        $"Battery characteristic not available for device {deviceId}. Status: {characteristicsResult.Status}."
+                    );
                 }
 
                 var characteristic = characteristicsResult.Characteristics[0];
                 var readResult = await characteristic.ReadValueAsync(BluetoothCacheMode.Uncached);
-                if (readResult.Status != GattCommunicationStatus.Success || readResult.Value is null || readResult.Value.Length == 0)
+                if (
+                    readResult.Status != GattCommunicationStatus.Success
+                    || readResult.Value is null
+                    || readResult.Value.Length == 0
+                )
                 {
-                    throw new BluetoothException($"Unable to read battery level for device {deviceId}. Status: {readResult.Status}.");
+                    throw new BluetoothException(
+                        $"Unable to read battery level for device {deviceId}. Status: {readResult.Status}."
+                    );
                 }
 
                 var reader = DataReader.FromBuffer(readResult.Value);
@@ -85,7 +108,10 @@ namespace BluetoothMonitor.Core.Devices
             }
             catch (Exception ex)
             {
-                throw new BluetoothException($"Failed to read battery level from device {deviceId}.", ex);
+                throw new BluetoothException(
+                    $"Failed to read battery level from device {deviceId}.",
+                    ex
+                );
             }
         }
     }

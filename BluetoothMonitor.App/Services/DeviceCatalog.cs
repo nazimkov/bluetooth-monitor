@@ -23,7 +23,8 @@ public sealed class DeviceCatalog : IDeviceCatalog
 
     public async Task RefreshAsync()
     {
-        if (!await _refreshLock.WaitAsync(0)) return;
+        if (!await _refreshLock.WaitAsync(0))
+            return;
         try
         {
             IsRefreshing = true;
@@ -67,7 +68,8 @@ public sealed class DeviceCatalog : IDeviceCatalog
 
     public DeviceItemViewModel? FindById(string? id)
     {
-        if (string.IsNullOrWhiteSpace(id)) return null;
+        if (string.IsNullOrWhiteSpace(id))
+            return null;
         return Devices.FirstOrDefault(d => d.Id == id);
     }
 }

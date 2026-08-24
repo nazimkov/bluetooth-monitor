@@ -22,7 +22,9 @@ public static class Program
 
         Microsoft.UI.Xaml.Application.Start(_ =>
         {
-            var context = new DispatcherQueueSynchronizationContext(DispatcherQueue.GetForCurrentThread());
+            var context = new DispatcherQueueSynchronizationContext(
+                DispatcherQueue.GetForCurrentThread()
+            );
             System.Threading.SynchronizationContext.SetSynchronizationContext(context);
             new App();
         });
@@ -33,9 +35,7 @@ public static class Program
     private static bool DecideRedirection()
     {
         var activatedArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
-        var key = E2ETestHost.IsEnabled
-            ? E2ETestHost.InstanceKey
-            : "BluetoothMonitor.App";
+        var key = E2ETestHost.IsEnabled ? E2ETestHost.InstanceKey : "BluetoothMonitor.App";
         var instance = AppInstance.FindOrRegisterForKey(key);
 
         if (instance.IsCurrent)

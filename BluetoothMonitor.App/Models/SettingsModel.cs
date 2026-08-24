@@ -14,18 +14,19 @@ public class SettingsModel
     public bool KeepRunningInBackground { get; set; } = true;
     public AppTheme Theme { get; set; } = AppTheme.System;
 
-    public SettingsModel Clone() => new()
-    {
-        SelectedDeviceId = SelectedDeviceId,
-        DeviceName = DeviceName,
-        LowBatteryThreshold = LowBatteryThreshold,
-        CriticalAlertUnder5 = CriticalAlertUnder5,
-        SilenceDuringDnd = SilenceDuringDnd,
-        NotificationStyle = NotificationStyle,
-        AlertSound = AlertSound,
-        RefreshIntervalSeconds = RefreshIntervalSeconds,
-        StartAtSignIn = StartAtSignIn,
-        KeepRunningInBackground = KeepRunningInBackground,
-        Theme = Theme
-    };
+    public SettingsModel Clone() =>
+        new()
+        {
+            SelectedDeviceId = SelectedDeviceId,
+            DeviceName = DeviceName,
+            LowBatteryThreshold = LowBatteryThreshold,
+            CriticalAlertUnder5 = CriticalAlertUnder5,
+            SilenceDuringDnd = SilenceDuringDnd,
+            NotificationStyle = NotificationStyle,
+            AlertSound = AlertSound,
+            RefreshIntervalSeconds = RefreshIntervalSeconds,
+            StartAtSignIn = StartAtSignIn,
+            KeepRunningInBackground = KeepRunningInBackground,
+            Theme = Theme,
+        };
 }

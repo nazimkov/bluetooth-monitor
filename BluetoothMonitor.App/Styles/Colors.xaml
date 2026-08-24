@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+>
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
             <Color x:Key="BattcheckAccent">#0078D4</Color>
@@ -24,21 +24,61 @@
             <Color x:Key="BattcheckCardBorderStrong">#1F000000</Color>
             <Color x:Key="BattcheckTextTertiary">#8A8A8A</Color>
 
-            <SolidColorBrush x:Key="BattcheckAccentBrush" Color="{StaticResource BattcheckAccent}" />
-            <SolidColorBrush x:Key="BattcheckAccentHoverBrush" Color="{StaticResource BattcheckAccentHover}" />
-            <SolidColorBrush x:Key="BattcheckAccentSoftBrush" Color="{StaticResource BattcheckAccentSoft}" />
+            <SolidColorBrush
+                x:Key="BattcheckAccentBrush"
+                Color="{StaticResource BattcheckAccent}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckAccentHoverBrush"
+                Color="{StaticResource BattcheckAccentHover}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckAccentSoftBrush"
+                Color="{StaticResource BattcheckAccentSoft}"
+            />
             <SolidColorBrush x:Key="BattcheckOkBrush" Color="{StaticResource BattcheckOk}" />
             <SolidColorBrush x:Key="BattcheckWarnBrush" Color="{StaticResource BattcheckWarn}" />
-            <SolidColorBrush x:Key="BattcheckWarnBgBrush" Color="{StaticResource BattcheckWarnBg}" />
-            <SolidColorBrush x:Key="BattcheckDangerBrush" Color="{StaticResource BattcheckDanger}" />
-            <SolidColorBrush x:Key="BattcheckDangerBgBrush" Color="{StaticResource BattcheckDangerBg}" />
-            <SolidColorBrush x:Key="BattcheckWindowBackgroundBrush" Color="{StaticResource BattcheckWindowBackground}" Opacity="0" />
-            <SolidColorBrush x:Key="BattcheckSurfaceBrush" Color="{StaticResource BattcheckSurface}" />
-            <SolidColorBrush x:Key="BattcheckSurface2Brush" Color="{StaticResource BattcheckSurface2}" />
-            <SolidColorBrush x:Key="BattcheckCardBorderBrush" Color="{StaticResource BattcheckCardBorder}" />
-            <SolidColorBrush x:Key="BattcheckCardBorderStrongBrush" Color="{StaticResource BattcheckCardBorderStrong}" />
-            <SolidColorBrush x:Key="BattcheckDividerBrush" Color="{StaticResource BattcheckDivider}" />
-            <SolidColorBrush x:Key="BattcheckTextTertiaryBrush" Color="{StaticResource BattcheckTextTertiary}" />
+            <SolidColorBrush
+                x:Key="BattcheckWarnBgBrush"
+                Color="{StaticResource BattcheckWarnBg}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckDangerBrush"
+                Color="{StaticResource BattcheckDanger}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckDangerBgBrush"
+                Color="{StaticResource BattcheckDangerBg}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckWindowBackgroundBrush"
+                Color="{StaticResource BattcheckWindowBackground}"
+                Opacity="0"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckSurfaceBrush"
+                Color="{StaticResource BattcheckSurface}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckSurface2Brush"
+                Color="{StaticResource BattcheckSurface2}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckCardBorderBrush"
+                Color="{StaticResource BattcheckCardBorder}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckCardBorderStrongBrush"
+                Color="{StaticResource BattcheckCardBorderStrong}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckDividerBrush"
+                Color="{StaticResource BattcheckDivider}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckTextTertiaryBrush"
+                Color="{StaticResource BattcheckTextTertiary}"
+            />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
@@ -61,22 +101,61 @@
             <Color x:Key="BattcheckCardBorderStrong">#24FFFFFF</Color>
             <Color x:Key="BattcheckTextTertiary">#9B9B9B</Color>
 
-            <SolidColorBrush x:Key="BattcheckAccentBrush" Color="{StaticResource BattcheckAccent}" />
-            <SolidColorBrush x:Key="BattcheckAccentHoverBrush" Color="{StaticResource BattcheckAccentHover}" />
-            <SolidColorBrush x:Key="BattcheckAccentSoftBrush" Color="{StaticResource BattcheckAccentSoft}" />
+            <SolidColorBrush
+                x:Key="BattcheckAccentBrush"
+                Color="{StaticResource BattcheckAccent}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckAccentHoverBrush"
+                Color="{StaticResource BattcheckAccentHover}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckAccentSoftBrush"
+                Color="{StaticResource BattcheckAccentSoft}"
+            />
             <SolidColorBrush x:Key="BattcheckOkBrush" Color="{StaticResource BattcheckOk}" />
             <SolidColorBrush x:Key="BattcheckWarnBrush" Color="{StaticResource BattcheckWarn}" />
-            <SolidColorBrush x:Key="BattcheckWarnBgBrush" Color="{StaticResource BattcheckWarnBg}" />
-            <SolidColorBrush x:Key="BattcheckDangerBrush" Color="{StaticResource BattcheckDanger}" />
-            <SolidColorBrush x:Key="BattcheckDangerBgBrush" Color="{StaticResource BattcheckDangerBg}" />
-            <SolidColorBrush x:Key="BattcheckWindowBackgroundBrush" Color="{StaticResource BattcheckWindowBackground}" Opacity="0" />
-            <SolidColorBrush x:Key="BattcheckSurfaceBrush" Color="{StaticResource BattcheckSurface}" />
-            <SolidColorBrush x:Key="BattcheckSurface2Brush" Color="{StaticResource BattcheckSurface2}" />
-            <SolidColorBrush x:Key="BattcheckCardBorderBrush" Color="{StaticResource BattcheckCardBorder}" />
-            <SolidColorBrush x:Key="BattcheckCardBorderStrongBrush" Color="{StaticResource BattcheckCardBorderStrong}" />
-            <SolidColorBrush x:Key="BattcheckDividerBrush" Color="{StaticResource BattcheckDivider}" />
-            <SolidColorBrush x:Key="BattcheckTextTertiaryBrush" Color="{StaticResource BattcheckTextTertiary}" />
+            <SolidColorBrush
+                x:Key="BattcheckWarnBgBrush"
+                Color="{StaticResource BattcheckWarnBg}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckDangerBrush"
+                Color="{StaticResource BattcheckDanger}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckDangerBgBrush"
+                Color="{StaticResource BattcheckDangerBg}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckWindowBackgroundBrush"
+                Color="{StaticResource BattcheckWindowBackground}"
+                Opacity="0"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckSurfaceBrush"
+                Color="{StaticResource BattcheckSurface}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckSurface2Brush"
+                Color="{StaticResource BattcheckSurface2}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckCardBorderBrush"
+                Color="{StaticResource BattcheckCardBorder}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckCardBorderStrongBrush"
+                Color="{StaticResource BattcheckCardBorderStrong}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckDividerBrush"
+                Color="{StaticResource BattcheckDivider}"
+            />
+            <SolidColorBrush
+                x:Key="BattcheckTextTertiaryBrush"
+                Color="{StaticResource BattcheckTextTertiary}"
+            />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
-
 </ResourceDictionary>

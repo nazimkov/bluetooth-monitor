@@ -13,8 +13,11 @@ public sealed partial class BatteryBar : UserControl
     }
 
     public static readonly DependencyProperty PercentLevelProperty = DependencyProperty.Register(
-        nameof(PercentLevel), typeof(byte), typeof(BatteryBar),
-        new PropertyMetadata((byte)0, OnVisualChanged));
+        nameof(PercentLevel),
+        typeof(byte),
+        typeof(BatteryBar),
+        new PropertyMetadata((byte)0, OnVisualChanged)
+    );
 
     public byte PercentLevel
     {
@@ -26,13 +29,15 @@ public sealed partial class BatteryBar : UserControl
 
     private static void OnVisualChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is BatteryBar bar) bar.UpdateWidth();
+        if (d is BatteryBar bar)
+            bar.UpdateWidth();
     }
 
     private void UpdateWidth()
     {
         Bindings?.Update();
-        if (FillBorder is null) return;
+        if (FillBorder is null)
+            return;
         var pct = Math.Clamp(PercentLevel / 100.0, 0.0, 1.0);
         FillBorder.Width = 140 * pct;
     }

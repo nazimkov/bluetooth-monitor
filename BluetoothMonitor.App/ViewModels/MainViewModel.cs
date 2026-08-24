@@ -15,5 +15,6 @@ public partial class MainViewModel : ObservableObject
         settings.Changed += (_, _) => Theme = settings.Current.Theme;
     }
 
-    [ObservableProperty] private AppTheme _theme;
+    [ObservableProperty]
+    private AppTheme _theme;
 }

@@ -92,7 +92,10 @@ public partial class App : Application
         return services.BuildServiceProvider();
     }
 
-    private void OnNotificationInvoked(AppNotificationManager sender, AppNotificationActivatedEventArgs args)
+    private void OnNotificationInvoked(
+        AppNotificationManager sender,
+        AppNotificationActivatedEventArgs args
+    )
     {
         if (args.Arguments.TryGetValue("action", out var action) && action == "open")
         {
@@ -100,7 +103,10 @@ public partial class App : Application
         }
     }
 
-    private void OnUnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private void OnUnhandledException(
+        object sender,
+        Microsoft.UI.Xaml.UnhandledExceptionEventArgs e
+    )
     {
         System.Diagnostics.Debug.WriteLine($"Unhandled: {e.Exception}");
         e.Handled = true;

@@ -13,7 +13,7 @@ public sealed class FakeBluetoothFacade : IBluetoothFacade
     private static readonly JsonSerializerOptions JsonOpts = new()
     {
         PropertyNameCaseInsensitive = true,
-        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) }
+        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
     };
 
     private readonly List<SeedDevice> _devices;
@@ -25,19 +25,22 @@ public sealed class FakeBluetoothFacade : IBluetoothFacade
 
     public Task<IReadOnlyList<BluetoothDeviceInfo>> ListDevicesAsync() =>
         Task.FromResult<IReadOnlyList<BluetoothDeviceInfo>>(
-            _devices.Select(d => d.ToInfo()).ToList());
+            _devices.Select(d => d.ToInfo()).ToList()
+        );
 
     public Task<string?> FindDeviceIdAsync(string deviceName)
     {
         var match = _devices.FirstOrDefault(d =>
-            string.Equals(d.Name, deviceName, StringComparison.OrdinalIgnoreCase));
+            string.Equals(d.Name, deviceName, StringComparison.OrdinalIgnoreCase)
+        );
         return Task.FromResult(match?.Id);
     }
 
     public Task<byte?> GetBatteryLevelAsync(string deviceId)
     {
         var match = _devices.FirstOrDefault(d =>
-            string.Equals(d.Id, deviceId, StringComparison.OrdinalIgnoreCase));
+            string.Equals(d.Id, deviceId, StringComparison.OrdinalIgnoreCase)
+        );
         return Task.FromResult(match?.BatteryLevel);
     }
 
@@ -70,7 +73,7 @@ public sealed class FakeBluetoothFacade : IBluetoothFacade
                 Kind = DeviceKind.OverEar,
                 MacAddress = "AA:BB:CC:DD:EE:01",
                 IsConnected = true,
-                BatteryLevel = 72
+                BatteryLevel = 72,
             },
             new SeedDevice
             {
@@ -79,8 +82,8 @@ public sealed class FakeBluetoothFacade : IBluetoothFacade
                 Kind = DeviceKind.Earbuds,
                 MacAddress = "AA:BB:CC:DD:EE:02",
                 IsConnected = true,
-                BatteryLevel = 18
-            }
+                BatteryLevel = 18,
+            },
         ];
     }
 
@@ -93,7 +96,6 @@ public sealed class FakeBluetoothFacade : IBluetoothFacade
         public bool IsConnected { get; set; } = true;
         public byte BatteryLevel { get; set; }
 
-        public BluetoothDeviceInfo ToInfo() =>
-            new(Id, Name, Kind, MacAddress, IsConnected);
+        public BluetoothDeviceInfo ToInfo() => new(Id, Name, Kind, MacAddress, IsConnected);
     }
 }

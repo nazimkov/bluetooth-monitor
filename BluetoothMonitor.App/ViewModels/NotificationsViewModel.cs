@@ -19,11 +19,20 @@ public partial class NotificationsViewModel : ObservableObject
         _silenceDuringDnd = settings.Current.SilenceDuringDnd;
     }
 
-    [ObservableProperty] private int _threshold;
-    [ObservableProperty] private NotificationStyle _notificationStyle;
-    [ObservableProperty] private string _alertSound = "Gentle";
-    [ObservableProperty] private bool _criticalAlertUnder5;
-    [ObservableProperty] private bool _silenceDuringDnd;
+    [ObservableProperty]
+    private int _threshold;
+
+    [ObservableProperty]
+    private NotificationStyle _notificationStyle;
+
+    [ObservableProperty]
+    private string _alertSound = "Gentle";
+
+    [ObservableProperty]
+    private bool _criticalAlertUnder5;
+
+    [ObservableProperty]
+    private bool _silenceDuringDnd;
 
     public int NotificationStyleIndex
     {
@@ -35,15 +44,22 @@ public partial class NotificationsViewModel : ObservableObject
         }
     }
 
-    partial void OnThresholdChanged(int value) => _settings.Update(s => s.LowBatteryThreshold = value);
+    partial void OnThresholdChanged(int value) =>
+        _settings.Update(s => s.LowBatteryThreshold = value);
+
     partial void OnNotificationStyleChanged(NotificationStyle value)
     {
         _settings.Update(s => s.NotificationStyle = value);
         OnPropertyChanged(nameof(NotificationStyleIndex));
     }
+
     partial void OnAlertSoundChanged(string value) => _settings.Update(s => s.AlertSound = value);
-    partial void OnCriticalAlertUnder5Changed(bool value) => _settings.Update(s => s.CriticalAlertUnder5 = value);
-    partial void OnSilenceDuringDndChanged(bool value) => _settings.Update(s => s.SilenceDuringDnd = value);
+
+    partial void OnCriticalAlertUnder5Changed(bool value) =>
+        _settings.Update(s => s.CriticalAlertUnder5 = value);
+
+    partial void OnSilenceDuringDndChanged(bool value) =>
+        _settings.Update(s => s.SilenceDuringDnd = value);
 
     [RelayCommand]
     private void PreviewSound()

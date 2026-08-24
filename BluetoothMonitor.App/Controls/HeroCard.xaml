@@ -7,8 +7,8 @@
     xmlns:conv="using:BluetoothMonitor.App.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-
+    mc:Ignorable="d"
+>
     <UserControl.Resources>
         <conv:DeviceKindToLabelConverter x:Key="KindLabelConv" />
         <conv:NullableByteToByteConverter x:Key="ByteConv" />
@@ -22,34 +22,58 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <controls:BatteryRing Grid.Column="0"
-                                  PercentLevel="{x:Bind Device.BatteryLevel, Mode=OneWay, Converter={StaticResource ByteConv}}" />
+            <controls:BatteryRing
+                Grid.Column="0"
+                PercentLevel="{x:Bind Device.BatteryLevel, Mode=OneWay, Converter={StaticResource ByteConv}}"
+            />
 
             <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
-                <TextBlock Text="{x:Bind Device.Name, Mode=OneWay}"
-                           FontSize="18"
-                           FontWeight="SemiBold"
-                           AutomationProperties.AutomationId="HeroDeviceName" />
+                <TextBlock
+                    Text="{x:Bind Device.Name, Mode=OneWay}"
+                    FontSize="18"
+                    FontWeight="SemiBold"
+                    AutomationProperties.AutomationId="HeroDeviceName"
+                />
                 <StackPanel Orientation="Horizontal" Spacing="10">
-                    <TextBlock Text="{x:Bind Device.Kind, Mode=OneWay, Converter={StaticResource KindLabelConv}}"
-                               Foreground="{ThemeResource TextFillColorSecondaryBrush}" />
+                    <TextBlock
+                        Text="{x:Bind Device.Kind, Mode=OneWay, Converter={StaticResource KindLabelConv}}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    />
                     <Border Style="{StaticResource BattcheckBadgeOk}">
                         <StackPanel Orientation="Horizontal" Spacing="4">
-                            <Ellipse Width="6" Height="6" Fill="{ThemeResource BattcheckOkBrush}" VerticalAlignment="Center" />
-                            <TextBlock Text="Connected"
-                                       FontSize="11"
-                                       FontWeight="SemiBold"
-                                       Foreground="{ThemeResource BattcheckOkBrush}" />
+                            <Ellipse
+                                Width="6"
+                                Height="6"
+                                Fill="{ThemeResource BattcheckOkBrush}"
+                                VerticalAlignment="Center"
+                            />
+                            <TextBlock
+                                Text="Connected"
+                                FontSize="11"
+                                FontWeight="SemiBold"
+                                Foreground="{ThemeResource BattcheckOkBrush}"
+                            />
                         </StackPanel>
                     </Border>
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                <Button Command="{x:Bind RefreshCommand, Mode=OneWay}"
-                        ToolTipService.ToolTip="Refresh"
-                        AutomationProperties.AutomationId="HeroRefreshButton">
-                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72C;" FontSize="14" />
+            <StackPanel
+                Grid.Column="2"
+                Orientation="Horizontal"
+                Spacing="8"
+                VerticalAlignment="Center"
+            >
+                <Button
+                    Command="{x:Bind RefreshCommand, Mode=OneWay}"
+                    ToolTipService.ToolTip="Refresh"
+                    AutomationProperties.AutomationId="HeroRefreshButton"
+                >
+                    <FontIcon
+                        FontFamily="{ThemeResource SymbolThemeFontFamily}"
+                        Glyph="&#xE72C;"
+                        FontSize="14"
+                    />
                 </Button>
             </StackPanel>
         </Grid>

@@ -10,8 +10,11 @@ public sealed partial class DeviceRow : UserControl
     public DeviceRow() => InitializeComponent();
 
     public static readonly DependencyProperty DeviceProperty = DependencyProperty.Register(
-        nameof(Device), typeof(DeviceItemViewModel), typeof(DeviceRow),
-        new PropertyMetadata(null, OnDeviceChanged));
+        nameof(Device),
+        typeof(DeviceItemViewModel),
+        typeof(DeviceRow),
+        new PropertyMetadata(null, OnDeviceChanged)
+    );
 
     public DeviceItemViewModel? Device
     {
@@ -42,7 +45,10 @@ public sealed partial class DeviceRow : UserControl
         }
     }
 
-    private void OnDevicePropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    private void OnDevicePropertyChanged(
+        object? sender,
+        System.ComponentModel.PropertyChangedEventArgs e
+    )
     {
         if (e.PropertyName is nameof(DeviceItemViewModel.Id) or nameof(DeviceItemViewModel.Name))
         {

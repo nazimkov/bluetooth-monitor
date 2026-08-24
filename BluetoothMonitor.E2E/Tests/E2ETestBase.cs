@@ -22,12 +22,7 @@ public abstract class E2ETestBase(AppLifecycle app)
         }
         catch (Exception ex)
         {
-            var path = FailureArtifacts.Write(
-                App.RunId,
-                testName,
-                ex.Message,
-                App.MainWindow,
-                ex);
+            var path = FailureArtifacts.Write(App.RunId, testName, ex.Message, App.MainWindow, ex);
             throw new Xunit.Sdk.XunitException($"{ex.Message}\n\nArtifacts: {path}");
         }
     }
@@ -40,12 +35,7 @@ public abstract class E2ETestBase(AppLifecycle app)
         }
         catch (Exception ex)
         {
-            var path = FailureArtifacts.Write(
-                App.RunId,
-                testName,
-                ex.Message,
-                App.MainWindow,
-                ex);
+            var path = FailureArtifacts.Write(App.RunId, testName, ex.Message, App.MainWindow, ex);
             throw new Xunit.Sdk.XunitException($"{ex.Message}\n\nArtifacts: {path}");
         }
     }

@@ -13,6 +13,7 @@ namespace BluetoothMonitor.Core
             _classicDevices = classicDevices;
             _leDevices = leDevices;
         }
+
         public async Task<IReadOnlyList<DeviceInformation>> ListDevicesAsync()
         {
             var classicDevices = await _classicDevices.ListDevicesAsync();
@@ -25,5 +26,4 @@ namespace BluetoothMonitor.Core
                 .ToList();
         }
     }
-
 }

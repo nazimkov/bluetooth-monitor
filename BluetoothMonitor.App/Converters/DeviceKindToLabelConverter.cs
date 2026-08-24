@@ -15,10 +15,10 @@ public sealed class DeviceKindToLabelConverter : IValueConverter
             DeviceKind.OverEar => "Over-ear headphones",
             DeviceKind.Speaker => "Bluetooth speaker",
             DeviceKind.Handsfree => "Handsfree headset",
-            _ => "Audio device"
+            _ => "Audio device",
         };
     }
 
-    public object ConvertBack(object value, Type targetType, object parameter, string language)
-        => throw new NotImplementedException();
+    public object ConvertBack(object value, Type targetType, object parameter, string language) =>
+        throw new NotImplementedException();
 }

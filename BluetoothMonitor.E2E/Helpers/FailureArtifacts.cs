@@ -30,7 +30,8 @@ public static class FailureArtifacts
         string testName,
         string message,
         AutomationElement? window,
-        Exception? exception = null)
+        Exception? exception = null
+    )
     {
         var safeName = Sanitize(testName);
         var dir = Path.Combine(RootDirectory, runId, safeName);
@@ -94,10 +95,14 @@ public static class FailureArtifacts
         sb.AppendLine();
         sb.AppendLine("```bash");
         sb.AppendLine("dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64");
-        sb.AppendLine($"dotnet test BluetoothMonitor.E2E -c Debug -p:Platform=x64 --filter FullyQualifiedName~{safeName}");
+        sb.AppendLine(
+            $"dotnet test BluetoothMonitor.E2E -c Debug -p:Platform=x64 --filter FullyQualifiedName~{safeName}"
+        );
         sb.AppendLine("```");
         sb.AppendLine();
-        sb.AppendLine("Read `failure.md`, `screenshot.png`, and `uia-tree.txt` before editing product code.");
+        sb.AppendLine(
+            "Read `failure.md`, `screenshot.png`, and `uia-tree.txt` before editing product code."
+        );
 
         File.WriteAllText(failurePath, sb.ToString(), Encoding.UTF8);
         return failurePath;
