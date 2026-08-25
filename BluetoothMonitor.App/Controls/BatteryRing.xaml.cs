@@ -36,7 +36,7 @@ public sealed partial class BatteryRing : UserControl
         new PropertyMetadata(80.0, OnVisualPropertyChanged)
     );
 
-    public new double Size
+    public double Size
     {
         get => (double)GetValue(SizeProperty);
         set => SetValue(SizeProperty, value);

@@ -67,7 +67,7 @@ public sealed partial class MainWindow : Window
     {
         if (args.SelectedItem is not NavigationViewItem item)
             return;
-        Type? page = item.Tag as string switch
+        Type? page = (item.Tag as string) switch
         {
             "devices" => typeof(DevicesPage),
             "notifications" => typeof(NotificationsPage),

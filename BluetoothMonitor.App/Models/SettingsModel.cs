@@ -6,11 +6,11 @@ public class SettingsModel
     public string DeviceName { get; set; } = "Baseus Bowie D05";
     public int LowBatteryThreshold { get; set; } = 20;
     public bool CriticalAlertUnder5 { get; set; } = true;
-    public bool SilenceDuringDnd { get; set; } = false;
+    public bool SilenceDuringDnd { get; set; }
     public NotificationStyle NotificationStyle { get; set; } = NotificationStyle.BannerAndSound;
     public string AlertSound { get; set; } = "Gentle";
     public int RefreshIntervalSeconds { get; set; } = 60;
-    public bool StartAtSignIn { get; set; } = false;
+    public bool StartAtSignIn { get; set; }
     public bool KeepRunningInBackground { get; set; } = true;
     public AppTheme Theme { get; set; } = AppTheme.System;
 

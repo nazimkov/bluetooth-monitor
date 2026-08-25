@@ -12,7 +12,7 @@ namespace BluetoothMonitor.App;
 
 public partial class App : Application
 {
-    public static App Current => (App)Application.Current;
+    public static new App Current => (App)Application.Current;
     public IServiceProvider Services { get; private set; } = null!;
     public MainWindow? MainWindow { get; private set; }
 

@@ -34,7 +34,7 @@ public partial class AboutViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async void OpenPrivacyPolicy()
+    private async Task OpenPrivacyPolicy()
     {
         await Launcher.LaunchUriAsync(new Uri("https://github.com/"));
     }
