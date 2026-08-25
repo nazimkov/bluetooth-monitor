@@ -29,7 +29,7 @@ public partial class App : Application
         var settings = Services.GetRequiredService<ISettingsService>();
         await settings.LoadAsync();
 
-        if (!E2ETestHost.IsEnabled)
+        if (!E2ETestHost.IsEnabled && AppEnvironment.IsPackaged)
         {
             AppNotificationManager.Default.NotificationInvoked += OnNotificationInvoked;
             AppNotificationManager.Default.Register();
@@ -69,11 +69,18 @@ public partial class App : Application
             services.AddSingleton<IStartupService, NoOpStartupService>();
             services.AddSingleton<ITrayIconService, NoOpTrayIconService>();
         }
-        else
+        else if (AppEnvironment.IsPackaged)
         {
             services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
             services.AddSingleton<INotificationService, AppNotificationService>();
             services.AddSingleton<IStartupService, StartupTaskService>();
+            services.AddSingleton<ITrayIconService, TrayIconService>();
+        }
+        else
+        {
+            services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
+            services.AddSingleton<INotificationService, NoOpNotificationService>();
+            services.AddSingleton<IStartupService, NoOpStartupService>();
             services.AddSingleton<ITrayIconService, TrayIconService>();
         }
 
