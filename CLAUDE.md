@@ -1,3 +1,6 @@
+# Instructions
+Always use ASD-STE100 Simplified Technical English when you talk to me.
+
 # Build & Run
 
 ```bash
@@ -13,6 +16,8 @@ The app targets `net8.0-windows10.0.22621.0` so it requires the Windows 10 22621
 ## E2E (agent loop)
 
 FlaUI + xUnit UI tests live in `BluetoothMonitor.E2E`. They launch the built `BluetoothMonitor.exe` with `BATTCHECK_E2E=1` (fake Bluetooth, no-op tray/toasts/startup, isolated settings dir). Requires an interactive Windows desktop session (not headless Server Core).
+
+Run E2E tests outside the sandbox with access to the interactive Windows desktop session.
 
 ```bash
 # Build app + E2E, then run the suite (x64)
