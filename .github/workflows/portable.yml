@@ -25,6 +25,18 @@ jobs:
       - name: Install MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      - name: Restore app packages
+        shell: pwsh
+        run: >-
+          dotnet restore BluetoothMonitor.App/BluetoothMonitor.App.csproj
+          --runtime win-x64
+          -p:Platform=x64
+          -p:WindowsPackageType=None
+          -p:EnableMsixTooling=false
+          -p:WindowsAppSDKSelfContained=true
+          -p:GenerateAppxPackageOnBuild=false
+          -p:AppxGeneratePriEnabled=false
+
       - name: Publish self-contained x64 app
         shell: pwsh
         run: >-
