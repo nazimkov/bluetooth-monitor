@@ -17,7 +17,9 @@ Keep the subject short and use an imperative verb. Choose a type and scope that 
 
 ## Required checks
 
-Before creating the commit, build the whole solution and run all tests:
+Before creating the commit, inspect the staged file list. Build the whole solution and run all tests only when the staged changes include source or project files, such as `.cs`, `.xaml`, `.resx`, `.props`, `.targets`, or `.csproj` files. Skip these checks for changes that contain none of these file types.
+
+When checks are required, run:
 
 ```powershell
 dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64

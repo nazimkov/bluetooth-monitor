@@ -14,7 +14,9 @@ Before the mutation, confirm that the user has supplied or clearly approved:
 
 Read the current version from `<Version>` in `BluetoothMonitor.App\BluetoothMonitor.App.csproj`. Use an explicitly supplied exact SemVer version when provided. Otherwise, increment the patch version: `MAJOR.MINOR.PATCH` becomes `MAJOR.MINOR.(PATCH+1)`. Use the resulting version as a `v<version>` tag, as required by `.github/workflows/portable.yml`.
 
-Assign the tag to the latest commit on the `master` branch. Create and push only this tag. Do not create or move a tag on another commit.
+Before creating the tag, make sure `<Version>` in `BluetoothMonitor.App\BluetoothMonitor.App.csproj` exactly matches the calculated release version. If it does not match, update the project file, commit that version change on `master`, and use the resulting latest `master` commit as the tag target. The commit message must be `Bump app version to <version>`. Do not create the tag until the project version and tag version match.
+
+Assign the tag to the latest commit on the `master` branch. Create and push only this tag after any required version-bump commit. Do not create or move a tag on another commit.
 
 If the repository or exact version is missing and the default version increment is not approved, ask for it. Treat assigning the tag as an external mutation. Get explicit confirmation immediately before assigning it when the user's request does not already clearly authorize the mutation.
 
