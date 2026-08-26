@@ -36,7 +36,7 @@ public sealed class FakeBluetoothFacade
                 .FirstOrDefault(d =>
                     string.Equals(d.Id, deviceId, StringComparison.OrdinalIgnoreCase)
                 )
-                ?.BatteryLevel
+                ?.GetBatteryLevel()
         );
 
     public void InvalidateCache() { }
@@ -84,6 +84,21 @@ public sealed class FakeBluetoothFacade
         public string? MacAddress { get; set; }
         public bool IsConnected { get; set; } = true;
         public byte BatteryLevel { get; set; }
+
+        public byte GetBatteryLevel()
+        {
+            var path = Environment.GetEnvironmentVariable("BATTCHECK_E2E_BATTERY_LEVEL_FILE");
+            if (
+                !string.IsNullOrWhiteSpace(path)
+                && File.Exists(path)
+                && byte.TryParse(File.ReadAllText(path), out var level)
+            )
+            {
+                return level;
+            }
+
+            return BatteryLevel;
+        }
 
         public FakeDeviceInfo ToInfo() => new(Id, Name, Kind, MacAddress, IsConnected);
     }

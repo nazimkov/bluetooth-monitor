@@ -81,6 +81,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     private void OnSettingsChanged(object? sender, EventArgs e)
     {
         ApplySelection();
+        UpdateBatteryBanners(SelectedDevice?.BatteryLevel);
     }
 
     private void ApplySelection()
@@ -94,6 +95,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
             match.IsMonitored = true;
         }
         SelectedDevice = match;
+        UpdateBatteryBanners(SelectedDevice?.BatteryLevel);
     }
 
     private void UpdateBatteryBanners(byte? level)

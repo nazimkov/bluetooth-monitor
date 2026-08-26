@@ -38,6 +38,10 @@ public sealed class AppLifecycle : IDisposable
 
     public string SettingsFilePath => Path.Combine(SettingsDirectory, "settings.json");
     public string NotificationLogPath => Path.Combine(SettingsDirectory, "notifications.jsonl");
+    public string FakeBatteryLevelPath => Path.Combine(SettingsDirectory, "battery-level.txt");
+
+    public void SetFakeBatteryLevel(byte level) =>
+        File.WriteAllText(FakeBatteryLevelPath, level.ToString());
 
     public async Task<JsonDocument> WaitForNotificationAsync(
         Func<JsonElement, bool> predicate,
@@ -193,6 +197,7 @@ public sealed class AppLifecycle : IDisposable
         startInfo.Environment["BATTCHECK_E2E_SETTINGS_DIR"] = SettingsDirectory;
         startInfo.Environment["BATTCHECK_E2E_INSTANCE_KEY"] = InstanceKey;
         startInfo.Environment["BATTCHECK_E2E_SELECTED_DEVICE_ID"] = FakeBluetoothFacade.EarbudsId;
+        startInfo.Environment["BATTCHECK_E2E_BATTERY_LEVEL_FILE"] = FakeBatteryLevelPath;
         startInfo.Environment["BATTCHECK_E2E_FACADE_ASSEMBLY"] = typeof(AppLifecycle)
             .Assembly
             .Location;

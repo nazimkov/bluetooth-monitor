@@ -53,4 +53,70 @@ public sealed class BatteryNotificationTests(AppLifecycle app) : E2ETestBase(app
             }
         );
     }
+
+    [Fact]
+    public async Task LowBatteryBanner_DisappearsWhenBatteryRisesAboveThreshold()
+    {
+        await CaptureOnFailureAsync(
+            nameof(LowBatteryBanner_DisappearsWhenBatteryRisesAboveThreshold),
+            () =>
+            {
+                App.SetFakeBatteryLevel(18);
+                Shell.GoToNotifications();
+                Notifications.WaitUntilLoaded();
+                Notifications.SetLowBatteryThreshold(20);
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+                App.MainWindow.ClickId("HeroRefreshButton");
+                UiWait.WaitUntil(
+                    () => App.MainWindow.TryById("LowBatteryInfoBar")?.IsOffscreen == false,
+                    TimeSpan.FromSeconds(10),
+                    "Low-battery banner did not open."
+                );
+
+                App.SetFakeBatteryLevel(26);
+                App.MainWindow.ClickId("HeroRefreshButton");
+                UiWait.WaitUntil(
+                    () => App.MainWindow.TryById("LowBatteryInfoBar")?.IsOffscreen != false,
+                    TimeSpan.FromSeconds(10),
+                    "Low-battery banner did not close after the battery rose above the threshold."
+                );
+
+                return Task.CompletedTask;
+            }
+        );
+    }
+
+    [Fact]
+    public async Task LowBatteryBanner_DisappearsWhenThresholdDropsBelowBatteryLevel()
+    {
+        await CaptureOnFailureAsync(
+            nameof(LowBatteryBanner_DisappearsWhenThresholdDropsBelowBatteryLevel),
+            () =>
+            {
+                App.SetFakeBatteryLevel(18);
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+                App.MainWindow.ClickId("HeroRefreshButton");
+                UiWait.WaitUntil(
+                    () => App.MainWindow.TryById("LowBatteryInfoBar")?.IsOffscreen == false,
+                    TimeSpan.FromSeconds(10),
+                    "Low-battery banner did not open."
+                );
+
+                Shell.GoToNotifications();
+                Notifications.WaitUntilLoaded();
+                Notifications.SetLowBatteryThreshold(15);
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+                UiWait.WaitUntil(
+                    () => App.MainWindow.TryById("LowBatteryInfoBar")?.IsOffscreen != false,
+                    TimeSpan.FromSeconds(10),
+                    "Low-battery banner did not close after the threshold moved below the battery level."
+                );
+
+                return Task.CompletedTask;
+            }
+        );
+    }
 }
