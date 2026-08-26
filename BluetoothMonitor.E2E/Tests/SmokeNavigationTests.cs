@@ -1,5 +1,6 @@
 using BluetoothMonitor.E2E.Fixtures;
 using BluetoothMonitor.E2E.Helpers;
+using BluetoothMonitor.E2E.TestDoubles;
 using Xunit;
 
 namespace BluetoothMonitor.E2E.Tests;
@@ -17,12 +18,12 @@ public sealed class SmokeNavigationTests(AppLifecycle app) : E2ETestBase(app)
                 Devices.WaitUntilLoaded();
                 Shell.AssertPageTitle("DevicesPageTitle", "Devices");
                 Assert.True(
-                    Devices.HasDevice("e2e-headset"),
-                    "Expected DeviceRow_e2e-headset in the list."
+                    Devices.HasDevice(FakeBluetoothFacade.HeadsetId),
+                    $"Expected DeviceRow_{FakeBluetoothFacade.HeadsetId} in the list."
                 );
                 Assert.True(
-                    Devices.HasDevice("e2e-earbuds"),
-                    "Expected DeviceRow_e2e-earbuds in the list."
+                    Devices.HasDevice(FakeBluetoothFacade.EarbudsId),
+                    $"Expected DeviceRow_{FakeBluetoothFacade.EarbudsId} in the list."
                 );
             }
         );

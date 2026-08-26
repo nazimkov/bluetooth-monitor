@@ -1,5 +1,6 @@
 using BluetoothMonitor.E2E.Fixtures;
 using BluetoothMonitor.E2E.Helpers;
+using BluetoothMonitor.E2E.TestDoubles;
 using Xunit;
 
 namespace BluetoothMonitor.E2E.Tests;
@@ -16,24 +17,30 @@ public sealed class DevicesFlowTests(AppLifecycle app) : E2ETestBase(app)
                 Shell.GoToDevices();
                 Devices.WaitUntilLoaded();
 
-                Devices.SelectDevice("e2e-earbuds");
+                Devices.SelectDevice(FakeBluetoothFacade.EarbudsId);
                 UiWait.WaitUntil(
                     () =>
                         Devices
                             .HeroDeviceName()
-                            .Contains("E2E Earbuds", StringComparison.OrdinalIgnoreCase),
+                            .Contains(
+                                FakeBluetoothFacade.EarbudsName,
+                                StringComparison.OrdinalIgnoreCase
+                            ),
                     TimeSpan.FromSeconds(10),
-                    $"Hero did not show E2E Earbuds (was '{Devices.HeroDeviceName()}')."
+                    $"Hero did not show {FakeBluetoothFacade.EarbudsName} (was '{Devices.HeroDeviceName()}')."
                 );
 
-                Devices.SelectDevice("e2e-headset");
+                Devices.SelectDevice(FakeBluetoothFacade.HeadsetId);
                 UiWait.WaitUntil(
                     () =>
                         Devices
                             .HeroDeviceName()
-                            .Contains("E2E Headset", StringComparison.OrdinalIgnoreCase),
+                            .Contains(
+                                FakeBluetoothFacade.HeadsetName,
+                                StringComparison.OrdinalIgnoreCase
+                            ),
                     TimeSpan.FromSeconds(10),
-                    $"Hero did not show E2E Headset (was '{Devices.HeroDeviceName()}')."
+                    $"Hero did not show {FakeBluetoothFacade.HeadsetName} (was '{Devices.HeroDeviceName()}')."
                 );
             }
         );
@@ -49,14 +56,17 @@ public sealed class DevicesFlowTests(AppLifecycle app) : E2ETestBase(app)
                 Shell.GoToDevices();
                 Devices.WaitUntilLoaded();
 
-                Devices.SelectDevice("e2e-earbuds");
+                Devices.SelectDevice(FakeBluetoothFacade.EarbudsId);
                 UiWait.WaitUntil(
                     () =>
                         Devices
                             .HeroDeviceName()
-                            .Contains("E2E Earbuds", StringComparison.OrdinalIgnoreCase),
+                            .Contains(
+                                FakeBluetoothFacade.EarbudsName,
+                                StringComparison.OrdinalIgnoreCase
+                            ),
                     TimeSpan.FromSeconds(10),
-                    $"Hero did not show E2E Earbuds (was '{Devices.HeroDeviceName()}')."
+                    $"Hero did not show {FakeBluetoothFacade.EarbudsName} (was '{Devices.HeroDeviceName()}')."
                 );
 
                 Shell.GoToNotifications();
@@ -69,7 +79,10 @@ public sealed class DevicesFlowTests(AppLifecycle app) : E2ETestBase(app)
                     () =>
                         Devices
                             .HeroDeviceName()
-                            .Contains("E2E Earbuds", StringComparison.OrdinalIgnoreCase),
+                            .Contains(
+                                FakeBluetoothFacade.EarbudsName,
+                                StringComparison.OrdinalIgnoreCase
+                            ),
                     TimeSpan.FromSeconds(10),
                     $"Selection was lost after switching tabs (hero was '{Devices.HeroDeviceName()}')."
                 );
@@ -89,7 +102,9 @@ public sealed class DevicesFlowTests(AppLifecycle app) : E2ETestBase(app)
                 Devices.Rescan();
 
                 UiWait.WaitUntil(
-                    () => Devices.HasDevice("e2e-headset") && Devices.HasDevice("e2e-earbuds"),
+                    () =>
+                        Devices.HasDevice(FakeBluetoothFacade.HeadsetId)
+                        && Devices.HasDevice(FakeBluetoothFacade.EarbudsId),
                     TimeSpan.FromSeconds(15),
                     "Fake devices missing after Rescan."
                 );

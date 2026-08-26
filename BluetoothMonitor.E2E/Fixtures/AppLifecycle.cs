@@ -159,6 +159,11 @@ public sealed class AppLifecycle : IDisposable
         startInfo.Environment["BATTCHECK_E2E"] = "1";
         startInfo.Environment["BATTCHECK_E2E_SETTINGS_DIR"] = SettingsDirectory;
         startInfo.Environment["BATTCHECK_E2E_INSTANCE_KEY"] = InstanceKey;
+        startInfo.Environment["BATTCHECK_E2E_FACADE_ASSEMBLY"] = typeof(AppLifecycle)
+            .Assembly
+            .Location;
+        startInfo.Environment["BATTCHECK_E2E_FACADE_TYPE"] =
+            "BluetoothMonitor.E2E.TestDoubles.FakeBluetoothFacade";
 
         _process =
             Process.Start(startInfo)

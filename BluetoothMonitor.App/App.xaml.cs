@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Reflection;
 using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.Services.Test;
 using BluetoothMonitor.App.ViewModels;
@@ -64,7 +66,7 @@ public partial class App : Application
 
         if (e2e)
         {
-            services.AddSingleton<IBluetoothFacade, FakeBluetoothFacade>();
+            services.AddSingleton<IBluetoothFacade>(_ => LoadE2EFacade());
             services.AddSingleton<INotificationService, NoOpNotificationService>();
             services.AddSingleton<IStartupService, NoOpStartupService>();
             services.AddSingleton<ITrayIconService, NoOpTrayIconService>();
@@ -97,6 +99,29 @@ public partial class App : Application
         services.AddSingleton<MainWindow>();
 
         return services.BuildServiceProvider();
+    }
+
+    private static IBluetoothFacade LoadE2EFacade()
+    {
+        var assemblyPath = E2ETestHost.FacadeAssembly;
+        if (string.IsNullOrWhiteSpace(assemblyPath))
+        {
+            throw new InvalidOperationException(
+                $"{E2ETestHost.EnvFacadeAssembly} must point to the E2E facade assembly."
+            );
+        }
+
+        if (!File.Exists(assemblyPath))
+        {
+            throw new FileNotFoundException(
+                "The E2E Bluetooth facade assembly was not found.",
+                assemblyPath
+            );
+        }
+
+        var assembly = Assembly.LoadFrom(Path.GetFullPath(assemblyPath));
+        var facadeType = assembly.GetType(E2ETestHost.FacadeType, throwOnError: true)!;
+        return new ExternalBluetoothFacade(Activator.CreateInstance(facadeType)!);
     }
 
     private void OnNotificationInvoked(

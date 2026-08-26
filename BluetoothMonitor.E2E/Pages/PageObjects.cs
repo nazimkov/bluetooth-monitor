@@ -1,4 +1,5 @@
 using BluetoothMonitor.E2E.Helpers;
+using BluetoothMonitor.E2E.TestDoubles;
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core.Input;
 using FlaUI.Core.WindowsAPI;
@@ -59,9 +60,10 @@ public sealed class DevicesPage(Window window)
         Window.ById("DevicesPageTitle");
         UiWait.WaitUntil(
             () =>
-                HasDevice("e2e-headset")
+                HasDevice(FakeBluetoothFacade.HeadsetId)
                 || Window.TryById("EmptyDevicesState") is not null
-                || Window.FindFirstDescendant(cf => cf.ByName("E2E Headset")) is not null,
+                || Window.FindFirstDescendant(cf => cf.ByName(FakeBluetoothFacade.HeadsetName))
+                    is not null,
             TimeSpan.FromSeconds(20),
             "Devices page did not show a device list or empty state."
         );
@@ -92,8 +94,12 @@ public sealed class DevicesPage(Window window)
             ?? Window.TryById($"DeviceName_{deviceId}")
             ?? deviceId switch
             {
-                "e2e-headset" => Window.FindFirstDescendant(cf => cf.ByName("E2E Headset")),
-                "e2e-earbuds" => Window.FindFirstDescendant(cf => cf.ByName("E2E Earbuds")),
+                FakeBluetoothFacade.HeadsetId => Window.FindFirstDescendant(cf =>
+                    cf.ByName(FakeBluetoothFacade.HeadsetName)
+                ),
+                FakeBluetoothFacade.EarbudsId => Window.FindFirstDescendant(cf =>
+                    cf.ByName(FakeBluetoothFacade.EarbudsName)
+                ),
                 _ => null,
             };
     }
