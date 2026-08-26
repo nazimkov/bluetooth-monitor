@@ -43,7 +43,7 @@ public sealed class FakeBluetoothFacade
 
     private static List<SeedDevice> LoadSeed()
     {
-        var json = Environment.GetEnvironmentVariable("BATTCHECK_E2E_DEVICES_JSON");
+        var json = Environment.GetEnvironmentVariable("BLUETOOTHMONITOR_E2E_DEVICES_JSON");
         if (!string.IsNullOrWhiteSpace(json))
         {
             try
@@ -87,7 +87,9 @@ public sealed class FakeBluetoothFacade
 
         public byte GetBatteryLevel()
         {
-            var path = Environment.GetEnvironmentVariable("BATTCHECK_E2E_BATTERY_LEVEL_FILE");
+            var path = Environment.GetEnvironmentVariable(
+                "BLUETOOTHMONITOR_E2E_BATTERY_LEVEL_FILE"
+            );
             if (
                 !string.IsNullOrWhiteSpace(path)
                 && File.Exists(path)

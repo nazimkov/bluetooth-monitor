@@ -26,7 +26,7 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
         : this(
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "Battcheck"
+                "BluetoothMonitor"
             )
         ) { }
 

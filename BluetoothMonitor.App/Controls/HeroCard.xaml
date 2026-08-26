@@ -14,7 +14,7 @@
         <conv:NullableByteToByteConverter x:Key="ByteConv" />
     </UserControl.Resources>
 
-    <Border Style="{StaticResource BattcheckCard}" Padding="20">
+    <Border Style="{StaticResource BluetoothMonitorCard}" Padding="20">
         <Grid ColumnSpacing="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80" />
@@ -39,19 +39,19 @@
                         Text="{x:Bind Device.Kind, Mode=OneWay, Converter={StaticResource KindLabelConv}}"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     />
-                    <Border Style="{StaticResource BattcheckBadgeOk}">
+                    <Border Style="{StaticResource BluetoothMonitorBadgeOk}">
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <Ellipse
                                 Width="6"
                                 Height="6"
-                                Fill="{ThemeResource BattcheckOkBrush}"
+                                Fill="{ThemeResource BluetoothMonitorOkBrush}"
                                 VerticalAlignment="Center"
                             />
                             <TextBlock
                                 Text="Connected"
                                 FontSize="11"
                                 FontWeight="SemiBold"
-                                Foreground="{ThemeResource BattcheckOkBrush}"
+                                Foreground="{ThemeResource BluetoothMonitorOkBrush}"
                             />
                         </StackPanel>
                     </Border>

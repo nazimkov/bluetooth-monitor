@@ -25,7 +25,10 @@ public sealed class TrayIconService : ITrayIconService, IDisposable
     {
         _menu = new PopupMenu();
         _menu.Items.Add(
-            new PopupMenuItem("Show Battcheck", (_, _) => App.Current.MainWindow?.ShowWindow())
+            new PopupMenuItem(
+                "Show Bluetooth Monitor",
+                (_, _) => App.Current.MainWindow?.ShowWindow()
+            )
         );
         _menu.Items.Add(new PopupMenuItem("Rescan", (_, _) => _ = _polling.PollOnceAsync()));
         _menu.Items.Add(

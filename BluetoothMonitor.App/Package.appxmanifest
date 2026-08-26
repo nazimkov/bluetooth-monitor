@@ -12,7 +12,7 @@
     Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>Battcheck</DisplayName>
+    <DisplayName>Bluetooth Monitor</DisplayName>
     <PublisherDisplayName>nazimkov</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -28,7 +28,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Battcheck"
+        DisplayName="Bluetooth Monitor"
         Description="Bluetooth headset battery monitor"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
@@ -40,7 +40,7 @@
 
       <Extensions>
         <uap5:Extension Category="windows.startupTask">
-          <uap5:StartupTask TaskId="BattcheckStartup" Enabled="false" DisplayName="Battcheck" />
+          <uap5:StartupTask TaskId="BluetoothMonitorStartup" Enabled="false" DisplayName="Bluetooth Monitor" />
         </uap5:Extension>
       </Extensions>
     </Application>

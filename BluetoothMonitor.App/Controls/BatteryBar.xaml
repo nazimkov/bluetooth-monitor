@@ -14,7 +14,7 @@
 
     <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
         <Grid Width="140" Height="6">
-            <Border Background="{ThemeResource BattcheckDividerBrush}" CornerRadius="3" />
+            <Border Background="{ThemeResource BluetoothMonitorDividerBrush}" CornerRadius="3" />
             <Border
                 x:Name="FillBorder"
                 HorizontalAlignment="Left"

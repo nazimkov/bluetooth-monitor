@@ -5,156 +5,156 @@
 >
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Light">
-            <Color x:Key="BattcheckAccent">#0078D4</Color>
-            <Color x:Key="BattcheckAccentHover">#106EBE</Color>
-            <Color x:Key="BattcheckAccentPressed">#005A9E</Color>
-            <Color x:Key="BattcheckAccentSoft">#EFF6FC</Color>
+            <Color x:Key="BluetoothMonitorAccent">#0078D4</Color>
+            <Color x:Key="BluetoothMonitorAccentHover">#106EBE</Color>
+            <Color x:Key="BluetoothMonitorAccentPressed">#005A9E</Color>
+            <Color x:Key="BluetoothMonitorAccentSoft">#EFF6FC</Color>
 
-            <Color x:Key="BattcheckOk">#107C10</Color>
-            <Color x:Key="BattcheckWarn">#9D5D00</Color>
-            <Color x:Key="BattcheckWarnBg">#FFF4CE</Color>
-            <Color x:Key="BattcheckDanger">#C42B1C</Color>
-            <Color x:Key="BattcheckDangerBg">#FDE7E9</Color>
+            <Color x:Key="BluetoothMonitorOk">#107C10</Color>
+            <Color x:Key="BluetoothMonitorWarn">#9D5D00</Color>
+            <Color x:Key="BluetoothMonitorWarnBg">#FFF4CE</Color>
+            <Color x:Key="BluetoothMonitorDanger">#C42B1C</Color>
+            <Color x:Key="BluetoothMonitorDangerBg">#FDE7E9</Color>
 
-            <Color x:Key="BattcheckWindowBackground">#F3F3F3</Color>
-            <Color x:Key="BattcheckSurface">#FBFBFB</Color>
-            <Color x:Key="BattcheckSurface2">#FFFFFF</Color>
-            <Color x:Key="BattcheckDivider">#11000000</Color>
-            <Color x:Key="BattcheckCardBorder">#12000000</Color>
-            <Color x:Key="BattcheckCardBorderStrong">#1F000000</Color>
-            <Color x:Key="BattcheckTextTertiary">#8A8A8A</Color>
+            <Color x:Key="BluetoothMonitorWindowBackground">#F3F3F3</Color>
+            <Color x:Key="BluetoothMonitorSurface">#FBFBFB</Color>
+            <Color x:Key="BluetoothMonitorSurface2">#FFFFFF</Color>
+            <Color x:Key="BluetoothMonitorDivider">#11000000</Color>
+            <Color x:Key="BluetoothMonitorCardBorder">#12000000</Color>
+            <Color x:Key="BluetoothMonitorCardBorderStrong">#1F000000</Color>
+            <Color x:Key="BluetoothMonitorTextTertiary">#8A8A8A</Color>
 
             <SolidColorBrush
-                x:Key="BattcheckAccentBrush"
-                Color="{StaticResource BattcheckAccent}"
+                x:Key="BluetoothMonitorAccentBrush"
+                Color="{StaticResource BluetoothMonitorAccent}"
             />
             <SolidColorBrush
-                x:Key="BattcheckAccentHoverBrush"
-                Color="{StaticResource BattcheckAccentHover}"
+                x:Key="BluetoothMonitorAccentHoverBrush"
+                Color="{StaticResource BluetoothMonitorAccentHover}"
             />
             <SolidColorBrush
-                x:Key="BattcheckAccentSoftBrush"
-                Color="{StaticResource BattcheckAccentSoft}"
+                x:Key="BluetoothMonitorAccentSoftBrush"
+                Color="{StaticResource BluetoothMonitorAccentSoft}"
             />
-            <SolidColorBrush x:Key="BattcheckOkBrush" Color="{StaticResource BattcheckOk}" />
-            <SolidColorBrush x:Key="BattcheckWarnBrush" Color="{StaticResource BattcheckWarn}" />
+            <SolidColorBrush x:Key="BluetoothMonitorOkBrush" Color="{StaticResource BluetoothMonitorOk}" />
+            <SolidColorBrush x:Key="BluetoothMonitorWarnBrush" Color="{StaticResource BluetoothMonitorWarn}" />
             <SolidColorBrush
-                x:Key="BattcheckWarnBgBrush"
-                Color="{StaticResource BattcheckWarnBg}"
-            />
-            <SolidColorBrush
-                x:Key="BattcheckDangerBrush"
-                Color="{StaticResource BattcheckDanger}"
+                x:Key="BluetoothMonitorWarnBgBrush"
+                Color="{StaticResource BluetoothMonitorWarnBg}"
             />
             <SolidColorBrush
-                x:Key="BattcheckDangerBgBrush"
-                Color="{StaticResource BattcheckDangerBg}"
+                x:Key="BluetoothMonitorDangerBrush"
+                Color="{StaticResource BluetoothMonitorDanger}"
             />
             <SolidColorBrush
-                x:Key="BattcheckWindowBackgroundBrush"
-                Color="{StaticResource BattcheckWindowBackground}"
+                x:Key="BluetoothMonitorDangerBgBrush"
+                Color="{StaticResource BluetoothMonitorDangerBg}"
+            />
+            <SolidColorBrush
+                x:Key="BluetoothMonitorWindowBackgroundBrush"
+                Color="{StaticResource BluetoothMonitorWindowBackground}"
                 Opacity="0"
             />
             <SolidColorBrush
-                x:Key="BattcheckSurfaceBrush"
-                Color="{StaticResource BattcheckSurface}"
+                x:Key="BluetoothMonitorSurfaceBrush"
+                Color="{StaticResource BluetoothMonitorSurface}"
             />
             <SolidColorBrush
-                x:Key="BattcheckSurface2Brush"
-                Color="{StaticResource BattcheckSurface2}"
+                x:Key="BluetoothMonitorSurface2Brush"
+                Color="{StaticResource BluetoothMonitorSurface2}"
             />
             <SolidColorBrush
-                x:Key="BattcheckCardBorderBrush"
-                Color="{StaticResource BattcheckCardBorder}"
+                x:Key="BluetoothMonitorCardBorderBrush"
+                Color="{StaticResource BluetoothMonitorCardBorder}"
             />
             <SolidColorBrush
-                x:Key="BattcheckCardBorderStrongBrush"
-                Color="{StaticResource BattcheckCardBorderStrong}"
+                x:Key="BluetoothMonitorCardBorderStrongBrush"
+                Color="{StaticResource BluetoothMonitorCardBorderStrong}"
             />
             <SolidColorBrush
-                x:Key="BattcheckDividerBrush"
-                Color="{StaticResource BattcheckDivider}"
+                x:Key="BluetoothMonitorDividerBrush"
+                Color="{StaticResource BluetoothMonitorDivider}"
             />
             <SolidColorBrush
-                x:Key="BattcheckTextTertiaryBrush"
-                Color="{StaticResource BattcheckTextTertiary}"
+                x:Key="BluetoothMonitorTextTertiaryBrush"
+                Color="{StaticResource BluetoothMonitorTextTertiary}"
             />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
-            <Color x:Key="BattcheckAccent">#60CDFF</Color>
-            <Color x:Key="BattcheckAccentHover">#4CC2FF</Color>
-            <Color x:Key="BattcheckAccentPressed">#3AA8E0</Color>
-            <Color x:Key="BattcheckAccentSoft">#1F60CDFF</Color>
+            <Color x:Key="BluetoothMonitorAccent">#60CDFF</Color>
+            <Color x:Key="BluetoothMonitorAccentHover">#4CC2FF</Color>
+            <Color x:Key="BluetoothMonitorAccentPressed">#3AA8E0</Color>
+            <Color x:Key="BluetoothMonitorAccentSoft">#1F60CDFF</Color>
 
-            <Color x:Key="BattcheckOk">#6CCB5F</Color>
-            <Color x:Key="BattcheckWarn">#FCE100</Color>
-            <Color x:Key="BattcheckWarnBg">#1FFCE100</Color>
-            <Color x:Key="BattcheckDanger">#FF99A4</Color>
-            <Color x:Key="BattcheckDangerBg">#1FFF99A4</Color>
+            <Color x:Key="BluetoothMonitorOk">#6CCB5F</Color>
+            <Color x:Key="BluetoothMonitorWarn">#FCE100</Color>
+            <Color x:Key="BluetoothMonitorWarnBg">#1FFCE100</Color>
+            <Color x:Key="BluetoothMonitorDanger">#FF99A4</Color>
+            <Color x:Key="BluetoothMonitorDangerBg">#1FFF99A4</Color>
 
-            <Color x:Key="BattcheckWindowBackground">#202020</Color>
-            <Color x:Key="BattcheckSurface">#2B2B2B</Color>
-            <Color x:Key="BattcheckSurface2">#323232</Color>
-            <Color x:Key="BattcheckDivider">#12FFFFFF</Color>
-            <Color x:Key="BattcheckCardBorder">#14FFFFFF</Color>
-            <Color x:Key="BattcheckCardBorderStrong">#24FFFFFF</Color>
-            <Color x:Key="BattcheckTextTertiary">#9B9B9B</Color>
+            <Color x:Key="BluetoothMonitorWindowBackground">#202020</Color>
+            <Color x:Key="BluetoothMonitorSurface">#2B2B2B</Color>
+            <Color x:Key="BluetoothMonitorSurface2">#323232</Color>
+            <Color x:Key="BluetoothMonitorDivider">#12FFFFFF</Color>
+            <Color x:Key="BluetoothMonitorCardBorder">#14FFFFFF</Color>
+            <Color x:Key="BluetoothMonitorCardBorderStrong">#24FFFFFF</Color>
+            <Color x:Key="BluetoothMonitorTextTertiary">#9B9B9B</Color>
 
             <SolidColorBrush
-                x:Key="BattcheckAccentBrush"
-                Color="{StaticResource BattcheckAccent}"
+                x:Key="BluetoothMonitorAccentBrush"
+                Color="{StaticResource BluetoothMonitorAccent}"
             />
             <SolidColorBrush
-                x:Key="BattcheckAccentHoverBrush"
-                Color="{StaticResource BattcheckAccentHover}"
+                x:Key="BluetoothMonitorAccentHoverBrush"
+                Color="{StaticResource BluetoothMonitorAccentHover}"
             />
             <SolidColorBrush
-                x:Key="BattcheckAccentSoftBrush"
-                Color="{StaticResource BattcheckAccentSoft}"
+                x:Key="BluetoothMonitorAccentSoftBrush"
+                Color="{StaticResource BluetoothMonitorAccentSoft}"
             />
-            <SolidColorBrush x:Key="BattcheckOkBrush" Color="{StaticResource BattcheckOk}" />
-            <SolidColorBrush x:Key="BattcheckWarnBrush" Color="{StaticResource BattcheckWarn}" />
+            <SolidColorBrush x:Key="BluetoothMonitorOkBrush" Color="{StaticResource BluetoothMonitorOk}" />
+            <SolidColorBrush x:Key="BluetoothMonitorWarnBrush" Color="{StaticResource BluetoothMonitorWarn}" />
             <SolidColorBrush
-                x:Key="BattcheckWarnBgBrush"
-                Color="{StaticResource BattcheckWarnBg}"
-            />
-            <SolidColorBrush
-                x:Key="BattcheckDangerBrush"
-                Color="{StaticResource BattcheckDanger}"
+                x:Key="BluetoothMonitorWarnBgBrush"
+                Color="{StaticResource BluetoothMonitorWarnBg}"
             />
             <SolidColorBrush
-                x:Key="BattcheckDangerBgBrush"
-                Color="{StaticResource BattcheckDangerBg}"
+                x:Key="BluetoothMonitorDangerBrush"
+                Color="{StaticResource BluetoothMonitorDanger}"
             />
             <SolidColorBrush
-                x:Key="BattcheckWindowBackgroundBrush"
-                Color="{StaticResource BattcheckWindowBackground}"
+                x:Key="BluetoothMonitorDangerBgBrush"
+                Color="{StaticResource BluetoothMonitorDangerBg}"
+            />
+            <SolidColorBrush
+                x:Key="BluetoothMonitorWindowBackgroundBrush"
+                Color="{StaticResource BluetoothMonitorWindowBackground}"
                 Opacity="0"
             />
             <SolidColorBrush
-                x:Key="BattcheckSurfaceBrush"
-                Color="{StaticResource BattcheckSurface}"
+                x:Key="BluetoothMonitorSurfaceBrush"
+                Color="{StaticResource BluetoothMonitorSurface}"
             />
             <SolidColorBrush
-                x:Key="BattcheckSurface2Brush"
-                Color="{StaticResource BattcheckSurface2}"
+                x:Key="BluetoothMonitorSurface2Brush"
+                Color="{StaticResource BluetoothMonitorSurface2}"
             />
             <SolidColorBrush
-                x:Key="BattcheckCardBorderBrush"
-                Color="{StaticResource BattcheckCardBorder}"
+                x:Key="BluetoothMonitorCardBorderBrush"
+                Color="{StaticResource BluetoothMonitorCardBorder}"
             />
             <SolidColorBrush
-                x:Key="BattcheckCardBorderStrongBrush"
-                Color="{StaticResource BattcheckCardBorderStrong}"
+                x:Key="BluetoothMonitorCardBorderStrongBrush"
+                Color="{StaticResource BluetoothMonitorCardBorderStrong}"
             />
             <SolidColorBrush
-                x:Key="BattcheckDividerBrush"
-                Color="{StaticResource BattcheckDivider}"
+                x:Key="BluetoothMonitorDividerBrush"
+                Color="{StaticResource BluetoothMonitorDivider}"
             />
             <SolidColorBrush
-                x:Key="BattcheckTextTertiaryBrush"
-                Color="{StaticResource BattcheckTextTertiary}"
+                x:Key="BluetoothMonitorTextTertiaryBrush"
+                Color="{StaticResource BluetoothMonitorTextTertiary}"
             />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>

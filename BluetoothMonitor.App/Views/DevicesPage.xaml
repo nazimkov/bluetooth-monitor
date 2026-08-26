@@ -19,12 +19,12 @@
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
                 Text="Devices"
-                Style="{StaticResource BattcheckPageTitle}"
+                Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="DevicesPageTitle"
             />
             <TextBlock
-                Text="Choose which Bluetooth audio device Battcheck shows in your system tray."
-                Style="{StaticResource BattcheckPageSub}"
+                Text="Choose which Bluetooth audio device Bluetooth Monitor shows in your system tray."
+                Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
             <InfoBar
@@ -62,7 +62,7 @@
                 AutomationProperties.AutomationId="LowBatteryInfoBar"
             />
 
-            <TextBlock Text="Currently monitoring" Style="{StaticResource BattcheckSectionTitle}" />
+            <TextBlock Text="Currently monitoring" Style="{StaticResource BluetoothMonitorSectionTitle}" />
             <controls:HeroCard
                 Device="{x:Bind ViewModel.SelectedDevice, Mode=OneWay}"
                 RefreshCommand="{x:Bind ViewModel.PollNowCommand}"
@@ -82,7 +82,7 @@
                 >
                     <TextBlock
                         Text="Paired devices"
-                        Style="{StaticResource BattcheckSectionTitle}"
+                        Style="{StaticResource BluetoothMonitorSectionTitle}"
                         Margin="0"
                     />
                     <TextBlock
@@ -124,7 +124,7 @@
             </Grid>
 
             <Border
-                Style="{StaticResource BattcheckCard}"
+                Style="{StaticResource BluetoothMonitorCard}"
                 AutomationProperties.AutomationId="DeviceList"
             >
                 <ItemsRepeater ItemsSource="{x:Bind ViewModel.Devices}">
@@ -148,8 +148,8 @@
                     Height="88"
                     CornerRadius="44"
                     BorderThickness="1"
-                    BorderBrush="{ThemeResource BattcheckCardBorderStrongBrush}"
-                    Background="{ThemeResource BattcheckSurfaceBrush}"
+                    BorderBrush="{ThemeResource BluetoothMonitorCardBorderStrongBrush}"
+                    Background="{ThemeResource BluetoothMonitorSurfaceBrush}"
                     HorizontalAlignment="Center"
                 >
                     <FontIcon
@@ -158,7 +158,7 @@
                         FontSize="36"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Foreground="{ThemeResource BattcheckTextTertiaryBrush}"
+                        Foreground="{ThemeResource BluetoothMonitorTextTertiaryBrush}"
                     />
                 </Border>
                 <TextBlock

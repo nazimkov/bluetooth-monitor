@@ -27,7 +27,7 @@ public sealed partial class MainWindow : Window
 
         InitializeComponent();
 
-        Title = "Battcheck";
+        Title = "Bluetooth Monitor";
         SystemBackdrop = new MicaBackdrop { Kind = MicaKind.Base };
         ExtendsContentIntoTitleBar = true;
         SetTitleBar(AppTitleBar);

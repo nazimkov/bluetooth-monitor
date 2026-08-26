@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
 >
-    <Grid x:Name="RootGrid" Background="{ThemeResource BattcheckWindowBackgroundBrush}">
+    <Grid x:Name="RootGrid" Background="{ThemeResource BluetoothMonitorWindowBackgroundBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -35,11 +35,11 @@
                 FontSize="14"
                 Margin="12,0,8,0"
                 VerticalAlignment="Center"
-                Foreground="{ThemeResource BattcheckAccentBrush}"
+                Foreground="{ThemeResource BluetoothMonitorAccentBrush}"
             />
             <TextBlock
                 Grid.Column="1"
-                Text="Battcheck"
+                Text="Bluetooth Monitor"
                 VerticalAlignment="Center"
                 Style="{ThemeResource CaptionTextBlockStyle}"
                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"

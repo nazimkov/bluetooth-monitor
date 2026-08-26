@@ -18,7 +18,7 @@
         <Ellipse
             Width="{x:Bind Size, Mode=OneWay}"
             Height="{x:Bind Size, Mode=OneWay}"
-            Stroke="{ThemeResource BattcheckCardBorderBrush}"
+            Stroke="{ThemeResource BluetoothMonitorCardBorderBrush}"
             StrokeThickness="{x:Bind StrokeThickness, Mode=OneWay}"
             Fill="Transparent"
         />

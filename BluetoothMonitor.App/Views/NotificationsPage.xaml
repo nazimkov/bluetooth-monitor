@@ -14,15 +14,15 @@
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
                 Text="Notifications"
-                Style="{StaticResource BattcheckPageTitle}"
+                Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="NotificationsPageTitle"
             />
             <TextBlock
                 Text="Get a heads up before your headphones die."
-                Style="{StaticResource BattcheckPageSub}"
+                Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
-            <TextBlock Text="Low battery alert" Style="{StaticResource BattcheckSectionTitle}" />
+            <TextBlock Text="Low battery alert" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
                 Header="Warn me when battery drops below"
@@ -54,7 +54,7 @@
 
             <ctkc:SettingsCard
                 Header="Notification style"
-                Description="How Battcheck lets you know."
+                Description="How Bluetooth Monitor lets you know."
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
@@ -97,7 +97,7 @@
                 </StackPanel>
             </ctkc:SettingsCard>
 
-            <TextBlock Text="Advanced" Style="{StaticResource BattcheckSectionTitle}" />
+            <TextBlock Text="Advanced" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
                 Header="Critical alert under 5%"

@@ -1,12 +1,12 @@
-# BluetoothMonitor
+# Bluetooth Monitor
 
 Bluetooth battery monitor for Windows.
 
-![Battcheck main page](docs/main-page.png)
+![Bluetooth Monitor main page](docs/main-page.png)
 
 ## Main features
 
-Battcheck is a Windows tray application that:
+Bluetooth Monitor is a Windows tray application that:
 
 - Finds paired Bluetooth audio devices and shows their connection state.
 - Reads battery levels for Bluetooth Low Energy and Classic Bluetooth devices.

@@ -5,7 +5,7 @@ namespace BluetoothMonitor.App.Services;
 
 public sealed class StartupTaskService : IStartupService
 {
-    private const string TaskId = "BattcheckStartup";
+    private const string TaskId = "BluetoothMonitorStartup";
 
     public async Task<bool> IsEnabledAsync()
     {

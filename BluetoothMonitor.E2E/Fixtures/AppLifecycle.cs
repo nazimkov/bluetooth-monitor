@@ -27,7 +27,7 @@ public sealed class AppLifecycle : IDisposable
 
     public AppLifecycle()
     {
-        SettingsDirectory = Path.Combine(Path.GetTempPath(), "BattcheckE2E", RunId);
+        SettingsDirectory = Path.Combine(Path.GetTempPath(), "BluetoothMonitorE2E", RunId);
         Directory.CreateDirectory(SettingsDirectory);
         InstanceKey = $"BluetoothMonitor.App.E2E.{RunId}";
         ExePath = ResolveExePath();
@@ -181,7 +181,7 @@ public sealed class AppLifecycle : IDisposable
         if (!File.Exists(ExePath))
         {
             throw new FileNotFoundException(
-                $"Battcheck exe not found at '{ExePath}'. Build the App project first: "
+                $"BluetoothMonitor exe not found at '{ExePath}'. Build the App project first: "
                     + "dotnet build BluetoothMonitor.App -c Debug -p:Platform=x64",
                 ExePath
             );
@@ -193,15 +193,16 @@ public sealed class AppLifecycle : IDisposable
             WorkingDirectory = Path.GetDirectoryName(ExePath)!,
             UseShellExecute = false,
         };
-        startInfo.Environment["BATTCHECK_E2E"] = "1";
-        startInfo.Environment["BATTCHECK_E2E_SETTINGS_DIR"] = SettingsDirectory;
-        startInfo.Environment["BATTCHECK_E2E_INSTANCE_KEY"] = InstanceKey;
-        startInfo.Environment["BATTCHECK_E2E_SELECTED_DEVICE_ID"] = FakeBluetoothFacade.EarbudsId;
-        startInfo.Environment["BATTCHECK_E2E_BATTERY_LEVEL_FILE"] = FakeBatteryLevelPath;
-        startInfo.Environment["BATTCHECK_E2E_FACADE_ASSEMBLY"] = typeof(AppLifecycle)
+        startInfo.Environment["BLUETOOTHMONITOR_E2E"] = "1";
+        startInfo.Environment["BLUETOOTHMONITOR_E2E_SETTINGS_DIR"] = SettingsDirectory;
+        startInfo.Environment["BLUETOOTHMONITOR_E2E_INSTANCE_KEY"] = InstanceKey;
+        startInfo.Environment["BLUETOOTHMONITOR_E2E_SELECTED_DEVICE_ID"] =
+            FakeBluetoothFacade.EarbudsId;
+        startInfo.Environment["BLUETOOTHMONITOR_E2E_BATTERY_LEVEL_FILE"] = FakeBatteryLevelPath;
+        startInfo.Environment["BLUETOOTHMONITOR_E2E_FACADE_ASSEMBLY"] = typeof(AppLifecycle)
             .Assembly
             .Location;
-        startInfo.Environment["BATTCHECK_E2E_FACADE_TYPE"] =
+        startInfo.Environment["BLUETOOTHMONITOR_E2E_FACADE_TYPE"] =
             "BluetoothMonitor.E2E.TestDoubles.FakeBluetoothFacade";
 
         _process =
@@ -247,7 +248,7 @@ public sealed class AppLifecycle : IDisposable
                         if (
                             candidate is not null
                             && candidate.Title.Contains(
-                                "Battcheck",
+                                "Bluetooth Monitor",
                                 StringComparison.OrdinalIgnoreCase
                             )
                         )
@@ -275,7 +276,7 @@ public sealed class AppLifecycle : IDisposable
                 window = desktop
                     .FindFirstDescendant(cf =>
                         cf.ByControlType(FlaUI.Core.Definitions.ControlType.Window)
-                            .And(cf.ByName("Battcheck"))
+                            .And(cf.ByName("Bluetooth Monitor"))
                     )
                     ?.AsWindow();
                 if (window is not null)
@@ -293,7 +294,9 @@ public sealed class AppLifecycle : IDisposable
 
         MainWindow =
             window
-            ?? throw new TimeoutException("Main Battcheck window did not appear within 45s.");
+            ?? throw new TimeoutException(
+                "Main Bluetooth Monitor window did not appear within 45s."
+            );
 
         MainWindow.SetForeground();
         Thread.Sleep(500);

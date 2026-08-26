@@ -3,17 +3,17 @@ using System;
 namespace BluetoothMonitor.App.Services.Test;
 
 /// <summary>
-/// Detects and reads BATTCHECK_E2E_* environment variables used by the E2E harness.
+/// Detects and reads BLUETOOTHMONITOR_E2E_* environment variables used by the E2E harness.
 /// </summary>
 public static class E2ETestHost
 {
-    public const string EnvFlag = "BATTCHECK_E2E";
-    public const string EnvSettingsDir = "BATTCHECK_E2E_SETTINGS_DIR";
-    public const string EnvInstanceKey = "BATTCHECK_E2E_INSTANCE_KEY";
-    public const string EnvDevicesJson = "BATTCHECK_E2E_DEVICES_JSON";
-    public const string EnvSelectedDeviceId = "BATTCHECK_E2E_SELECTED_DEVICE_ID";
-    public const string EnvFacadeAssembly = "BATTCHECK_E2E_FACADE_ASSEMBLY";
-    public const string EnvFacadeType = "BATTCHECK_E2E_FACADE_TYPE";
+    public const string EnvFlag = "BLUETOOTHMONITOR_E2E";
+    public const string EnvSettingsDir = "BLUETOOTHMONITOR_E2E_SETTINGS_DIR";
+    public const string EnvInstanceKey = "BLUETOOTHMONITOR_E2E_INSTANCE_KEY";
+    public const string EnvDevicesJson = "BLUETOOTHMONITOR_E2E_DEVICES_JSON";
+    public const string EnvSelectedDeviceId = "BLUETOOTHMONITOR_E2E_SELECTED_DEVICE_ID";
+    public const string EnvFacadeAssembly = "BLUETOOTHMONITOR_E2E_FACADE_ASSEMBLY";
+    public const string EnvFacadeType = "BLUETOOTHMONITOR_E2E_FACADE_TYPE";
 
     public static bool IsEnabled =>
         string.Equals(Environment.GetEnvironmentVariable(EnvFlag), "1", StringComparison.Ordinal);

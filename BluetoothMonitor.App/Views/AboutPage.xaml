@@ -12,24 +12,24 @@
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
-                Text="About Battcheck"
-                Style="{StaticResource BattcheckPageTitle}"
+                Text="About Bluetooth Monitor"
+                Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="AboutPageTitle"
             />
             <TextBlock
                 Text="A small utility for watching your Bluetooth headset battery."
-                Style="{StaticResource BattcheckPageSub}"
+                Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
             <ctkc:SettingsCard
-                Header="Battcheck"
+                Header="Bluetooth Monitor"
                 Description="{x:Bind ViewModel.Platform, Mode=OneWay}"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon
                         FontFamily="{ThemeResource SymbolThemeFontFamily}"
                         Glyph="&#xEBA9;"
-                        Foreground="{ThemeResource BattcheckAccentBrush}"
+                        Foreground="{ThemeResource BluetoothMonitorAccentBrush}"
                     />
                 </ctkc:SettingsCard.HeaderIcon>
                 <TextBlock Text="{x:Bind ViewModel.Version, Mode=OneWay}" FontWeight="SemiBold" />

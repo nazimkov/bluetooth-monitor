@@ -13,18 +13,18 @@
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
                 Text="General"
-                Style="{StaticResource BattcheckPageTitle}"
+                Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="GeneralPageTitle"
             />
             <TextBlock
                 Text="App behavior and appearance."
-                Style="{StaticResource BattcheckPageSub}"
+                Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
-            <TextBlock Text="Startup" Style="{StaticResource BattcheckSectionTitle}" />
+            <TextBlock Text="Startup" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
-                Header="Start Battcheck when I sign in"
+                Header="Start Bluetooth Monitor when I sign in"
                 Description="Launches silently and sits in the system tray."
             >
                 <ctkc:SettingsCard.HeaderIcon>
@@ -49,11 +49,11 @@
                 />
             </ctkc:SettingsCard>
 
-            <TextBlock Text="Polling" Style="{StaticResource BattcheckSectionTitle}" />
+            <TextBlock Text="Polling" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
                 Header="Refresh interval"
-                Description="How often Battcheck reads the battery level. Lower values use slightly more battery on your PC."
+                Description="How often Bluetooth Monitor reads the battery level. Lower values use slightly more battery on your PC."
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
@@ -71,7 +71,7 @@
                 </ComboBox>
             </ctkc:SettingsCard>
 
-            <TextBlock Text="Appearance" Style="{StaticResource BattcheckSectionTitle}" />
+            <TextBlock Text="Appearance" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard Header="Theme" Description="Match Windows, or pick a fixed theme.">
                 <ctkc:SettingsCard.HeaderIcon>

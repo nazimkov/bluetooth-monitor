@@ -19,11 +19,11 @@ public sealed class BatteryLevelToBrushConverter : IValueConverter
 
         var app = (App)Microsoft.UI.Xaml.Application.Current;
         var resources = app.Resources;
-        if (level <= 10 && resources.TryGetValue("BattcheckDangerBrush", out var danger))
+        if (level <= 10 && resources.TryGetValue("BluetoothMonitorDangerBrush", out var danger))
             return danger;
-        if (level <= 20 && resources.TryGetValue("BattcheckWarnBrush", out var warn))
+        if (level <= 20 && resources.TryGetValue("BluetoothMonitorWarnBrush", out var warn))
             return warn;
-        if (resources.TryGetValue("BattcheckOkBrush", out var ok))
+        if (resources.TryGetValue("BluetoothMonitorOkBrush", out var ok))
             return ok;
         return new SolidColorBrush(Microsoft.UI.Colors.Green);
     }
