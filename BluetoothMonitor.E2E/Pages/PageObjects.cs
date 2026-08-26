@@ -125,6 +125,23 @@ public sealed class NotificationsPage(Window window)
         var slider = Window.ById("LowBatteryThresholdSlider").AsSlider();
         return slider.Value;
     }
+
+    public void SelectNotificationStyleIndex(int index)
+    {
+        var combo = Window.ById("NotificationStyleCombo").AsComboBox();
+        combo.Select(index);
+        Thread.Sleep(200);
+    }
+
+    public string SelectedNotificationStyleText()
+    {
+        var combo = Window.ById("NotificationStyleCombo").AsComboBox();
+        return combo.SelectedItem?.Text ?? string.Empty;
+    }
+
+    public void ToggleCriticalAlert() => Window.ClickId("CriticalAlertToggle");
+
+    public bool IsDndSilencingEnabled() => Window.ById("SilenceDndToggle").IsEnabled;
 }
 
 public sealed class GeneralPage(Window window)
@@ -143,6 +160,23 @@ public sealed class GeneralPage(Window window)
     public string SelectedThemeText()
     {
         var combo = Window.ById("ThemeCombo").AsComboBox();
+        return combo.SelectedItem?.Text ?? string.Empty;
+    }
+
+    public void ToggleStartAtSignIn() => Window.ClickId("StartAtSignInToggle");
+
+    public void ToggleKeepRunning() => Window.ClickId("KeepRunningToggle");
+
+    public void SelectRefreshIntervalIndex(int index)
+    {
+        var combo = Window.ById("RefreshIntervalCombo").AsComboBox();
+        combo.Select(index);
+        Thread.Sleep(200);
+    }
+
+    public string SelectedRefreshIntervalText()
+    {
+        var combo = Window.ById("RefreshIntervalCombo").AsComboBox();
         return combo.SelectedItem?.Text ?? string.Empty;
     }
 }

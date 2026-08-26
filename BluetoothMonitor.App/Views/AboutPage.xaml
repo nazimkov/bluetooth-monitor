@@ -45,6 +45,7 @@
                 <Button
                     Content="Privacy policy"
                     Command="{x:Bind ViewModel.OpenPrivacyPolicyCommand}"
+                    AutomationProperties.AutomationId="PrivacyPolicyButton"
                 />
             </ctkc:SettingsCard>
 
@@ -55,7 +56,11 @@
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" />
                 </ctkc:SettingsCard.HeaderIcon>
-                <Button Content="Check now" Command="{x:Bind ViewModel.CheckForUpdatesCommand}" />
+                <Button
+                    Content="Check now"
+                    Command="{x:Bind ViewModel.CheckForUpdatesCommand}"
+                    AutomationProperties.AutomationId="CheckForUpdatesButton"
+                />
             </ctkc:SettingsCard>
 
             <InfoBar
@@ -63,6 +68,7 @@
                 Severity="Informational"
                 Title="Update check"
                 Message="{x:Bind ViewModel.UpdateInfoText, Mode=OneWay}"
+                AutomationProperties.AutomationId="UpdateInfoBar"
             />
         </StackPanel>
     </ScrollViewer>

@@ -2,6 +2,31 @@
 
 Bluetooth battery monitor for Windows.
 
+![Battcheck main page](docs/main-page.png)
+
+## Main features
+
+Battcheck is a Windows tray application that:
+
+- Finds paired Bluetooth audio devices and shows their connection state.
+- Reads battery levels for Bluetooth Low Energy and Classic Bluetooth devices.
+- Shows one monitored device in the main window and keeps the selected device after navigation.
+- Refreshes device data on demand and at a configurable interval.
+- Shows low and critical battery warnings in the app and in Windows notifications.
+- Lets you set the low-battery threshold, notification style, alert sound, and critical-alert option.
+- Supports System, Light, and Dark themes.
+- Can start at sign-in and keep running when the window closes.
+- Runs in the system tray and provides Show, Rescan, Settings, and Exit actions.
+- Provides a Pair new action that opens Windows Bluetooth settings.
+- Stores settings locally. Bluetooth polling does not send data over the network.
+
+The current V1 scope has these limits:
+
+- Earbud left, right, and case levels are not separate. The app shows one level.
+- Bluetooth codec information is not available from Windows.
+- Do Not Disturb silencing is displayed but disabled because Windows does not expose the required state.
+- Settings search, automatic updates, and in-app pairing are not implemented.
+
 ## Install the portable app
 
 The portable build does not need .NET or the Windows App SDK. It runs on
