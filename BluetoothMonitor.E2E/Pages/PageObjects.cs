@@ -77,7 +77,7 @@ public sealed class DevicesPage(Window window)
             FindDeviceElement(deviceId)
             ?? throw new InvalidOperationException($"Device '{deviceId}' not found in UI.");
         row.Focus();
-        row.Click();
+        (Window.TryById($"DeviceName_{deviceId}") ?? row).Click();
     }
 
     public string HeroDeviceName()

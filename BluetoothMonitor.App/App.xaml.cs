@@ -30,6 +30,10 @@ public partial class App : Application
 
         var settings = Services.GetRequiredService<ISettingsService>();
         await settings.LoadAsync();
+        if (E2ETestHost.IsEnabled && E2ETestHost.SelectedDeviceId is { Length: > 0 } selectedId)
+        {
+            settings.Update(current => current.SelectedDeviceId = selectedId);
+        }
 
         if (!E2ETestHost.IsEnabled && AppEnvironment.IsPackaged)
         {
@@ -67,7 +71,7 @@ public partial class App : Application
         if (e2e)
         {
             services.AddSingleton<IBluetoothFacade>(_ => LoadE2EFacade());
-            services.AddSingleton<INotificationService, NoOpNotificationService>();
+            services.AddSingleton<INotificationService, E2ENotificationService>();
             services.AddSingleton<IStartupService, NoOpStartupService>();
             services.AddSingleton<ITrayIconService, NoOpTrayIconService>();
         }

@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Text.Json;
+using BluetoothMonitor.E2E.TestDoubles;
 using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.UIA3;
@@ -36,6 +37,38 @@ public sealed class AppLifecycle : IDisposable
     }
 
     public string SettingsFilePath => Path.Combine(SettingsDirectory, "settings.json");
+    public string NotificationLogPath => Path.Combine(SettingsDirectory, "notifications.jsonl");
+
+    public async Task<JsonDocument> WaitForNotificationAsync(
+        Func<JsonElement, bool> predicate,
+        TimeSpan? timeout = null
+    )
+    {
+        var deadline = DateTime.UtcNow + (timeout ?? TimeSpan.FromSeconds(10));
+        while (DateTime.UtcNow < deadline)
+        {
+            if (File.Exists(NotificationLogPath))
+            {
+                foreach (var line in await File.ReadAllLinesAsync(NotificationLogPath))
+                {
+                    try
+                    {
+                        var document = JsonDocument.Parse(line);
+                        if (predicate(document.RootElement))
+                            return document;
+                        document.Dispose();
+                    }
+                    catch (JsonException) { }
+                }
+            }
+
+            await Task.Delay(100);
+        }
+
+        throw new TimeoutException(
+            $"Expected notification was not recorded in {NotificationLogPath}"
+        );
+    }
 
     public async Task<JsonDocument> WaitForSettingsAsync(TimeSpan? timeout = null)
     {
@@ -159,6 +192,7 @@ public sealed class AppLifecycle : IDisposable
         startInfo.Environment["BATTCHECK_E2E"] = "1";
         startInfo.Environment["BATTCHECK_E2E_SETTINGS_DIR"] = SettingsDirectory;
         startInfo.Environment["BATTCHECK_E2E_INSTANCE_KEY"] = InstanceKey;
+        startInfo.Environment["BATTCHECK_E2E_SELECTED_DEVICE_ID"] = FakeBluetoothFacade.EarbudsId;
         startInfo.Environment["BATTCHECK_E2E_FACADE_ASSEMBLY"] = typeof(AppLifecycle)
             .Assembly
             .Location;
