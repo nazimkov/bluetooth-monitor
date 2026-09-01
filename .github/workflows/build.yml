@@ -100,6 +100,57 @@ jobs:
             "$env:RUNNER_TEMP\BluetoothMonitor-signing.pfx",
             [Convert]::FromBase64String($env:MSIX_CERTIFICATE_BASE64))
 
+      - name: Validate signing certificate
+        shell: pwsh
+        env:
+          MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
+        run: |
+          $pfxPath = "$env:RUNNER_TEMP\BluetoothMonitor-signing.pfx"
+          if (-not (Test-Path -LiteralPath $pfxPath)) {
+            throw "The signing certificate file was not created: $pfxPath"
+          }
+
+          try {
+            $certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new(
+              $pfxPath,
+              $env:MSIX_CERTIFICATE_PASSWORD,
+              [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::EphemeralKeySet)
+          }
+          catch {
+            throw "The signing PFX cannot be opened. Check that MSIX_CERTIFICATE_BASE64 contains the PFX and that MSIX_CERTIFICATE_PASSWORD is correct. $($_.Exception.Message)"
+          }
+
+          if (-not $certificate.HasPrivateKey) {
+            throw 'The signing certificate does not contain a private key. MSIX_CERTIFICATE_BASE64 must contain a PFX, not a CER file.'
+          }
+
+          $now = [DateTime]::UtcNow
+          if ($now -lt $certificate.NotBefore.ToUniversalTime() -or
+              $now -gt $certificate.NotAfter.ToUniversalTime()) {
+            throw "The signing certificate is not valid at the current time. Valid from $($certificate.NotBefore.ToUniversalTime().ToString('u')) to $($certificate.NotAfter.ToUniversalTime().ToString('u'))."
+          }
+
+          $hasCodeSigningUsage = $certificate.Extensions |
+            Where-Object {
+              $_ -is [System.Security.Cryptography.X509Certificates.X509EnhancedKeyUsageExtension] -and
+              $_.EnhancedKeyUsages.ObjectId.Value -contains '1.3.6.1.5.5.7.3.3'
+            }
+          if (-not $hasCodeSigningUsage) {
+            throw 'The signing certificate does not have the Code Signing enhanced key usage.'
+          }
+
+          [xml]$manifest = Get-Content -LiteralPath 'BluetoothMonitor.App\Package.appxmanifest'
+          $identity = $manifest.SelectSingleNode("//*[local-name()='Identity']")
+          if ($null -eq $identity) {
+            throw 'The package identity was not found in Package.appxmanifest.'
+          }
+
+          if ($certificate.Subject -ne $identity.Publisher) {
+            throw "The certificate subject '$($certificate.Subject)' does not match the package publisher '$($identity.Publisher)'."
+          }
+
+          Write-Host "Signing certificate validated: $($certificate.Subject), expires $($certificate.NotAfter.ToUniversalTime().ToString('u'))."
+
       - name: Build signed MSIX
         shell: pwsh
         env:
