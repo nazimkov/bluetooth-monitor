@@ -1,0 +1,159 @@
+name: Build applications
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  portable:
+    name: Build portable app
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore app packages
+        shell: pwsh
+        run: >-
+          dotnet restore BluetoothMonitor.App/BluetoothMonitor.App.csproj
+          --runtime win-x64
+          -p:Platform=x64
+          -p:WindowsPackageType=None
+          -p:EnableMsixTooling=false
+          -p:WindowsAppSDKSelfContained=true
+          -p:GenerateAppxPackageOnBuild=false
+          -p:AppxGeneratePriEnabled=false
+
+      - name: Publish self-contained x64 app
+        shell: pwsh
+        run: >-
+          msbuild BluetoothMonitor.App/BluetoothMonitor.App.csproj
+          /t:Publish
+          /p:Configuration=Release
+          /p:Platform=x64
+          /p:RuntimeIdentifier=win-x64
+          /p:SelfContained=true
+          /p:PublishDir=${{ runner.temp }}/BluetoothMonitor/
+          -p:WindowsPackageType=None
+          -p:EnableMsixTooling=false
+          -p:WindowsAppSDKSelfContained=true
+          -p:GenerateAppxPackageOnBuild=false
+          -p:AppxGeneratePriEnabled=false
+
+      - name: Create portable archive
+        shell: pwsh
+        run: Compress-Archive -Path '${{ runner.temp }}/BluetoothMonitor/*' -DestinationPath '${{ runner.temp }}/BluetoothMonitor-win-x64.zip'
+
+      - name: Upload portable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BluetoothMonitor-win-x64
+          path: ${{ runner.temp }}/BluetoothMonitor-win-x64.zip
+          if-no-files-found: error
+
+  packaged:
+    name: Build packaged MSIX
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Install MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore app packages
+        shell: pwsh
+        run: >-
+          dotnet restore BluetoothMonitor.App/BluetoothMonitor.App.csproj
+          --runtime win-x64
+          -p:Platform=x64
+
+      - name: Write signing certificate
+        shell: pwsh
+        env:
+          MSIX_CERTIFICATE_BASE64: ${{ secrets.MSIX_CERTIFICATE_BASE64 }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:MSIX_CERTIFICATE_BASE64)) {
+            throw 'The MSIX_CERTIFICATE_BASE64 secret is not configured.'
+          }
+          [IO.File]::WriteAllBytes(
+            "$env:RUNNER_TEMP\BluetoothMonitor-signing.pfx",
+            [Convert]::FromBase64String($env:MSIX_CERTIFICATE_BASE64))
+
+      - name: Build signed MSIX
+        shell: pwsh
+        env:
+          MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
+        run: >-
+          msbuild BluetoothMonitor.App/BluetoothMonitor.App.csproj
+          /t:Publish
+          /p:Configuration=Release
+          /p:Platform=x64
+          /p:RuntimeIdentifier=win-x64
+          /p:SelfContained=true
+          /p:WindowsPackageType=MSIX
+          /p:EnableMsixTooling=true
+          /p:WindowsAppSDKSelfContained=true
+          /p:GenerateAppxPackageOnBuild=true
+          /p:AppxPackageSigningEnabled=true
+          /p:PackageCertificateKeyFile="$env:RUNNER_TEMP\BluetoothMonitor-signing.pfx"
+          /p:PackageCertificatePassword="$env:MSIX_CERTIFICATE_PASSWORD"
+          /p:AppxPackageDir="$env:RUNNER_TEMP\AppPackages\"
+          /p:AppxBundle=Never
+
+      - name: Collect MSIX package
+        shell: pwsh
+        run: |
+          $package = Get-ChildItem -Path "$env:RUNNER_TEMP\AppPackages" -Filter *.msix -Recurse |
+            Where-Object { $_.FullName -notmatch '\\AppxTest\\' } |
+            Select-Object -First 1
+          if ($null -eq $package) {
+            throw 'No MSIX package was produced.'
+          }
+          Copy-Item $package.FullName "$env:RUNNER_TEMP\BluetoothMonitor-win-x64.msix"
+
+      - name: Upload packaged artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BluetoothMonitor-win-x64-msix
+          path: ${{ runner.temp }}/BluetoothMonitor-win-x64.msix
+          if-no-files-found: error
+
+  release:
+    name: Create release
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [portable, packaged]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: BluetoothMonitor-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: Upload both assets to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-assets/*

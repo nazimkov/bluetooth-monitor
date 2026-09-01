@@ -56,5 +56,13 @@ dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64
 ```
 
 The portable package is built by the GitHub Actions workflow. Start it from
-**Actions > Build portable app > Run workflow**, or push a tag that starts with
+**Actions > Build applications > Run workflow**, or push a tag that starts with
 `v`, such as `v1.0.0`.
+
+## Install the packaged MSIX app
+
+The packaged build is self-contained and is available from the **Build
+applications** workflow artifact or from a tagged release. A self-signed certificate
+must be trusted on the target computer before installation. See
+[docs/MSIX.md](docs/MSIX.md) for certificate creation, GitHub Actions setup,
+and installation commands.
