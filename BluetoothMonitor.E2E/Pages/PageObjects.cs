@@ -152,6 +152,21 @@ public sealed class NotificationsPage(Window window)
         return combo.SelectedItem?.Text ?? string.Empty;
     }
 
+    public void SelectAlertSoundIndex(int index)
+    {
+        var combo = Window.ById("AlertSoundCombo").AsComboBox();
+        combo.Select(index);
+        Thread.Sleep(200);
+    }
+
+    public string SelectedAlertSoundText()
+    {
+        var combo = Window.ById("AlertSoundCombo").AsComboBox();
+        return combo.SelectedItem?.Text ?? string.Empty;
+    }
+
+    public void PreviewAlertSound() => Window.ClickId("PreviewSoundButton");
+
     public void ToggleCriticalAlert() => Window.ClickId("CriticalAlertToggle");
 
     public bool IsDndSilencingEnabled() => Window.ById("SilenceDndToggle").IsEnabled;

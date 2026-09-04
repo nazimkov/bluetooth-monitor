@@ -2,12 +2,25 @@ using BluetoothMonitor.App.Models;
 using BluetoothMonitor.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Windows.Media.Core;
+using Windows.Media.Playback;
 
 namespace BluetoothMonitor.App.ViewModels;
 
 public partial class NotificationsViewModel : ObservableObject
 {
     private readonly ISettingsService _settings;
+    private readonly MediaPlayer _previewPlayer = new();
+
+    private static readonly IReadOnlyDictionary<string, string> PreviewSoundUris = new Dictionary<
+        string,
+        string
+    >(StringComparer.OrdinalIgnoreCase)
+    {
+        ["Gentle"] = "ms-winsoundevent:Notification.Default",
+        ["Ping"] = "ms-winsoundevent:Notification.IM",
+        ["Alert"] = "ms-winsoundevent:Notification.Mail",
+    };
 
     public NotificationsViewModel(ISettingsService settings)
     {
@@ -64,6 +77,17 @@ public partial class NotificationsViewModel : ObservableObject
     [RelayCommand]
     private void PreviewSound()
     {
-        // no-op for now; alert sounds aren't implemented yet.
+        if (!PreviewSoundUris.TryGetValue(AlertSound, out var soundUri))
+            return;
+
+        try
+        {
+            _previewPlayer.Source = MediaSource.CreateFromUri(new Uri(soundUri));
+            _previewPlayer.Play();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"Unable to preview alert sound: {ex}");
+        }
     }
 }

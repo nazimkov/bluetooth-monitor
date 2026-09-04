@@ -6,6 +6,32 @@ namespace BluetoothMonitor.E2E.Tests;
 public sealed class NotificationsSettingsTests(AppLifecycle app) : E2ETestBase(app)
 {
     [Fact]
+    public void AlertSoundPreview_PlaysWithoutBreakingThePage()
+    {
+        CaptureOnFailure(
+            nameof(AlertSoundPreview_PlaysWithoutBreakingThePage),
+            () =>
+            {
+                Shell.GoToNotifications();
+                Notifications.WaitUntilLoaded();
+
+                Notifications.SelectAlertSoundIndex(1);
+                Assert.Equal("Ping", Notifications.SelectedAlertSoundText());
+
+                Notifications.PreviewAlertSound();
+
+                // Audio output is not reliable in an automated desktop session.
+                // Verify that the command completes and the app remains responsive.
+                Shell.GoToGeneral();
+                General.WaitUntilLoaded();
+                Shell.GoToNotifications();
+                Notifications.WaitUntilLoaded();
+                Assert.Equal("Ping", Notifications.SelectedAlertSoundText());
+            }
+        );
+    }
+
+    [Fact]
     public async Task LowBatteryThreshold_PersistsToSettingsJson()
     {
         await CaptureOnFailureAsync(
