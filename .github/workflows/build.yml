@@ -120,6 +120,7 @@ jobs:
         shell: pwsh
         env:
           MSIX_CERTIFICATE_BASE64: ${{ secrets.MSIX_CERTIFICATE_BASE64 }}
+          MSIX_CERTIFICATE_CER_BASE64: ${{ secrets.MSIX_CERTIFICATE_CER_BASE64 }}
           MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
         run: |
           if ([string]::IsNullOrWhiteSpace($env:MSIX_CERTIFICATE_BASE64)) {
@@ -127,6 +128,9 @@ jobs:
           }
           if ([string]::IsNullOrWhiteSpace($env:MSIX_CERTIFICATE_PASSWORD)) {
             throw 'The MSIX_CERTIFICATE_PASSWORD secret is not configured.'
+          }
+          if ([string]::IsNullOrWhiteSpace($env:MSIX_CERTIFICATE_CER_BASE64)) {
+            throw 'The MSIX_CERTIFICATE_CER_BASE64 secret is not configured.'
           }
 
           $certificatePath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-signing.pfx'
@@ -142,9 +146,11 @@ jobs:
               [Convert]::FromBase64String($env:MSIX_CERTIFICATE_BASE64))
             Write-Host "[sign] PFX written: $([Math]::Round((Get-Item $certificatePath).Length / 1KB, 2)) KB"
 
-            Write-Host '[sign] Reading the public certificate from the PFX.'
-            $certificate = Get-PfxCertificate -FilePath $certificatePath
-            Export-Certificate -Cert $certificate -FilePath $publicCertificatePath | Out-Null
+            Write-Host '[sign] Decoding the public CER secret.'
+            [IO.File]::WriteAllBytes(
+              $publicCertificatePath,
+              [Convert]::FromBase64String($env:MSIX_CERTIFICATE_CER_BASE64))
+            $certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($publicCertificatePath)
             Write-Host '[sign] Importing the public certificate into the temporary Root store.'
             Import-Certificate `
               -FilePath $publicCertificatePath `
@@ -193,6 +199,7 @@ jobs:
         shell: pwsh
         env:
           MSIX_CERTIFICATE_BASE64: ${{ secrets.MSIX_CERTIFICATE_BASE64 }}
+          MSIX_CERTIFICATE_CER_BASE64: ${{ secrets.MSIX_CERTIFICATE_CER_BASE64 }}
           MSIX_CERTIFICATE_PASSWORD: ${{ secrets.MSIX_CERTIFICATE_PASSWORD }}
         run: |
           $pfxPath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-signing.pfx'
@@ -203,9 +210,9 @@ jobs:
 
           try {
             [IO.File]::WriteAllBytes($pfxPath, [Convert]::FromBase64String($env:MSIX_CERTIFICATE_BASE64))
-            $password = ConvertTo-SecureString $env:MSIX_CERTIFICATE_PASSWORD -AsPlainText -Force
-            $certificate = Get-PfxCertificate -FilePath $pfxPath
-            Export-Certificate -Cert $certificate -FilePath $cerPath | Out-Null
+            [IO.File]::WriteAllBytes(
+              $cerPath,
+              [Convert]::FromBase64String($env:MSIX_CERTIFICATE_CER_BASE64))
             & pwsh -NoProfile -File scripts/New-EmbeddedCertificateInstaller.ps1 `
               -CertificatePath $cerPath `
               -OutputPath (Join-Path $artifactDirectory 'install-cert.ps1')
