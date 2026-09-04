@@ -1,15 +1,20 @@
 # Packaged MSIX build
 
+The repository builds an unsigned MSIX. No certificate or GitHub Actions
+secret is required. Windows requires a trusted digital signature to install
+an MSIX, so use this artifact for testing or sign it in a separate release
+step.
+
 The packaged build is a self-contained x64 MSIX. It includes the Windows App
 SDK runtime. It does not need a separate .NET or Windows App SDK installation.
 
-## Create a self-signed certificate
+## Optional: create a self-signed certificate
 
 Run PowerShell on a Windows development machine. Use the same publisher name
 as `Publisher` in `BluetoothMonitor.App/Package.appxmanifest`.
 
 ```powershell
-$publisher = 'CN=nazimkov-dev'
+$publisher = 'CN=nazimkov-dev, O=VN Software, C=US'
 $cert = New-SelfSignedCertificate `
   -Type Custom `
   -Subject $publisher `
@@ -29,31 +34,20 @@ the public certificate and can be shared with users who install the package.
 The certificate subject must match the manifest publisher exactly. If the
 publisher changes, create a new certificate and update the manifest.
 
-## Configure GitHub Actions
+## GitHub Actions
 
-Convert the PFX to one line of Base64 and add these repository **Actions
-secrets** under **Settings > Secrets and variables > Actions**:
-
-```powershell
-[Convert]::ToBase64String([IO.File]::ReadAllBytes('.\BluetoothMonitor-signing.pfx')) |
-  Set-Clipboard
-```
-
-Add:
-
-- `MSIX_CERTIFICATE_BASE64`: the clipboard value.
-- `MSIX_CERTIFICATE_PASSWORD`: the PFX password.
-
-The `Build applications` workflow runs from **Actions > Build applications >
-Run workflow**. It also runs for tags such as `v1.0.0`. The workflow uploads
-the MSIX as an artifact and adds it to a tagged GitHub release.
+The `Build applications` workflow does not use signing secrets. It creates an
+unsigned MSIX artifact and a portable ZIP artifact. It runs from **Actions >
+Build applications > Run workflow**, and for tags such as `v1.0.0` it adds both
+artifacts to a GitHub release.
 
 Do not commit the PFX file, its password, or a Base64 value to the repository.
 
 ## Install the package
 
-For a self-signed package, install the public certificate once for each user
-who installs the app. In PowerShell:
+The unsigned artifact cannot be installed with `Add-AppxPackage`. Sign the
+MSIX with a trusted certificate first. For a self-signed package, install the
+public certificate once for each user:
 
 ```powershell
 Import-Certificate -FilePath .\BluetoothMonitor-signing.cer `
