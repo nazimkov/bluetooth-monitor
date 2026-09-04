@@ -10,7 +10,7 @@
   <Identity
     Name="BluetoothMonitor.App"
     Publisher="CN=nazimkov-dev, O=VN Software, C=US"
-    Version="1.0.0.0" />
+    Version="1.0.0.4" />
 
   <Properties>
     <DisplayName>Bluetooth Monitor</DisplayName>
