@@ -11,7 +11,9 @@
 >
     <UserControl.Resources>
         <conv:DeviceKindToLabelConverter x:Key="KindLabelConv" />
+        <conv:NullToVisibilityConverter x:Key="NullToVisConv" />
         <conv:NullableByteToByteConverter x:Key="ByteConv" />
+        <conv:BoolToVisibilityConverter x:Key="BoolToVisConv" />
     </UserControl.Resources>
 
     <Border Style="{StaticResource BluetoothMonitorCard}" Padding="20">
@@ -25,6 +27,7 @@
             <controls:BatteryRing
                 Grid.Column="0"
                 PercentLevel="{x:Bind Device.BatteryLevel, Mode=OneWay, Converter={StaticResource ByteConv}}"
+                Visibility="{x:Bind Device.BatteryLevel, Mode=OneWay, Converter={StaticResource NullToVisConv}}"
             />
 
             <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
@@ -39,7 +42,10 @@
                         Text="{x:Bind Device.Kind, Mode=OneWay, Converter={StaticResource KindLabelConv}}"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                     />
-                    <Border Style="{StaticResource BluetoothMonitorBadgeOk}">
+                    <Border
+                        Style="{StaticResource BluetoothMonitorBadgeOk}"
+                        Visibility="{x:Bind Device.IsConnected, Mode=OneWay, Converter={StaticResource BoolToVisConv}}"
+                    >
                         <StackPanel Orientation="Horizontal" Spacing="4">
                             <Ellipse
                                 Width="6"
@@ -52,9 +58,18 @@
                                 FontSize="11"
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource BluetoothMonitorOkBrush}"
+                                AutomationProperties.AutomationId="HeroConnectedStatus"
                             />
                         </StackPanel>
                     </Border>
+                    <TextBlock
+                        Text="Not connected"
+                        FontSize="11"
+                        VerticalAlignment="Center"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        AutomationProperties.AutomationId="HeroDisconnectedStatus"
+                        Visibility="{x:Bind Device.IsConnected, Mode=OneWay, Converter={StaticResource BoolToVisConv}, ConverterParameter=Invert}"
+                    />
                 </StackPanel>
             </StackPanel>
 

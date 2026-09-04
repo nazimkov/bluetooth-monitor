@@ -62,7 +62,7 @@ public sealed class DeviceCatalog : IDeviceCatalog
         var match = FindById(deviceId);
         if (match is not null)
         {
-            match.BatteryLevel = level;
+            match.BatteryLevel = match.IsConnected ? level : null;
         }
     }
 

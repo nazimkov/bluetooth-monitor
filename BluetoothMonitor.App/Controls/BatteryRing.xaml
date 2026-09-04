@@ -36,6 +36,7 @@
             VerticalAlignment="Center"
             FontSize="20"
             FontWeight="SemiBold"
+            AutomationProperties.AutomationId="BatteryPercent"
         />
     </Grid>
 </UserControl>

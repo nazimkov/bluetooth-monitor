@@ -111,4 +111,90 @@ public sealed class DevicesFlowTests(AppLifecycle app) : E2ETestBase(app)
             }
         );
     }
+
+    [Fact]
+    public void StartupPoll_LoadsSelectedDeviceBattery()
+    {
+        CaptureOnFailure(
+            nameof(StartupPoll_LoadsSelectedDeviceBattery),
+            () =>
+            {
+                App.SetFakeBatteryLevel(18);
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+                Devices.SelectDevice(FakeBluetoothFacade.EarbudsId);
+
+                UiWait.WaitUntil(
+                    () => !string.IsNullOrWhiteSpace(Devices.HeroBatteryPercent()),
+                    TimeSpan.FromSeconds(15),
+                    "Startup polling did not load the selected device battery level."
+                );
+            }
+        );
+    }
+
+    [Fact]
+    public void DeviceList_ShowsConnectionDots()
+    {
+        CaptureOnFailure(
+            nameof(DeviceList_ShowsConnectionDots),
+            () =>
+            {
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+
+                UiWait.WaitUntil(
+                    () =>
+                        Devices.IsConnectedDotVisible(FakeBluetoothFacade.HeadsetId)
+                        && Devices.IsDisconnectedDotVisible("e2e-offline"),
+                    TimeSpan.FromSeconds(10),
+                    "Device list did not show the expected connection dots."
+                );
+            }
+        );
+    }
+
+    [Fact]
+    public void DisconnectedDevice_ShowsNoBattery()
+    {
+        CaptureOnFailure(
+            nameof(DisconnectedDevice_ShowsNoBattery),
+            () =>
+            {
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+                Devices.SelectDevice("e2e-offline");
+
+                UiWait.WaitUntil(
+                    () =>
+                        Devices.IsHeroDisconnected()
+                        && string.IsNullOrWhiteSpace(Devices.HeroBatteryPercent()),
+                    TimeSpan.FromSeconds(10),
+                    "Disconnected device still showed a battery value."
+                );
+            }
+        );
+    }
+
+    [Fact]
+    public void Rescan_UpdatesSelectedDeviceBattery()
+    {
+        CaptureOnFailure(
+            nameof(Rescan_UpdatesSelectedDeviceBattery),
+            () =>
+            {
+                App.SetFakeBatteryLevel(61);
+                Shell.GoToDevices();
+                Devices.WaitUntilLoaded();
+                Devices.SelectDevice(FakeBluetoothFacade.HeadsetId);
+                Devices.Rescan();
+
+                UiWait.WaitUntil(
+                    () => Devices.HeroBatteryPercent() == "61%",
+                    TimeSpan.FromSeconds(15),
+                    "Rescan did not update the selected device battery level."
+                );
+            }
+        );
+    }
 }

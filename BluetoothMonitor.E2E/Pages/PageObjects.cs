@@ -86,7 +86,20 @@ public sealed class DevicesPage(Window window)
         return name.Name;
     }
 
+    public string HeroBatteryPercent() => Window.TryById("BatteryPercent")?.Name ?? string.Empty;
+
+    public bool IsHeroConnected() => Window.TryById("HeroConnectedStatus") is not null;
+
+    public bool IsHeroDisconnected() => Window.TryById("HeroDisconnectedStatus") is not null;
+
     public bool HasDevice(string deviceId) => FindDeviceElement(deviceId) is not null;
+
+    public bool IsConnectedDotVisible(string deviceId) => IsVisible($"ConnectedDot_{deviceId}");
+
+    public bool IsDisconnectedDotVisible(string deviceId) =>
+        IsVisible($"DisconnectedDot_{deviceId}");
+
+    private bool IsVisible(string automationId) => Window.TryById(automationId) is not null;
 
     private AutomationElement? FindDeviceElement(string deviceId)
     {

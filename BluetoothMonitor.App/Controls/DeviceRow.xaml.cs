@@ -66,5 +66,11 @@ public sealed partial class DeviceRow : UserControl
             AutomationProperties.SetName(RootBorder, device.Name);
             AutomationProperties.SetAutomationId(DeviceNameText, $"DeviceName_{device.Id}");
         }
+        if (device is { Id.Length: > 0 })
+        {
+            AutomationProperties.SetAutomationId(ConnectedDot, $"ConnectedDot_{device.Id}");
+            AutomationProperties.SetAutomationId(DisconnectedDot, $"DisconnectedDot_{device.Id}");
+            AutomationProperties.SetAutomationId(BatteryBarControl, $"BatteryBar_{device.Id}");
+        }
     }
 }

@@ -59,12 +59,18 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
         // selection can silently fail to reach the UI.
         if (_dispatcher is not null)
         {
-            _dispatcher.TryEnqueue(async () => await _catalog.RefreshAsync());
+            _dispatcher.TryEnqueue(async () => await RefreshAndPollAsync());
         }
         else
         {
-            _ = Task.Run(async () => await _catalog.RefreshAsync());
+            _ = Task.Run(async () => await RefreshAndPollAsync());
         }
+    }
+
+    private async Task RefreshAndPollAsync()
+    {
+        await _catalog.RefreshAsync();
+        await _polling.PollOnceAsync();
     }
 
     private void OnCatalogRefreshed(object? sender, EventArgs e)
@@ -113,6 +119,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
         try
         {
             await _catalog.RefreshAsync();
+            await _polling.PollOnceAsync();
             await Task.Delay(TimeSpan.FromMilliseconds(2200));
         }
         finally

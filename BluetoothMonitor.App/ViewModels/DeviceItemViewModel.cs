@@ -44,5 +44,9 @@ public partial class DeviceItemViewModel : ObservableObject
         Kind = info.Kind;
         MacAddress = info.MacAddress;
         IsConnected = info.IsConnected;
+        if (!IsConnected)
+        {
+            BatteryLevel = null;
+        }
     }
 }

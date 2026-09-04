@@ -11,7 +11,10 @@ public sealed class BoolToVisibilityConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, string language)
     {
         var flag = value is bool b && b;
-        if (Invert)
+        if (
+            Invert
+            || string.Equals(parameter?.ToString(), "Invert", StringComparison.OrdinalIgnoreCase)
+        )
             flag = !flag;
         return flag ? Visibility.Visible : Visibility.Collapsed;
     }

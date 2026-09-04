@@ -72,7 +72,27 @@
                         Text="{x:Bind Device.Kind, Mode=OneWay, Converter={StaticResource KindLabelConv}}"
                         Style="{StaticResource BluetoothMonitorRowMeta}"
                     />
-                    <TextBlock Text="&#x2022;" Style="{StaticResource BluetoothMonitorRowMeta}" />
+                    <TextBlock
+                        x:Name="ConnectedDot"
+                        Text="●"
+                        FontSize="8"
+                        Foreground="{ThemeResource BluetoothMonitorOkBrush}"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind Device.IsConnected, Mode=OneWay, Converter={StaticResource BoolToVisConv}}"
+                    />
+                    <TextBlock
+                        x:Name="DisconnectedDot"
+                        Text="●"
+                        FontSize="8"
+                        Foreground="{ThemeResource BluetoothMonitorTextTertiaryBrush}"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind Device.IsConnected, Mode=OneWay, Converter={StaticResource BoolToVisConv}, ConverterParameter=Invert}"
+                    />
+                    <TextBlock
+                        Text="&#x2022;"
+                        Style="{StaticResource BluetoothMonitorRowMeta}"
+                        Visibility="{x:Bind Device.MacAddress, Mode=OneWay, Converter={StaticResource NullToVisConv}}"
+                    />
                     <TextBlock
                         Text="{x:Bind Device.MacAddress, Mode=OneWay}"
                         Style="{StaticResource BluetoothMonitorMono}"
@@ -83,6 +103,7 @@
             </StackPanel>
 
             <controls:BatteryBar
+                x:Name="BatteryBarControl"
                 Grid.Column="3"
                 PercentLevel="{x:Bind Device.BatteryLevel, Mode=OneWay, Converter={StaticResource ByteConv}}"
                 VerticalAlignment="Center"

@@ -73,6 +73,15 @@ public sealed class FakeBluetoothFacade
                 MacAddress = "AA:BB:CC:DD:EE:02",
                 BatteryLevel = 18,
             },
+            new()
+            {
+                Id = "e2e-offline",
+                Name = "E2E Offline",
+                Kind = "OverEar",
+                MacAddress = "AA:BB:CC:DD:EE:03",
+                IsConnected = false,
+                BatteryLevel = 44,
+            },
         ];
     }
 

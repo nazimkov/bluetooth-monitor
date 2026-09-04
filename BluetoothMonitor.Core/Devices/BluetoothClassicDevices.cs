@@ -32,7 +32,10 @@ namespace BluetoothMonitor.Core.Devices
         public async Task<string?> FindDeviceIdAsync(string deviceName)
         {
             var aqsFilter = BluetoothDevice.GetDeviceSelectorFromDeviceName(deviceName);
-            var devices = await DeviceInformation.FindAllAsync(aqsFilter);
+            var devices = await DeviceInformation.FindAllAsync(
+                aqsFilter,
+                new[] { "System.Devices.Aep.IsConnected" }
+            );
             if (devices is null)
                 return null;
 
@@ -47,7 +50,10 @@ namespace BluetoothMonitor.Core.Devices
         public async Task<IReadOnlyList<DeviceInformation>> ListDevicesAsync()
         {
             var aqsFilter = BluetoothDevice.GetDeviceSelectorFromPairingState(true);
-            var devices = await DeviceInformation.FindAllAsync(aqsFilter);
+            var devices = await DeviceInformation.FindAllAsync(
+                aqsFilter,
+                new[] { "System.Devices.Aep.IsConnected" }
+            );
             return devices;
         }
 

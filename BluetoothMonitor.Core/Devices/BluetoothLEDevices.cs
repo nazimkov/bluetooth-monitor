@@ -10,7 +10,10 @@ namespace BluetoothMonitor.Core.Devices
         public async Task<IReadOnlyList<DeviceInformation>> ListDevicesAsync()
         {
             var selector = BluetoothLEDevice.GetDeviceSelector();
-            var devices = await DeviceInformation.FindAllAsync(selector);
+            var devices = await DeviceInformation.FindAllAsync(
+                selector,
+                new[] { "System.Devices.Aep.IsConnected" }
+            );
             return devices;
         }
 
