@@ -132,11 +132,17 @@ jobs:
           $certificatePath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-signing.pfx'
           $publicCertificatePath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-signing.cer'
           $msixPath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-win-x64.msix'
+          $timer = [Diagnostics.Stopwatch]::StartNew()
           try {
+            Write-Host "[sign] MSIX path: $msixPath"
+            Write-Host "[sign] MSIX size: $([Math]::Round((Get-Item $msixPath).Length / 1MB, 2)) MB"
+            Write-Host '[sign] Decoding PFX secret.'
             [IO.File]::WriteAllBytes(
               $certificatePath,
               [Convert]::FromBase64String($env:MSIX_CERTIFICATE_BASE64))
+            Write-Host "[sign] PFX written: $([Math]::Round((Get-Item $certificatePath).Length / 1KB, 2)) KB"
 
+            Write-Host '[sign] Importing certificate into the temporary certificate store.'
             $password = ConvertTo-SecureString $env:MSIX_CERTIFICATE_PASSWORD -AsPlainText -Force
             $certificate = Import-PfxCertificate `
               -FilePath $certificatePath `
@@ -146,7 +152,10 @@ jobs:
             Import-Certificate `
               -FilePath $publicCertificatePath `
               -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
+            Write-Host "[sign] Certificate thumbprint: $($certificate.Thumbprint)"
+            Write-Host "[sign] Certificate preparation took $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
 
+            Write-Host '[sign] Searching for SignTool.'
             $signTool = Get-ChildItem `
               -Path "${env:ProgramFiles(x86)}\Windows Kits\10\bin" `
               -Filter signtool.exe -Recurse -ErrorAction SilentlyContinue |
@@ -155,21 +164,27 @@ jobs:
             if ($null -eq $signTool) {
               throw 'SignTool was not found in the Windows SDK.'
             }
+            Write-Host "[sign] SignTool: $($signTool.FullName)"
+            Write-Host '[sign] Starting signing. The timestamp server can cause a long wait.'
 
-            & $signTool.FullName sign /fd SHA256 /a /f $certificatePath `
+            & $signTool.FullName sign /v /debug /fd SHA256 /a /f $certificatePath `
               /p $env:MSIX_CERTIFICATE_PASSWORD `
               /tr 'http://timestamp.digicert.com' /td SHA256 $msixPath
             if ($LASTEXITCODE -ne 0) {
               throw "SignTool failed with exit code $LASTEXITCODE."
             }
+            Write-Host "[sign] Signing completed in $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
 
             # The certificate is self-signed. Trust it only for this verification.
+            Write-Host '[sign] Verifying the signed MSIX.'
             & $signTool.FullName verify /pa /all $msixPath
             if ($LASTEXITCODE -ne 0) {
               throw "Signed MSIX verification failed with exit code $LASTEXITCODE."
             }
+            Write-Host "[sign] Verification completed in $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
           }
           finally {
+            Write-Host "[sign] Cleaning temporary certificate files after $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
             Remove-Item -LiteralPath $certificatePath -Force -ErrorAction SilentlyContinue
             Remove-Item -LiteralPath $publicCertificatePath -Force -ErrorAction SilentlyContinue
             if ($null -ne $certificate) {
