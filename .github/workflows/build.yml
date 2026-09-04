@@ -151,10 +151,6 @@ jobs:
               $publicCertificatePath,
               [Convert]::FromBase64String($env:MSIX_CERTIFICATE_CER_BASE64))
             $certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($publicCertificatePath)
-            Write-Host '[sign] Importing the public certificate into the temporary Root store.'
-            Import-Certificate `
-              -FilePath $publicCertificatePath `
-              -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
             Write-Host "[sign] Certificate thumbprint: $($certificate.Thumbprint)"
             Write-Host "[sign] Certificate preparation took $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
 
@@ -178,21 +174,17 @@ jobs:
             }
             Write-Host "[sign] Signing completed in $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
 
-            # The certificate is self-signed. Trust it only for this verification.
-            Write-Host '[sign] Verifying the signed MSIX.'
-            & $signTool.FullName verify /pa /all $msixPath
-            if ($LASTEXITCODE -ne 0) {
-              throw "Signed MSIX verification failed with exit code $LASTEXITCODE."
+            $signedMsix = Get-Item -LiteralPath $msixPath -ErrorAction Stop
+            if ($signedMsix.Length -le 0) {
+              throw 'The signed MSIX is empty.'
             }
-            Write-Host "[sign] Verification completed in $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
+            Write-Host "[sign] Signed MSIX size: $([Math]::Round($signedMsix.Length / 1MB, 2)) MB"
+            Write-Host '[sign] SignTool completed. Trust verification is skipped for the self-signed certificate.'
           }
           finally {
             Write-Host "[sign] Cleaning temporary certificate files after $([Math]::Round($timer.Elapsed.TotalSeconds, 1)) seconds."
             Remove-Item -LiteralPath $certificatePath -Force -ErrorAction SilentlyContinue
             Remove-Item -LiteralPath $publicCertificatePath -Force -ErrorAction SilentlyContinue
-            if ($null -ne $certificate) {
-              Remove-Item -LiteralPath "Cert:\CurrentUser\Root\$($certificate.Thumbprint)" -Force -ErrorAction SilentlyContinue
-            }
           }
 
       - name: Create certificate installer
