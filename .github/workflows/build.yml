@@ -143,6 +143,9 @@ jobs:
               -CertStoreLocation 'Cert:\CurrentUser\My' `
               -Password $password
             Export-Certificate -Cert $certificate -FilePath $publicCertificatePath | Out-Null
+            Import-Certificate `
+              -FilePath $publicCertificatePath `
+              -CertStoreLocation 'Cert:\CurrentUser\Root' | Out-Null
 
             $signTool = Get-ChildItem `
               -Path "${env:ProgramFiles(x86)}\Windows Kits\10\bin" `
@@ -160,9 +163,8 @@ jobs:
               throw "SignTool failed with exit code $LASTEXITCODE."
             }
 
-            # The certificate is self-signed. Give SignTool its public certificate
-            # for this verification so the GitHub runner does not need to trust it.
-            & $signTool.FullName verify /pa /all /c $publicCertificatePath $msixPath
+            # The certificate is self-signed. Trust it only for this verification.
+            & $signTool.FullName verify /pa /all $msixPath
             if ($LASTEXITCODE -ne 0) {
               throw "Signed MSIX verification failed with exit code $LASTEXITCODE."
             }
@@ -170,6 +172,10 @@ jobs:
           finally {
             Remove-Item -LiteralPath $certificatePath -Force -ErrorAction SilentlyContinue
             Remove-Item -LiteralPath $publicCertificatePath -Force -ErrorAction SilentlyContinue
+            if ($null -ne $certificate) {
+              Remove-Item -LiteralPath "Cert:\CurrentUser\Root\$($certificate.Thumbprint)" -Force -ErrorAction SilentlyContinue
+              Remove-Item -LiteralPath "Cert:\CurrentUser\My\$($certificate.Thumbprint)" -Force -ErrorAction SilentlyContinue
+            }
           }
 
       - name: Create certificate installer
