@@ -10,8 +10,13 @@ public partial class AboutViewModel : ObservableObject
 {
     public AboutViewModel()
     {
-        var asm = Assembly.GetExecutingAssembly().GetName();
-        Version = asm.Version?.ToString(3) ?? "1.0.0";
+        var assembly = Assembly.GetExecutingAssembly();
+        Version =
+            assembly
+                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+                ?.InformationalVersion
+            ?? assembly.GetName().Version?.ToString(3)
+            ?? "0.0.0";
     }
 
     [ObservableProperty]
