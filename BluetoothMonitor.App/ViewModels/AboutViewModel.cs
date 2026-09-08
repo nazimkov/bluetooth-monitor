@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using BluetoothMonitor.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Windows.System;
@@ -8,8 +9,11 @@ namespace BluetoothMonitor.App.ViewModels;
 
 public partial class AboutViewModel : ObservableObject
 {
-    public AboutViewModel()
+    private readonly IUpdateChecker _updateChecker;
+
+    public AboutViewModel(IUpdateChecker updateChecker)
     {
+        _updateChecker = updateChecker;
         Version = GetVersion();
         Platform = Environment.OSVersion.VersionString;
     }
@@ -26,11 +30,39 @@ public partial class AboutViewModel : ObservableObject
     [ObservableProperty]
     private string _updateInfoText = string.Empty;
 
+    [ObservableProperty]
+    private Uri? _updateReleaseUrl;
+
     [RelayCommand]
     private void CheckForUpdates()
     {
-        UpdateInfoText = "No update server configured.";
-        UpdateInfoVisible = true;
+        _ = CheckForUpdatesAsync();
+    }
+
+    private async Task CheckForUpdatesAsync()
+    {
+        try
+        {
+            var result = await _updateChecker.CheckForUpdateAsync(Version);
+            UpdateReleaseUrl = result.ReleaseUrl;
+            UpdateInfoText = result.IsUpdateAvailable
+                ? $"Version {result.LatestVersion} is available."
+                : "You have the latest version.";
+            UpdateInfoVisible = result.IsUpdateAvailable;
+        }
+        catch
+        {
+            UpdateReleaseUrl = null;
+            UpdateInfoText = "Unable to check for updates. Try again later.";
+            UpdateInfoVisible = true;
+        }
+    }
+
+    [RelayCommand]
+    private async Task OpenUpdate()
+    {
+        if (UpdateReleaseUrl is not null)
+            await Launcher.LaunchUriAsync(UpdateReleaseUrl);
     }
 
     [RelayCommand]

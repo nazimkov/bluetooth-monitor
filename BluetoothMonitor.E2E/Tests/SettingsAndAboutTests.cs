@@ -70,10 +70,10 @@ public sealed class SettingsAndAboutTests(AppLifecycle app) : E2ETestBase(app)
     }
 
     [Fact]
-    public void About_CheckForUpdates_ShowsConfiguredServerMessage()
+    public void About_CheckForUpdates_ShowsAvailableRelease()
     {
         CaptureOnFailure(
-            nameof(About_CheckForUpdates_ShowsConfiguredServerMessage),
+            nameof(About_CheckForUpdates_ShowsAvailableRelease),
             () =>
             {
                 Shell.GoToAbout();
@@ -87,9 +87,10 @@ public sealed class SettingsAndAboutTests(AppLifecycle app) : E2ETestBase(app)
 
                 Assert.NotNull(
                     App.MainWindow.FindFirstDescendant(cf =>
-                        cf.ByName("No update server configured.")
+                        cf.ByName("Version v9.9.0-beta.1 is available.")
                     )
                 );
+                Assert.NotNull(App.MainWindow.TryById("OpenUpdateButton"));
             }
         );
     }

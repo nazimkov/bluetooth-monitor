@@ -51,7 +51,7 @@
 
             <ctkc:SettingsCard
                 Header="Check for updates"
-                Description="Manual check — no auto-updater is wired up yet."
+                Description="Check the GitHub release page for a newer version."
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" />
@@ -69,7 +69,15 @@
                 Title="Update check"
                 Message="{x:Bind ViewModel.UpdateInfoText, Mode=OneWay}"
                 AutomationProperties.AutomationId="UpdateInfoBar"
-            />
+            >
+                <InfoBar.ActionButton>
+                    <Button
+                        Content="Open release"
+                        Command="{x:Bind ViewModel.OpenUpdateCommand}"
+                        AutomationProperties.AutomationId="OpenUpdateButton"
+                    />
+                </InfoBar.ActionButton>
+            </InfoBar>
         </StackPanel>
     </ScrollViewer>
 </Page>

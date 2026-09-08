@@ -96,6 +96,22 @@ public partial class App : Application
         services.AddSingleton<IDeviceCatalog, DeviceCatalog>();
         services.AddSingleton<IBatteryPollingService, BatteryPollingService>();
         services.AddSingleton<ISingleInstanceService, AppInstanceService>();
+        services.AddSingleton<IUpdateChecker>(_ =>
+        {
+            if (e2e)
+            {
+                var assembly = Assembly.LoadFrom(Path.GetFullPath(E2ETestHost.FacadeAssembly!));
+                var type = assembly.GetType(
+                    "BluetoothMonitor.E2E.TestDoubles.FakeUpdateChecker",
+                    true
+                )!;
+                return new ExternalUpdateChecker(Activator.CreateInstance(type)!);
+            }
+
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("BluetoothMonitor/1.0");
+            return new GitHubUpdateChecker(client);
+        });
 
         services.AddSingleton<MainViewModel>();
         services.AddTransient<DevicesViewModel>();
