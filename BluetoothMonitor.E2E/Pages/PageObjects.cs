@@ -76,6 +76,12 @@ public sealed class DevicesPage(Window window)
         var row =
             FindDeviceElement(deviceId)
             ?? throw new InvalidOperationException($"Device '{deviceId}' not found in UI.");
+
+        if (row.Patterns.ScrollItem.IsSupported)
+        {
+            row.Patterns.ScrollItem.Pattern.ScrollIntoView();
+        }
+
         row.Focus();
         (Window.TryById($"DeviceName_{deviceId}") ?? row).Click();
     }
