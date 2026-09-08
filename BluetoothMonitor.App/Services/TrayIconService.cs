@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace BluetoothMonitor.App.Services;
 
-public sealed class TrayIconService : ITrayIconService, IDisposable
+public sealed class TrayIconService : ITrayIconService
 {
     private readonly ISettingsService _settings;
     private readonly IBatteryPollingService _polling;

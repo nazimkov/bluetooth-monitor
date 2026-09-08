@@ -5,6 +5,7 @@ using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.Services.Test;
 using BluetoothMonitor.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
@@ -15,6 +16,7 @@ namespace BluetoothMonitor.App;
 public partial class App : Application
 {
     public static new App Current => (App)Application.Current;
+    public static DispatcherQueue UiDispatcherQueue { get; private set; } = null!;
     public IServiceProvider Services { get; private set; } = null!;
     public MainWindow? MainWindow { get; private set; }
 
@@ -26,6 +28,7 @@ public partial class App : Application
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
+        UiDispatcherQueue = DispatcherQueue.GetForCurrentThread();
         Services = ConfigureServices();
 
         var settings = Services.GetRequiredService<ISettingsService>();

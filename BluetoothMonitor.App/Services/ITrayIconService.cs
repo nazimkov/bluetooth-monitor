@@ -1,8 +1,7 @@
 namespace BluetoothMonitor.App.Services;
 
-public interface ITrayIconService
+public interface ITrayIconService : IDisposable
 {
     void Initialize();
     void UpdateIcon(byte? level, bool connected);
-    void Dispose();
 }

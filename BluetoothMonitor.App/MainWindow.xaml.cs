@@ -17,6 +17,7 @@ public sealed partial class MainWindow : Window
 {
     private readonly ISettingsService _settings;
     private bool _reallyClose;
+    private int _exitRequested;
 
     public MainViewModel ViewModel { get; }
 
@@ -111,7 +112,22 @@ public sealed partial class MainWindow : Window
 
     public void ExitApplication()
     {
+        if (Interlocked.Exchange(ref _exitRequested, 1) != 0)
+            return;
+
         _reallyClose = true;
-        Microsoft.UI.Xaml.Application.Current.Exit();
+
+        void Exit()
+        {
+            App.Current.Exit();
+            var tray =
+                App.Current.Services.GetService(typeof(ITrayIconService)) as ITrayIconService;
+            tray?.Dispose();
+        }
+
+        if (!App.UiDispatcherQueue.TryEnqueue(Exit))
+        {
+            Volatile.Write(ref _exitRequested, 0);
+        }
     }
 }
