@@ -7,6 +7,13 @@ namespace BluetoothMonitor.Core.Devices
 {
     public sealed class BluetoothClassicDevices : IBluetoothDevices
     {
+        private static readonly string[] RequestedProperties =
+        {
+            "System.Devices.Aep.DeviceAddress",
+            "System.Devices.Aep.IsConnected",
+            "System.Devices.Aep.IsPaired",
+        };
+
         private static readonly DEVPROPKEY DEVPKEY_DEVICE_AEP_ID_GUID = new()
         {
             fmtid = new Guid("3B2CE006-5E61-4FDE-BAB8-9B8AAC9B26DF"),
@@ -32,10 +39,7 @@ namespace BluetoothMonitor.Core.Devices
         public async Task<string?> FindDeviceIdAsync(string deviceName)
         {
             var aqsFilter = BluetoothDevice.GetDeviceSelectorFromDeviceName(deviceName);
-            var devices = await DeviceInformation.FindAllAsync(
-                aqsFilter,
-                new[] { "System.Devices.Aep.IsConnected" }
-            );
+            var devices = await DeviceInformation.FindAllAsync(aqsFilter, RequestedProperties);
             if (devices is null)
                 return null;
 
@@ -50,10 +54,7 @@ namespace BluetoothMonitor.Core.Devices
         public async Task<IReadOnlyList<DeviceInformation>> ListDevicesAsync()
         {
             var aqsFilter = BluetoothDevice.GetDeviceSelectorFromPairingState(true);
-            var devices = await DeviceInformation.FindAllAsync(
-                aqsFilter,
-                new[] { "System.Devices.Aep.IsConnected" }
-            );
+            var devices = await DeviceInformation.FindAllAsync(aqsFilter, RequestedProperties);
             return devices;
         }
 

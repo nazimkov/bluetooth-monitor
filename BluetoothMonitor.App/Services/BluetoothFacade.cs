@@ -29,7 +29,7 @@ public sealed class BluetoothFacade : IBluetoothFacade
         var result = new List<BluetoothDeviceInfo>(merged.Count);
         foreach (var d in merged)
         {
-            result.Add(Project(d));
+            result.Add(await ProjectAsync(d));
         }
         return result;
     }
@@ -89,10 +89,10 @@ public sealed class BluetoothFacade : IBluetoothFacade
         }
     }
 
-    private static BluetoothDeviceInfo Project(DeviceInformation info)
+    private static async Task<BluetoothDeviceInfo> ProjectAsync(DeviceInformation info)
     {
         var kind = GuessKind(info);
-        var mac = ExtractMac(info);
+        var mac = await ExtractMacAsync(info);
         var connected = IsConnected(info);
         return new BluetoothDeviceInfo(info.Id, info.Name ?? "Unknown", kind, mac, connected);
     }
@@ -134,7 +134,7 @@ public sealed class BluetoothFacade : IBluetoothFacade
         return DeviceKind.Unknown;
     }
 
-    private static string? ExtractMac(DeviceInformation info)
+    private static async Task<string?> ExtractMacAsync(DeviceInformation info)
     {
         if (
             info.Properties.TryGetValue("System.Devices.Aep.DeviceAddress", out var raw)
@@ -143,7 +143,26 @@ public sealed class BluetoothFacade : IBluetoothFacade
         {
             return s.Length == 12 ? FormatMac(s) : s;
         }
-        return null;
+
+        try
+        {
+            using var device = await BluetoothDevice.FromIdAsync(info.Id);
+            return device is null ? null : FormatMac(device.BluetoothAddress);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
+    private static string FormatMac(ulong address)
+    {
+        return string.Join(
+            ":",
+            Enumerable
+                .Range(0, 6)
+                .Select(index => ((address >> (8 * (5 - index))) & 0xFF).ToString("X2"))
+        );
     }
 
     private static string FormatMac(string hex)

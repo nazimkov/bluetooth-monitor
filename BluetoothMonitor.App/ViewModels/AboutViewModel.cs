@@ -10,13 +10,8 @@ public partial class AboutViewModel : ObservableObject
 {
     public AboutViewModel()
     {
-        var assembly = Assembly.GetExecutingAssembly();
-        Version =
-            assembly
-                .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-                ?.InformationalVersion
-            ?? assembly.GetName().Version?.ToString(3)
-            ?? "0.0.0";
+        Version = GetVersion();
+        Platform = Environment.OSVersion.VersionString;
     }
 
     [ObservableProperty]
@@ -42,5 +37,18 @@ public partial class AboutViewModel : ObservableObject
     private async Task OpenPrivacyPolicy()
     {
         await Launcher.LaunchUriAsync(new Uri("https://github.com/"));
+    }
+
+    private static string GetVersion()
+    {
+        var assembly = Assembly.GetExecutingAssembly();
+        var assemblyVersion = assembly
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()
+            ?.InformationalVersion;
+
+        assemblyVersion = assemblyVersion?.Split('+')[0]; // Remove build metadata if present
+
+        return assemblyVersion
+            ?? throw new ApplicationException("Unable to determine assembly version.");
     }
 }
