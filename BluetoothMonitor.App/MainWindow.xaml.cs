@@ -103,6 +103,12 @@ public sealed partial class MainWindow : Window
 
     public void ShowWindow()
     {
+        if (!DispatcherQueue.HasThreadAccess)
+        {
+            DispatcherQueue.TryEnqueue(ShowWindow);
+            return;
+        }
+
         var hwnd = WindowNative.GetWindowHandle(this);
         var id = Win32Interop.GetWindowIdFromWindow(hwnd);
         var appWindow = AppWindow.GetFromWindowId(id);
