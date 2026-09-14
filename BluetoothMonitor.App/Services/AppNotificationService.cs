@@ -12,11 +12,23 @@ public sealed class AppNotificationService : INotificationService
             return;
 
         var builder = new AppNotificationBuilder()
-            .AddText("Low battery")
-            .AddText($"{deviceName} is at {level}%. Charge soon to avoid disconnection.")
+            .AddText(AppResources.Get("Notification.LowBattery"))
+            .AddText(
+                string.Format(AppResources.Get("Notification.LowBatteryDetails"), deviceName, level)
+            )
             .AddArgument("action", "open")
-            .AddButton(new AppNotificationButton("Dismiss").AddArgument("action", "dismiss"))
-            .AddButton(new AppNotificationButton("Snooze 10m").AddArgument("action", "snooze"));
+            .AddButton(
+                new AppNotificationButton(AppResources.Get("Notification.Dismiss")).AddArgument(
+                    "action",
+                    "dismiss"
+                )
+            )
+            .AddButton(
+                new AppNotificationButton(AppResources.Get("Notification.Snooze10m")).AddArgument(
+                    "action",
+                    "snooze"
+                )
+            );
 
         if (style == NotificationStyle.BannerOnly || style == NotificationStyle.SoundOnly)
         {
@@ -29,10 +41,21 @@ public sealed class AppNotificationService : INotificationService
     public void ShowCriticalBattery(string deviceName, byte level)
     {
         var notification = new AppNotificationBuilder()
-            .AddText("Critical battery")
-            .AddText($"{deviceName} is at {level}%. Charge now to avoid disconnection.")
+            .AddText(AppResources.Get("Notification.CriticalBattery"))
+            .AddText(
+                string.Format(
+                    AppResources.Get("Notification.CriticalBatteryDetails"),
+                    deviceName,
+                    level
+                )
+            )
             .AddArgument("action", "open")
-            .AddButton(new AppNotificationButton("Dismiss").AddArgument("action", "dismiss"))
+            .AddButton(
+                new AppNotificationButton(AppResources.Get("Notification.Dismiss")).AddArgument(
+                    "action",
+                    "dismiss"
+                )
+            )
             .BuildNotification();
         AppNotificationManager.Default.Show(notification);
     }

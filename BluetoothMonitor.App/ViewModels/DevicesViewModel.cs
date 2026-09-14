@@ -142,13 +142,13 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     [RelayCommand]
     private async Task OpenBluetoothSettings()
     {
-        await Launcher.LaunchUriAsync(new Uri("ms-settings:bluetooth"));
+        await Launcher.LaunchUriAsync(new Uri(AppResources.Get("Url.BluetoothSettings")));
     }
 
     [RelayCommand]
     private async Task PairNew()
     {
-        await Launcher.LaunchUriAsync(new Uri("ms-settings:bluetooth?&pair"));
+        await Launcher.LaunchUriAsync(new Uri(AppResources.Get("Url.PairBluetoothDevice")));
     }
 
     public void Dispose()

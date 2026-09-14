@@ -68,7 +68,7 @@
                         Visibility="{x:Bind Device.IsMonitored, Mode=OneWay, Converter={StaticResource BoolToVisConv}}"
                     >
                         <TextBlock
-                            Text="Monitoring"
+                            x:Uid="DeviceMonitoringBadge"
                             FontSize="11"
                             FontWeight="SemiBold"
                             Foreground="{ThemeResource BluetoothMonitorAccentBrush}"

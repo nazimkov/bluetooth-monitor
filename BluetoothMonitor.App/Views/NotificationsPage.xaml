@@ -13,19 +13,19 @@
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
-                Text="Notifications"
+                x:Uid="NotificationsPageTitle"
                 Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="NotificationsPageTitle"
             />
             <TextBlock
-                Text="Get a heads up before your headphones die."
+                x:Uid="NotificationsPageSubtitle"
                 Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
-            <TextBlock Text="Low battery alert" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+            <TextBlock x:Uid="LowBatteryAlert" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
-                Header="Warn me when battery drops below"
+                x:Uid="LowBatteryThresholdCard"
                 Description="{x:Bind ViewModel.Threshold, Mode=OneWay}"
             >
                 <ctkc:SettingsCard.HeaderIcon>
@@ -48,13 +48,12 @@
                         VerticalAlignment="Center"
                         AutomationProperties.AutomationId="LowBatteryThresholdValue"
                     />
-                    <TextBlock Text="%" VerticalAlignment="Center" />
+                    <TextBlock x:Uid="PercentUnit" VerticalAlignment="Center" />
                 </StackPanel>
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard
-                Header="Notification style"
-                Description="How Bluetooth Monitor lets you know."
+                x:Uid="NotificationStyleCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
@@ -64,16 +63,15 @@
                     MinWidth="180"
                     AutomationProperties.AutomationId="NotificationStyleCombo"
                 >
-                    <ComboBoxItem Content="Banner + sound" />
-                    <ComboBoxItem Content="Banner only" />
-                    <ComboBoxItem Content="Sound only" />
-                    <ComboBoxItem Content="Silent" />
+                    <ComboBoxItem x:Uid="BannerSound" />
+                    <ComboBoxItem x:Uid="BannerOnly" />
+                    <ComboBoxItem x:Uid="SoundOnly" />
+                    <ComboBoxItem x:Uid="Silent" />
                 </ComboBox>
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard
-                Header="Alert sound"
-                Description="Played through your system speakers, not the headset."
+                x:Uid="AlertSoundCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE767;" />
@@ -90,18 +88,17 @@
                         <x:String>None</x:String>
                     </ComboBox>
                     <Button
-                        Content="Preview"
+                        x:Uid="PreviewButton"
                         Command="{x:Bind ViewModel.PreviewSoundCommand}"
                         AutomationProperties.AutomationId="PreviewSoundButton"
                     />
                 </StackPanel>
             </ctkc:SettingsCard>
 
-            <TextBlock Text="Advanced" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+            <TextBlock x:Uid="Advanced" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
-                Header="Critical alert under 5%"
-                Description="Send an extra urgent notification that can't be suppressed."
+                x:Uid="CriticalAlertCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
@@ -113,10 +110,8 @@
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard
-                Header="Silence during Do Not Disturb"
-                Description="Coming in a future release — Windows doesn't expose Focus assist state yet."
+                x:Uid="SilenceDndCard"
                 IsEnabled="False"
-                ToolTipService.ToolTip="Windows Focus-assist state is not exposed to apps in the current OS build."
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />

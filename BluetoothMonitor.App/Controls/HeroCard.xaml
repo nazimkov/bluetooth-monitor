@@ -54,7 +54,7 @@
                                 VerticalAlignment="Center"
                             />
                             <TextBlock
-                                Text="Connected"
+                                x:Uid="HeroConnectedStatus"
                                 FontSize="11"
                                 FontWeight="SemiBold"
                                 Foreground="{ThemeResource BluetoothMonitorOkBrush}"
@@ -63,7 +63,7 @@
                         </StackPanel>
                     </Border>
                     <TextBlock
-                        Text="Not connected"
+                        x:Uid="HeroDisconnectedStatus"
                         FontSize="11"
                         VerticalAlignment="Center"
                         Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -80,8 +80,8 @@
                 VerticalAlignment="Center"
             >
                 <Button
+                    x:Uid="HeroRefreshButton"
                     Command="{x:Bind RefreshCommand, Mode=OneWay}"
-                    ToolTipService.ToolTip="Refresh"
                     AutomationProperties.AutomationId="HeroRefreshButton"
                 >
                     <FontIcon

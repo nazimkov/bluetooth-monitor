@@ -26,17 +26,28 @@ public sealed class TrayIconService : ITrayIconService
         _menu = new PopupMenu();
         _menu.Items.Add(
             new PopupMenuItem(
-                "Show Bluetooth Monitor",
+                AppResources.Get("Tray.Show"),
                 (_, _) => App.Current.MainWindow?.ShowWindow()
             )
         );
-        _menu.Items.Add(new PopupMenuItem("Rescan", (_, _) => _ = _polling.PollOnceAsync()));
         _menu.Items.Add(
-            new PopupMenuItem("Settings", (_, _) => App.Current.MainWindow?.ShowWindow())
+            new PopupMenuItem(
+                AppResources.Get("Tray.Rescan"),
+                (_, _) => _ = _polling.PollOnceAsync()
+            )
+        );
+        _menu.Items.Add(
+            new PopupMenuItem(
+                AppResources.Get("Tray.Settings"),
+                (_, _) => App.Current.MainWindow?.ShowWindow()
+            )
         );
         _menu.Items.Add(new PopupMenuSeparator());
         _menu.Items.Add(
-            new PopupMenuItem("Exit", (_, _) => App.Current.MainWindow?.ExitApplication())
+            new PopupMenuItem(
+                AppResources.Get("Tray.Exit"),
+                (_, _) => App.Current.MainWindow?.ExitApplication()
+            )
         );
 
         _icon = new TrayIconWithContextMenu

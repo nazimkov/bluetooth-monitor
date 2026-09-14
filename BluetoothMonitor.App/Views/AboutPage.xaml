@@ -12,17 +12,17 @@
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
-                Text="About Bluetooth Monitor"
+                x:Uid="AboutPageTitle"
                 Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="AboutPageTitle"
             />
             <TextBlock
-                Text="A small utility for watching your Bluetooth headset battery."
+                x:Uid="AboutPageSubtitle"
                 Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
             <ctkc:SettingsCard
-                Header="Bluetooth Monitor"
+                x:Uid="AboutAppCard"
                 Description="{x:Bind ViewModel.Platform, Mode=OneWay}"
             >
                 <ctkc:SettingsCard.HeaderIcon>
@@ -36,43 +36,41 @@
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard
-                Header="Privacy"
-                Description="All Bluetooth polling happens locally. No data is sent over the network."
+                x:Uid="PrivacyCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE946;" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <Button
-                    Content="Privacy policy"
+                    x:Uid="PrivacyPolicyButton"
                     Command="{x:Bind ViewModel.OpenPrivacyPolicyCommand}"
                     AutomationProperties.AutomationId="PrivacyPolicyButton"
                 />
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard
-                Header="Check for updates"
-                Description="Check the GitHub release page for a newer version."
+                x:Uid="CheckUpdatesCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE721;" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <Button
-                    Content="Check now"
+                    x:Uid="CheckNowButton"
                     Command="{x:Bind ViewModel.CheckForUpdatesCommand}"
                     AutomationProperties.AutomationId="CheckForUpdatesButton"
                 />
             </ctkc:SettingsCard>
 
             <InfoBar
+                x:Uid="UpdateInfoBar"
                 IsOpen="{x:Bind ViewModel.UpdateInfoVisible, Mode=OneWay}"
                 Severity="Informational"
-                Title="Update check"
                 Message="{x:Bind ViewModel.UpdateInfoText, Mode=OneWay}"
                 AutomationProperties.AutomationId="UpdateInfoBar"
             >
                 <InfoBar.ActionButton>
                     <Button
-                        Content="Open release"
+                        x:Uid="OpenReleaseButton"
                         Command="{x:Bind ViewModel.OpenUpdateCommand}"
                         AutomationProperties.AutomationId="OpenUpdateButton"
                     />

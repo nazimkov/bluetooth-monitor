@@ -18,26 +18,25 @@
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
-                Text="Devices"
+                x:Uid="DevicesPageTitle"
                 Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="DevicesPageTitle"
             />
             <TextBlock
-                Text="Choose which Bluetooth audio device Bluetooth Monitor shows in your system tray."
+                x:Uid="DevicesPageSubtitle"
                 Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
             <InfoBar
+                x:Uid="BluetoothOffInfoBar"
                 IsOpen="{x:Bind ViewModel.IsBluetoothOff, Mode=OneWay}"
                 Severity="Error"
-                Title="Bluetooth is turned off on this PC"
-                Message="Turn on Bluetooth in Windows Quick Settings to see paired devices."
                 IsClosable="False"
                 AutomationProperties.AutomationId="BluetoothOffInfoBar"
             >
                 <InfoBar.ActionButton>
                     <Button
-                        Content="Open Bluetooth settings"
+                        x:Uid="OpenBluetoothSettingsButton"
                         Command="{x:Bind ViewModel.OpenBluetoothSettingsCommand}"
                         AutomationProperties.AutomationId="OpenBluetoothSettingsButton"
                     />
@@ -45,24 +44,22 @@
             </InfoBar>
 
             <InfoBar
+                x:Uid="CriticalBatteryInfoBar"
                 IsOpen="{x:Bind ViewModel.IsCriticalBattery, Mode=OneWay}"
                 Severity="Error"
-                Title="Battery is critically low"
-                Message="Charge soon to avoid disconnection."
                 IsClosable="False"
                 AutomationProperties.AutomationId="CriticalBatteryInfoBar"
             />
 
             <InfoBar
+                x:Uid="LowBatteryInfoBar"
                 IsOpen="{x:Bind ViewModel.IsLowBattery, Mode=OneWay}"
                 Severity="Warning"
-                Title="Low battery"
-                Message="Your monitored device is under the low-battery threshold."
                 IsClosable="False"
                 AutomationProperties.AutomationId="LowBatteryInfoBar"
             />
 
-            <TextBlock Text="Currently monitoring" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+            <TextBlock x:Uid="CurrentlyMonitoring" Style="{StaticResource BluetoothMonitorSectionTitle}" />
             <controls:HeroCard
                 Device="{x:Bind ViewModel.SelectedDevice, Mode=OneWay}"
                 RefreshCommand="{x:Bind ViewModel.PollNowCommand}"
@@ -81,7 +78,7 @@
                     VerticalAlignment="Center"
                 >
                     <TextBlock
-                        Text="Paired devices"
+                        x:Uid="PairedDevices"
                         Style="{StaticResource BluetoothMonitorSectionTitle}"
                         Margin="0"
                     />
@@ -104,7 +101,7 @@
                                 Glyph="&#xE72C;"
                                 FontSize="14"
                             />
-                            <TextBlock Text="Rescan" />
+                            <TextBlock x:Uid="RescanButtonText" />
                         </StackPanel>
                     </Button>
                     <Button
@@ -117,7 +114,7 @@
                                 Glyph="&#xE710;"
                                 FontSize="14"
                             />
-                            <TextBlock Text="Pair new" />
+                            <TextBlock x:Uid="PairNewButtonText" />
                         </StackPanel>
                     </Button>
                 </StackPanel>
@@ -162,13 +159,13 @@
                     />
                 </Border>
                 <TextBlock
-                    Text="No paired devices yet"
+                    x:Uid="NoPairedDevices"
                     HorizontalAlignment="Center"
                     FontSize="16"
                     FontWeight="SemiBold"
                 />
                 <TextBlock
-                    Text="Put your headphones or earbuds into pairing mode, then press Pair new to add them."
+                    x:Uid="NoPairedDevicesDescription"
                     HorizontalAlignment="Center"
                     MaxWidth="340"
                     TextWrapping="Wrap"
@@ -176,8 +173,8 @@
                     Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                 />
                 <Button
+                    x:Uid="EmptyPairNewButton"
                     Style="{StaticResource AccentButtonStyle}"
-                    Content="Pair new device"
                     HorizontalAlignment="Center"
                     Command="{x:Bind ViewModel.PairNewCommand}"
                     AutomationProperties.AutomationId="EmptyPairNewButton"

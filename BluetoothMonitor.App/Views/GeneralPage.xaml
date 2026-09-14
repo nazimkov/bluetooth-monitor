@@ -12,20 +12,19 @@
     <ScrollViewer Padding="32,24,32,32">
         <StackPanel Spacing="8" MaxWidth="720" HorizontalAlignment="Left">
             <TextBlock
-                Text="General"
+                x:Uid="GeneralPageTitle"
                 Style="{StaticResource BluetoothMonitorPageTitle}"
                 AutomationProperties.AutomationId="GeneralPageTitle"
             />
             <TextBlock
-                Text="App behavior and appearance."
+                x:Uid="GeneralPageSubtitle"
                 Style="{StaticResource BluetoothMonitorPageSub}"
             />
 
-            <TextBlock Text="Startup" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+            <TextBlock x:Uid="Startup" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
-                Header="Start Bluetooth Monitor when I sign in"
-                Description="Launches silently and sits in the system tray."
+                x:Uid="StartAtSignInCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
@@ -37,8 +36,7 @@
             </ctkc:SettingsCard>
 
             <ctkc:SettingsCard
-                Header="Keep running in the background"
-                Description="Closing the window will minimize to tray instead of quitting."
+                x:Uid="KeepRunningCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE968;" />
@@ -49,11 +47,10 @@
                 />
             </ctkc:SettingsCard>
 
-            <TextBlock Text="Polling" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+            <TextBlock x:Uid="Polling" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard
-                Header="Refresh interval"
-                Description="How often Bluetooth Monitor reads the battery level. Lower values use slightly more battery on your PC."
+                x:Uid="RefreshIntervalCard"
             >
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
@@ -63,17 +60,17 @@
                     MinWidth="180"
                     AutomationProperties.AutomationId="RefreshIntervalCombo"
                 >
-                    <ComboBoxItem Content="Every 15 seconds" />
-                    <ComboBoxItem Content="Every 30 seconds" />
-                    <ComboBoxItem Content="Every minute" />
-                    <ComboBoxItem Content="Every 5 minutes" />
-                    <ComboBoxItem Content="Every 10 minutes" />
+                    <ComboBoxItem x:Uid="Every15Seconds" />
+                    <ComboBoxItem x:Uid="Every30Seconds" />
+                    <ComboBoxItem x:Uid="EveryMinute" />
+                    <ComboBoxItem x:Uid="Every5Minutes" />
+                    <ComboBoxItem x:Uid="Every10Minutes" />
                 </ComboBox>
             </ctkc:SettingsCard>
 
-            <TextBlock Text="Appearance" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+            <TextBlock x:Uid="Appearance" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
-            <ctkc:SettingsCard Header="Theme" Description="Match Windows, or pick a fixed theme.">
+            <ctkc:SettingsCard x:Uid="ThemeCard">
                 <ctkc:SettingsCard.HeaderIcon>
                     <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE713;" />
                 </ctkc:SettingsCard.HeaderIcon>
@@ -82,9 +79,9 @@
                     MinWidth="140"
                     AutomationProperties.AutomationId="ThemeCombo"
                 >
-                    <ComboBoxItem Content="System" />
-                    <ComboBoxItem Content="Light" />
-                    <ComboBoxItem Content="Dark" />
+                    <ComboBoxItem x:Uid="SystemTheme" />
+                    <ComboBoxItem x:Uid="LightTheme" />
+                    <ComboBoxItem x:Uid="DarkTheme" />
                 </ComboBox>
             </ctkc:SettingsCard>
         </StackPanel>

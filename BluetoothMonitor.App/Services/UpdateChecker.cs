@@ -19,8 +19,7 @@ public sealed record UpdateCheckResult(
 
 public sealed class GitHubUpdateChecker(HttpClient httpClient) : IUpdateChecker
 {
-    private const string LatestReleaseApi =
-        "https://api.github.com/repos/nazimkov/bluetooth-battery-hawk/releases/latest";
+    private static readonly string LatestReleaseApi = AppResources.Get("Url.LatestReleaseApi");
 
     public async Task<UpdateCheckResult> CheckForUpdateAsync(
         string currentVersion,

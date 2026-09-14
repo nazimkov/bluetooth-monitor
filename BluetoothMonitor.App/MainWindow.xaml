@@ -39,7 +39,7 @@
             />
             <TextBlock
                 Grid.Column="1"
-                Text="Bluetooth Monitor"
+                x:Uid="AppTitle"
                 VerticalAlignment="Center"
                 Style="{ThemeResource CaptionTextBlockStyle}"
                 Foreground="{ThemeResource TextFillColorSecondaryBrush}"
@@ -60,9 +60,8 @@
             <NavigationView.AutoSuggestBox>
                 <AutoSuggestBox
                     x:Name="NavSearch"
-                    PlaceholderText="Find a setting"
+                    x:Uid="NavSearch"
                     IsEnabled="False"
-                    ToolTipService.ToolTip="Search is coming in a future release"
                     QueryIcon="Find"
                     AutomationProperties.AutomationId="NavSearch"
                 />
@@ -70,7 +69,7 @@
             <NavigationView.MenuItems>
                 <NavigationViewItem
                     x:Name="NavDevices"
-                    Content="Devices"
+                    x:Uid="NavDevices"
                     Tag="devices"
                     IsSelected="True"
                     AutomationProperties.AutomationId="NavDevices"
@@ -84,7 +83,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     x:Name="NavNotifications"
-                    Content="Notifications"
+                    x:Uid="NavNotifications"
                     Tag="notifications"
                     AutomationProperties.AutomationId="NavNotifications"
                 >
@@ -97,7 +96,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     x:Name="NavGeneral"
-                    Content="General"
+                    x:Uid="NavGeneral"
                     Tag="general"
                     AutomationProperties.AutomationId="NavGeneral"
                 >
@@ -110,7 +109,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     x:Name="NavAbout"
-                    Content="About"
+                    x:Uid="NavAbout"
                     Tag="about"
                     AutomationProperties.AutomationId="NavAbout"
                 >

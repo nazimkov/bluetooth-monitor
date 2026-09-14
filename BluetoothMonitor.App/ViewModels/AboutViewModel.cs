@@ -46,14 +46,14 @@ public partial class AboutViewModel : ObservableObject
             var result = await _updateChecker.CheckForUpdateAsync(Version);
             UpdateReleaseUrl = result.ReleaseUrl;
             UpdateInfoText = result.IsUpdateAvailable
-                ? $"Version {result.LatestVersion} is available."
-                : "You have the latest version.";
+                ? string.Format(AppResources.Get("Update.Available"), result.LatestVersion)
+                : AppResources.Get("Update.Latest");
             UpdateInfoVisible = result.IsUpdateAvailable;
         }
         catch
         {
             UpdateReleaseUrl = null;
-            UpdateInfoText = "Unable to check for updates. Try again later.";
+            UpdateInfoText = AppResources.Get("Update.Failed");
             UpdateInfoVisible = true;
         }
     }
@@ -68,7 +68,7 @@ public partial class AboutViewModel : ObservableObject
     [RelayCommand]
     private async Task OpenPrivacyPolicy()
     {
-        await Launcher.LaunchUriAsync(new Uri("https://github.com/"));
+        await Launcher.LaunchUriAsync(new Uri(AppResources.Get("Url.PrivacyPolicy")));
     }
 
     private static string GetVersion()

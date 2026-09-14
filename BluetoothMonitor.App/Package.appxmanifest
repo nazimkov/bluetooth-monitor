@@ -13,8 +13,8 @@
     Version="1.0.0.6" />
 
   <Properties>
-    <DisplayName>Bluetooth Monitor</DisplayName>
-    <PublisherDisplayName>nazimkov</PublisherDisplayName>
+    <DisplayName>ms-resource:Resources/AppName</DisplayName>
+    <PublisherDisplayName>ms-resource:Resources/PublisherName</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -29,8 +29,8 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="Bluetooth Monitor"
-        Description="Bluetooth headset battery monitor"
+        DisplayName="ms-resource:Resources/AppName"
+        Description="ms-resource:Resources/AppDescription"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
@@ -41,7 +41,7 @@
 
       <Extensions>
         <uap5:Extension Category="windows.startupTask">
-          <uap5:StartupTask TaskId="BluetoothMonitorStartup" Enabled="false" DisplayName="Bluetooth Monitor" />
+          <uap5:StartupTask TaskId="BluetoothMonitorStartup" Enabled="false" DisplayName="ms-resource:Resources/AppName" />
         </uap5:Extension>
       </Extensions>
     </Application>

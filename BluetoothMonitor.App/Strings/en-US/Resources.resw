@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0</value></resheader>
+  <data name="AppTitle.Text" xml:space="preserve"><value>Bluetooth Monitor</value></data>
+  <data name="AppName" xml:space="preserve"><value>Bluetooth Monitor</value></data>
+  <data name="PublisherName" xml:space="preserve"><value>nazimkov</value></data>
+  <data name="AppDescription" xml:space="preserve"><value>Bluetooth headset battery monitor</value></data>
+  <data name="NavSearch.PlaceholderText" xml:space="preserve"><value>Find a setting</value></data>
+  <data name="NavSearch.ToolTipService.ToolTip" xml:space="preserve"><value>Search is coming in a future release</value></data>
+  <data name="NavDevices.Content" xml:space="preserve"><value>Devices</value></data>
+  <data name="NavNotifications.Content" xml:space="preserve"><value>Notifications</value></data>
+  <data name="NavGeneral.Content" xml:space="preserve"><value>General</value></data>
+  <data name="NavAbout.Content" xml:space="preserve"><value>About</value></data>
+  <data name="DevicesPageTitle.Text" xml:space="preserve"><value>Devices</value></data>
+  <data name="DevicesPageSubtitle.Text" xml:space="preserve"><value>Choose which Bluetooth audio device Bluetooth Monitor shows in your system tray.</value></data>
+  <data name="BluetoothOffInfoBar.Title" xml:space="preserve"><value>Bluetooth is turned off on this PC</value></data>
+  <data name="BluetoothOffInfoBar.Message" xml:space="preserve"><value>Turn on Bluetooth in Windows Quick Settings to see paired devices.</value></data>
+  <data name="OpenBluetoothSettingsButton.Content" xml:space="preserve"><value>Open Bluetooth settings</value></data>
+  <data name="CriticalBatteryInfoBar.Title" xml:space="preserve"><value>Battery is critically low</value></data>
+  <data name="CriticalBatteryInfoBar.Message" xml:space="preserve"><value>Charge soon to avoid disconnection.</value></data>
+  <data name="LowBatteryInfoBar.Title" xml:space="preserve"><value>Low battery</value></data>
+  <data name="LowBatteryInfoBar.Message" xml:space="preserve"><value>Your monitored device is under the low-battery threshold.</value></data>
+  <data name="CurrentlyMonitoring.Text" xml:space="preserve"><value>Currently monitoring</value></data>
+  <data name="PairedDevices.Text" xml:space="preserve"><value>Paired devices</value></data>
+  <data name="RescanButtonText.Text" xml:space="preserve"><value>Rescan</value></data>
+  <data name="PairNewButtonText.Text" xml:space="preserve"><value>Pair new</value></data>
+  <data name="NoPairedDevices.Text" xml:space="preserve"><value>No paired devices yet</value></data>
+  <data name="NoPairedDevicesDescription.Text" xml:space="preserve"><value>Put your headphones or earbuds into pairing mode, then press Pair new to add them.</value></data>
+  <data name="EmptyPairNewButton.Content" xml:space="preserve"><value>Pair new device</value></data>
+  <data name="HeroConnectedStatus.Text" xml:space="preserve"><value>Connected</value></data>
+  <data name="HeroDisconnectedStatus.Text" xml:space="preserve"><value>Not connected</value></data>
+  <data name="HeroRefreshButton.ToolTipService.ToolTip" xml:space="preserve"><value>Refresh</value></data>
+  <data name="DeviceMonitoringBadge.Text" xml:space="preserve"><value>Monitoring</value></data>
+  <data name="NotificationsPageTitle.Text" xml:space="preserve"><value>Notifications</value></data>
+  <data name="NotificationsPageSubtitle.Text" xml:space="preserve"><value>Get a heads up before your headphones die.</value></data>
+  <data name="LowBatteryAlert.Text" xml:space="preserve"><value>Low battery alert</value></data>
+  <data name="LowBatteryThresholdCard.Header" xml:space="preserve"><value>Warn me when battery drops below</value></data>
+  <data name="PercentUnit.Text" xml:space="preserve"><value>%</value></data>
+  <data name="NotificationStyleCard.Header" xml:space="preserve"><value>Notification style</value></data>
+  <data name="NotificationStyleCard.Description" xml:space="preserve"><value>How Bluetooth Monitor lets you know.</value></data>
+  <data name="BannerSound.Content" xml:space="preserve"><value>Banner + sound</value></data>
+  <data name="BannerOnly.Content" xml:space="preserve"><value>Banner only</value></data>
+  <data name="SoundOnly.Content" xml:space="preserve"><value>Sound only</value></data>
+  <data name="Silent.Content" xml:space="preserve"><value>Silent</value></data>
+  <data name="AlertSoundCard.Header" xml:space="preserve"><value>Alert sound</value></data>
+  <data name="AlertSoundCard.Description" xml:space="preserve"><value>Played through your system speakers, not the headset.</value></data>
+  <data name="GentleSound.Text" xml:space="preserve"><value>Gentle</value></data>
+  <data name="PingSound.Text" xml:space="preserve"><value>Ping</value></data>
+  <data name="AlertSound.Text" xml:space="preserve"><value>Alert</value></data>
+  <data name="NoneSound.Text" xml:space="preserve"><value>None</value></data>
+  <data name="PreviewButton.Content" xml:space="preserve"><value>Preview</value></data>
+  <data name="Advanced.Text" xml:space="preserve"><value>Advanced</value></data>
+  <data name="CriticalAlertCard.Header" xml:space="preserve"><value>Critical alert under 5%</value></data>
+  <data name="CriticalAlertCard.Description" xml:space="preserve"><value>Send an extra urgent notification that can't be suppressed.</value></data>
+  <data name="SilenceDndCard.Header" xml:space="preserve"><value>Silence during Do Not Disturb</value></data>
+  <data name="SilenceDndCard.Description" xml:space="preserve"><value>Coming in a future release — Windows does not expose Focus assist state yet.</value></data>
+  <data name="SilenceDndCard.ToolTipService.ToolTip" xml:space="preserve"><value>Windows Focus-assist state is not exposed to apps in the current OS build.</value></data>
+  <data name="GeneralPageTitle.Text" xml:space="preserve"><value>General</value></data>
+  <data name="GeneralPageSubtitle.Text" xml:space="preserve"><value>App behavior and appearance.</value></data>
+  <data name="Startup.Text" xml:space="preserve"><value>Startup</value></data>
+  <data name="StartAtSignInCard.Header" xml:space="preserve"><value>Start Bluetooth Monitor when I sign in</value></data>
+  <data name="StartAtSignInCard.Description" xml:space="preserve"><value>Launches silently and sits in the system tray.</value></data>
+  <data name="KeepRunningCard.Header" xml:space="preserve"><value>Keep running in the background</value></data>
+  <data name="KeepRunningCard.Description" xml:space="preserve"><value>Closing the window will minimize to tray instead of quitting.</value></data>
+  <data name="Polling.Text" xml:space="preserve"><value>Polling</value></data>
+  <data name="RefreshIntervalCard.Header" xml:space="preserve"><value>Refresh interval</value></data>
+  <data name="RefreshIntervalCard.Description" xml:space="preserve"><value>How often Bluetooth Monitor reads the battery level. Lower values use slightly more battery on your PC.</value></data>
+  <data name="Every15Seconds.Content" xml:space="preserve"><value>Every 15 seconds</value></data>
+  <data name="Every30Seconds.Content" xml:space="preserve"><value>Every 30 seconds</value></data>
+  <data name="EveryMinute.Content" xml:space="preserve"><value>Every minute</value></data>
+  <data name="Every5Minutes.Content" xml:space="preserve"><value>Every 5 minutes</value></data>
+  <data name="Every10Minutes.Content" xml:space="preserve"><value>Every 10 minutes</value></data>
+  <data name="Appearance.Text" xml:space="preserve"><value>Appearance</value></data>
+  <data name="ThemeCard.Header" xml:space="preserve"><value>Theme</value></data>
+  <data name="ThemeCard.Description" xml:space="preserve"><value>Match Windows, or pick a fixed theme.</value></data>
+  <data name="SystemTheme.Content" xml:space="preserve"><value>System</value></data>
+  <data name="LightTheme.Content" xml:space="preserve"><value>Light</value></data>
+  <data name="DarkTheme.Content" xml:space="preserve"><value>Dark</value></data>
+  <data name="AboutPageTitle.Text" xml:space="preserve"><value>About Bluetooth Monitor</value></data>
+  <data name="AboutPageSubtitle.Text" xml:space="preserve"><value>A small utility for watching your Bluetooth headset battery.</value></data>
+  <data name="AboutAppCard.Header" xml:space="preserve"><value>Bluetooth Monitor</value></data>
+  <data name="PrivacyCard.Header" xml:space="preserve"><value>Privacy</value></data>
+  <data name="PrivacyCard.Description" xml:space="preserve"><value>All Bluetooth polling happens locally. No data is sent over the network.</value></data>
+  <data name="PrivacyPolicyButton.Content" xml:space="preserve"><value>Privacy policy</value></data>
+  <data name="CheckUpdatesCard.Header" xml:space="preserve"><value>Check for updates</value></data>
+  <data name="CheckUpdatesCard.Description" xml:space="preserve"><value>Check the GitHub release page for a newer version.</value></data>
+  <data name="CheckNowButton.Content" xml:space="preserve"><value>Check now</value></data>
+  <data name="UpdateInfoBar.Title" xml:space="preserve"><value>Update check</value></data>
+  <data name="OpenReleaseButton.Content" xml:space="preserve"><value>Open release</value></data>
+  <data name="DeviceKind.Earbuds" xml:space="preserve"><value>True wireless earbuds</value></data>
+  <data name="DeviceKind.OverEar" xml:space="preserve"><value>Over-ear headphones</value></data>
+  <data name="DeviceKind.Speaker" xml:space="preserve"><value>Bluetooth speaker</value></data>
+  <data name="DeviceKind.Handsfree" xml:space="preserve"><value>Handsfree headset</value></data>
+  <data name="DeviceKind.Unknown" xml:space="preserve"><value>Audio device</value></data>
+  <data name="Notification.LowBattery" xml:space="preserve"><value>Low battery</value></data>
+  <data name="Notification.LowBatteryDetails" xml:space="preserve"><value>{0} is at {1}%. Charge soon to avoid disconnection.</value></data>
+  <data name="Notification.CriticalBattery" xml:space="preserve"><value>Critical battery</value></data>
+  <data name="Notification.CriticalBatteryDetails" xml:space="preserve"><value>{0} is at {1}%. Charge now to avoid disconnection.</value></data>
+  <data name="Notification.Dismiss" xml:space="preserve"><value>Dismiss</value></data>
+  <data name="Notification.Snooze10m" xml:space="preserve"><value>Snooze 10m</value></data>
+  <data name="Tray.Show" xml:space="preserve"><value>Show Bluetooth Monitor</value></data>
+  <data name="Tray.Rescan" xml:space="preserve"><value>Rescan</value></data>
+  <data name="Tray.Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Tray.Exit" xml:space="preserve"><value>Exit</value></data>
+  <data name="Update.Available" xml:space="preserve"><value>Version {0} is available.</value></data>
+  <data name="Update.Latest" xml:space="preserve"><value>You have the latest version.</value></data>
+  <data name="Update.Failed" xml:space="preserve"><value>Unable to check for updates. Try again later.</value></data>
+  <data name="Url.BluetoothSettings" xml:space="preserve"><value>ms-settings:bluetooth</value></data>
+  <data name="Url.PairBluetoothDevice" xml:space="preserve"><value>ms-settings:bluetooth?&amp;pair</value></data>
+  <data name="Url.PrivacyPolicy" xml:space="preserve"><value>https://github.com/</value></data>
+  <data name="Url.LatestReleaseApi" xml:space="preserve"><value>https://api.github.com/repos/nazimkov/bluetooth-battery-hawk/releases/latest</value></data>
+</root>
