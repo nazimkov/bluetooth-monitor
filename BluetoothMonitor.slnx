@@ -1,0 +1,20 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="CLAUDE.md" />
+  </Folder>
+  <Project Path="BluetoothMonitor.App/BluetoothMonitor.App.csproj">
+    <Platform Project="x64" />
+    <Build Solution="Release|Any CPU" Project="false" />
+    <Deploy Solution="*|x64" />
+    <Deploy Solution="Debug|Any CPU" />
+  </Project>
+  <Project Path="BluetoothMonitor.Core/BluetoothMonitor.Core.csproj" />
+  <Project Path="BluetoothMonitor.E2E/BluetoothMonitor.E2E.csproj">
+    <Platform Project="x64" />
+  </Project>
+</Solution>

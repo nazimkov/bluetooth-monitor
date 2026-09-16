@@ -22,7 +22,7 @@ Before creating the commit, inspect the staged file list. Build the whole soluti
 When checks are required, run:
 
 ```powershell
-dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64
+dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64
 dotnet test BluetoothMonitor.E2E -c Debug -p:Platform=x64 --logger "console;verbosity=detailed"
 ```
 

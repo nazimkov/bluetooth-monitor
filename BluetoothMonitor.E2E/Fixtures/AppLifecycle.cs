@@ -377,7 +377,7 @@ public sealed class AppLifecycle : IDisposable
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir is not null)
         {
-            if (File.Exists(Path.Combine(dir.FullName, "BluetoothMonitor.sln")))
+            if (File.Exists(Path.Combine(dir.FullName, "BluetoothMonitor.slnx")))
             {
                 return dir.FullName;
             }
@@ -386,7 +386,7 @@ public sealed class AppLifecycle : IDisposable
         }
 
         throw new DirectoryNotFoundException(
-            "Could not locate BluetoothMonitor.sln from " + AppContext.BaseDirectory
+            "Could not locate BluetoothMonitor.slnx from " + AppContext.BaseDirectory
         );
     }
 

@@ -5,7 +5,7 @@ Always use ASD-STE100 Simplified Technical English when you talk to me.
 
 ```bash
 # Restore and build the whole solution (x64 only — the WinUI app is not AnyCPU)
-dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64
+dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64
 
 # Run the tray app (launches the WinUI 3 window and sits in the system tray)
 dotnet run --project BluetoothMonitor.App -c Debug -r win-x64
@@ -21,7 +21,7 @@ Run E2E tests outside the sandbox with access to the interactive Windows desktop
 
 ```bash
 # Build app + E2E, then run the suite (x64)
-dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64
+dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64
 dotnet test BluetoothMonitor.E2E -c Debug -p:Platform=x64 --logger "console;verbosity=detailed"
 ```
 

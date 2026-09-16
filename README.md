@@ -49,10 +49,10 @@ your settings, delete the `BluetoothMonitor` folder under `%LOCALAPPDATA%`.
 
 ## Build from source
 
-Install the .NET 8 SDK and the Windows 10 SDK version 22621 or later. Then run:
+Install the .NET 10 SDK and the Windows 10 SDK version 22621 or later. Then run:
 
 ```powershell
-dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64
+dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64
 ```
 
 The portable package is built by the GitHub Actions workflow. Start it from

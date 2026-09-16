@@ -14,7 +14,7 @@ public static class FailureArtifacts
         var dir = new DirectoryInfo(AppContext.BaseDirectory);
         while (dir is not null)
         {
-            if (File.Exists(Path.Combine(dir.FullName, "BluetoothMonitor.sln")))
+            if (File.Exists(Path.Combine(dir.FullName, "BluetoothMonitor.slnx")))
             {
                 return Path.Combine(dir.FullName, "TestResults", "e2e");
             }
@@ -94,7 +94,7 @@ public static class FailureArtifacts
         sb.AppendLine("## Repro");
         sb.AppendLine();
         sb.AppendLine("```bash");
-        sb.AppendLine("dotnet build BluetoothMonitor.sln -c Debug -p:Platform=x64");
+        sb.AppendLine("dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64");
         sb.AppendLine(
             $"dotnet test BluetoothMonitor.E2E -c Debug -p:Platform=x64 --filter FullyQualifiedName~{safeName}"
         );
