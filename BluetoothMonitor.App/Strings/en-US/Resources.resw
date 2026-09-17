@@ -110,6 +110,6 @@
   <data name="Update.Failed" xml:space="preserve"><value>Unable to check for updates. Try again later.</value></data>
   <data name="Url.BluetoothSettings" xml:space="preserve"><value>ms-settings:bluetooth</value></data>
   <data name="Url.PairBluetoothDevice" xml:space="preserve"><value>ms-settings:bluetooth?&amp;pair</value></data>
-  <data name="Url.PrivacyPolicy" xml:space="preserve"><value>https://github.com/</value></data>
+  <data name="Url.PrivacyPolicy" xml:space="preserve"><value>https://github.com/nazimkov/bluetooth-battery-hawk/blob/master/PRIVACY_POLICY.md</value></data>
   <data name="Url.LatestReleaseApi" xml:space="preserve"><value>https://api.github.com/repos/nazimkov/bluetooth-battery-hawk/releases/latest</value></data>
 </root>
