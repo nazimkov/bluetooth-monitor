@@ -175,6 +175,9 @@ public sealed class NotificationsPage(Window window)
 
     public void ToggleCriticalAlert() => Window.ClickId("CriticalAlertToggle");
 
+    public bool IsCriticalAlertOn() =>
+        Window.ById("CriticalAlertToggle").Patterns.Toggle.Pattern.ToggleState.ToString() == "On";
+
     public bool IsDndSilencingEnabled() => Window.ById("SilenceDndToggle").IsEnabled;
 }
 
@@ -198,6 +201,9 @@ public sealed class GeneralPage(Window window)
     }
 
     public void ToggleStartAtSignIn() => Window.ClickId("StartAtSignInToggle");
+
+    public bool IsStartAtSignInOn() =>
+        Window.ById("StartAtSignInToggle").Patterns.Toggle.Pattern.ToggleState.ToString() == "On";
 
     public void ToggleKeepRunning() => Window.ClickId("KeepRunningToggle");
 
