@@ -18,6 +18,17 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
+      - name: Set release version
+        id: version
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF -match '^refs/tags/v?(.+)$') {
+            $version = $Matches[1]
+          } else {
+            $version = 'manual'
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
+
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v4
         with:
@@ -56,13 +67,13 @@ jobs:
 
       - name: Create portable archive
         shell: pwsh
-        run: Compress-Archive -Path '${{ runner.temp }}/BluetoothMonitor/*' -DestinationPath '${{ runner.temp }}/BluetoothMonitor-win-x64.zip'
+        run: Compress-Archive -Path '${{ runner.temp }}/BluetoothMonitor/*' -DestinationPath '${{ runner.temp }}/BluetoothMonitor-win-x64-${{ steps.version.outputs.version }}.zip'
 
       - name: Upload portable artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BluetoothMonitor-win-x64
-          path: ${{ runner.temp }}/BluetoothMonitor-win-x64.zip
+          name: BluetoothMonitor-win-x64-${{ steps.version.outputs.version }}
+          path: ${{ runner.temp }}/BluetoothMonitor-win-x64-${{ steps.version.outputs.version }}.zip
           if-no-files-found: error
 
   packaged:
@@ -72,6 +83,17 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+
+      - name: Set release version
+        id: version
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF -match '^refs/tags/v?(.+)$') {
+            $version = $Matches[1]
+          } else {
+            $version = 'manual'
+          }
+          "version=$version" >> $env:GITHUB_OUTPUT
 
       - name: Install .NET SDK
         uses: actions/setup-dotnet@v4
@@ -114,7 +136,7 @@ jobs:
           if ($null -eq $package) {
             throw 'No unsigned MSIX package was produced.'
           }
-          Copy-Item $package.FullName "$env:RUNNER_TEMP\BluetoothMonitor-win-x64.msix"
+          Copy-Item $package.FullName "$env:RUNNER_TEMP\BluetoothMonitor-win-x64-${{ steps.version.outputs.version }}.msix"
 
       - name: Sign MSIX with SignTool
         shell: pwsh
@@ -135,7 +157,7 @@ jobs:
 
           $certificatePath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-signing.pfx'
           $publicCertificatePath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-signing.cer'
-          $msixPath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-win-x64.msix'
+          $msixPath = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-win-x64-${{ steps.version.outputs.version }}.msix'
           $timer = [Diagnostics.Stopwatch]::StartNew()
           try {
             Write-Host "[sign] MSIX path: $msixPath"
@@ -193,13 +215,13 @@ jobs:
           $artifactDirectory = Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-msix-artifact'
           New-Item -ItemType Directory -Path $artifactDirectory -Force | Out-Null
           Copy-Item `
-            (Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-win-x64.msix') `
+            (Join-Path $env:RUNNER_TEMP 'BluetoothMonitor-win-x64-${{ steps.version.outputs.version }}.msix') `
             $artifactDirectory
 
       - name: Upload packaged artifact
         uses: actions/upload-artifact@v4
         with:
-          name: BluetoothMonitor-win-x64-msix
+          name: BluetoothMonitor-win-x64-msix-${{ steps.version.outputs.version }}
           path: ${{ runner.temp }}/BluetoothMonitor-msix-artifact
           if-no-files-found: error
 
