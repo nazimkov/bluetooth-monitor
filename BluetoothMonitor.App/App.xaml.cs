@@ -5,10 +5,12 @@ using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.Services.Test;
 using BluetoothMonitor.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
+using Serilog;
 using WinRT;
 
 namespace BluetoothMonitor.App;
@@ -22,12 +24,15 @@ public partial class App : Application
 
     public App()
     {
+        AppLogging.Initialize();
         InitializeComponent();
         UnhandledException += OnUnhandledException;
     }
 
     protected override async void OnLaunched(LaunchActivatedEventArgs args)
     {
+        var logger = Log.Logger.ForContext<App>();
+        logger.Information("Application starting");
         UiDispatcherQueue = DispatcherQueue.GetForCurrentThread();
         Services = ConfigureServices();
 
@@ -55,11 +60,13 @@ public partial class App : Application
 
         var tray = Services.GetRequiredService<ITrayIconService>();
         tray.Initialize();
+        logger.Information("Application initialization completed");
     }
 
     private static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
+        services.AddLogging(builder => builder.AddSerilog(Log.Logger, dispose: false));
         var e2e = E2ETestHost.IsEnabled;
 
         if (e2e && E2ETestHost.SettingsDirectory is { Length: > 0 } settingsDir)
@@ -163,7 +170,7 @@ public partial class App : Application
         Microsoft.UI.Xaml.UnhandledExceptionEventArgs e
     )
     {
-        System.Diagnostics.Debug.WriteLine($"Unhandled: {e.Exception}");
+        Log.Logger.Fatal(e.Exception, "Unhandled UI exception");
         e.Handled = true;
     }
 }

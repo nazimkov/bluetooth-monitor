@@ -1,4 +1,5 @@
 using System;
+using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.Services.Test;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
@@ -12,6 +13,7 @@ public static class Program
     [STAThread]
     public static int Main(string[] args)
     {
+        AppLogging.Initialize();
         ComWrappersSupport.InitializeComWrappers();
 
         var isRedirect = DecideRedirection();
@@ -20,16 +22,24 @@ public static class Program
             return 0;
         }
 
-        Microsoft.UI.Xaml.Application.Start(_ =>
+        try
         {
-            var context = new DispatcherQueueSynchronizationContext(
-                DispatcherQueue.GetForCurrentThread()
-            );
-            System.Threading.SynchronizationContext.SetSynchronizationContext(context);
-            new App();
-        });
-
-        return 0;
+            Microsoft.UI.Xaml.Application.Start(_ =>
+            {
+                var context = new DispatcherQueueSynchronizationContext(
+                    DispatcherQueue.GetForCurrentThread()
+                );
+                System.Threading.SynchronizationContext.SetSynchronizationContext(context);
+                new App();
+            });
+            return 0;
+        }
+        catch (Exception ex)
+        {
+            Serilog.Log.Fatal(ex, "Application startup failed");
+            AppLogging.CloseAndFlush();
+            return 1;
+        }
     }
 
     private static bool DecideRedirection()

@@ -2,6 +2,7 @@ using System;
 using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.ViewModels;
 using BluetoothMonitor.App.Views;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI;
 using Microsoft.UI.Composition.SystemBackdrops;
 using Microsoft.UI.Windowing;
@@ -18,13 +19,19 @@ public sealed partial class MainWindow : Window
     private readonly ISettingsService _settings;
     private bool _reallyClose;
     private int _exitRequested;
+    private readonly ILogger<MainWindow> _logger;
 
     public MainViewModel ViewModel { get; }
 
-    public MainWindow(MainViewModel viewModel, ISettingsService settings)
+    public MainWindow(
+        MainViewModel viewModel,
+        ISettingsService settings,
+        ILogger<MainWindow> logger
+    )
     {
         ViewModel = viewModel;
         _settings = settings;
+        _logger = logger;
 
         InitializeComponent();
 
@@ -122,13 +129,16 @@ public sealed partial class MainWindow : Window
             return;
 
         _reallyClose = true;
+        _logger.LogInformation("Application shutdown requested");
 
         void Exit()
         {
+            _logger.LogInformation("Application shutting down");
             App.Current.Exit();
             var tray =
                 App.Current.Services.GetService(typeof(ITrayIconService)) as ITrayIconService;
             tray?.Dispose();
+            AppLogging.CloseAndFlush();
         }
 
         if (!App.UiDispatcherQueue.TryEnqueue(Exit))

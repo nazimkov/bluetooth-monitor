@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using BluetoothMonitor.App.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
 
 namespace BluetoothMonitor.App.Services;
@@ -11,6 +12,7 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
     private readonly ISettingsService _settings;
     private readonly IBluetoothFacade _facade;
     private readonly INotificationService _notifications;
+    private readonly ILogger<BatteryPollingService> _logger;
     private DispatcherQueueTimer? _timer;
     private int _lastLevelAbove;
     private bool _lowNotified;
@@ -19,12 +21,14 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
     public BatteryPollingService(
         ISettingsService settings,
         IBluetoothFacade facade,
-        INotificationService notifications
+        INotificationService notifications,
+        ILogger<BatteryPollingService> logger
     )
     {
         _settings = settings;
         _facade = facade;
         _notifications = notifications;
+        _logger = logger;
         _settings.Changed += OnSettingsChanged;
     }
 
@@ -42,6 +46,10 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
         _timer.Tick += (_, _) => _ = PollOnceAsync();
         _timer.IsRepeating = true;
         _timer.Start();
+        _logger.LogInformation(
+            "Battery polling started with interval {IntervalSeconds} seconds",
+            _timer.Interval.TotalSeconds
+        );
         return Task.CompletedTask;
     }
 
@@ -57,7 +65,16 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
         if (string.IsNullOrWhiteSpace(id))
             return;
 
-        var level = await _facade.GetBatteryLevelAsync(id);
+        byte? level;
+        try
+        {
+            level = await _facade.GetBatteryLevelAsync(id);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Battery polling failed");
+            return;
+        }
         BatteryUpdated?.Invoke(this, new BatteryUpdatedEventArgs { DeviceId = id, Level = level });
 
         if (level is null)
@@ -81,6 +98,10 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
         if (level <= 5 && settings.CriticalAlertUnder5 && !_criticalNotified)
         {
             _notifications.ShowCriticalBattery(settings.DeviceName, level);
+            _logger.LogInformation(
+                "Critical battery notification sent at {BatteryLevel} percent",
+                level
+            );
             _criticalNotified = true;
             _lowNotified = true;
             return;
@@ -93,6 +114,10 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
         )
         {
             _notifications.ShowLowBattery(settings.DeviceName, level, settings.NotificationStyle);
+            _logger.LogInformation(
+                "Low battery notification sent at {BatteryLevel} percent",
+                level
+            );
             _lowNotified = true;
         }
     }

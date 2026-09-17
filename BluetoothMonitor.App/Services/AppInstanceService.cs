@@ -1,10 +1,15 @@
 using BluetoothMonitor.App.Services.Test;
+using Microsoft.Extensions.Logging;
 using Microsoft.Windows.AppLifecycle;
 
 namespace BluetoothMonitor.App.Services;
 
 public sealed class AppInstanceService : ISingleInstanceService
 {
+    private readonly ILogger<AppInstanceService> _logger;
+
+    public AppInstanceService(ILogger<AppInstanceService> logger) => _logger = logger;
+
     public bool RedirectIfNotPrimary()
     {
         var args = AppInstance.GetCurrent().GetActivatedEventArgs();
@@ -21,6 +26,7 @@ public sealed class AppInstanceService : ISingleInstanceService
             return false;
         }
         instance.RedirectActivationToAsync(args).AsTask().GetAwaiter().GetResult();
+        _logger.LogInformation("Activation redirected to the primary instance");
         return true;
     }
 }

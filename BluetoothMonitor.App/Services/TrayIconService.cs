@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using H.NotifyIcon.Core;
+using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Controls;
 
 namespace BluetoothMonitor.App.Services;
@@ -13,11 +14,17 @@ public sealed class TrayIconService : ITrayIconService
     private PopupMenu? _menu;
     private byte? _lastLevel;
     private bool _lastConnected;
+    private readonly ILogger<TrayIconService> _logger;
 
-    public TrayIconService(ISettingsService settings, IBatteryPollingService polling)
+    public TrayIconService(
+        ISettingsService settings,
+        IBatteryPollingService polling,
+        ILogger<TrayIconService> logger
+    )
     {
         _settings = settings;
         _polling = polling;
+        _logger = logger;
         _polling.BatteryUpdated += OnBatteryUpdated;
     }
 
@@ -67,6 +74,7 @@ public sealed class TrayIconService : ITrayIconService
 
         ApplyIcon();
         _icon.Create();
+        _logger.LogInformation("Tray icon initialized");
     }
 
     public void UpdateIcon(byte? level, bool connected)
@@ -101,9 +109,9 @@ public sealed class TrayIconService : ITrayIconService
                 var icon = new System.Drawing.Icon(chosen);
                 _icon.UpdateIcon(icon.Handle);
             }
-            catch
+            catch (Exception ex)
             {
-                // icon update is best-effort; don't crash the tray
+                _logger.LogWarning(ex, "Tray icon update failed");
             }
         }
 

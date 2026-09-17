@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BluetoothMonitor.App.Models;
 using BluetoothMonitor.Core;
 using BluetoothMonitor.Core.Devices;
+using Microsoft.Extensions.Logging;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
 
@@ -16,6 +17,12 @@ public sealed class BluetoothFacade : IBluetoothFacade
     private readonly IBluetoothDevices _classic = new BluetoothClassicDevices();
     private readonly IBluetoothDevices _le = new BluetoothLEDevices();
     private readonly ConcurrentDictionary<string, bool> _isLeCache = new();
+    private readonly ILogger<BluetoothFacade> _logger;
+
+    public BluetoothFacade(ILogger<BluetoothFacade> logger)
+    {
+        _logger = logger;
+    }
 
     public async Task<IReadOnlyList<BluetoothDeviceInfo>> ListDevicesAsync()
     {
@@ -25,6 +32,7 @@ public sealed class BluetoothFacade : IBluetoothFacade
         var le = await _le.ListDevicesAsync();
 
         var merged = classic.Concat(le).GroupBy(d => d.Id).Select(g => g.First()).ToList();
+        _logger.LogInformation("Bluetooth scan completed with {DeviceCount} devices", merged.Count);
 
         var result = new List<BluetoothDeviceInfo>(merged.Count);
         foreach (var d in merged)
@@ -53,12 +61,14 @@ public sealed class BluetoothFacade : IBluetoothFacade
             var result = await service.CheckBatteryLevelAsync(deviceId);
             return result.BatteryLevel;
         }
-        catch (BluetoothException)
+        catch (BluetoothException ex)
         {
+            _logger.LogWarning(ex, "Bluetooth battery read failed");
             return null;
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogError(ex, "Unexpected Bluetooth battery read failure");
             return null;
         }
     }
@@ -76,15 +86,16 @@ public sealed class BluetoothFacade : IBluetoothFacade
         return isLe ? _le : _classic;
     }
 
-    private static async Task<bool> IsLeAsync(string deviceId)
+    private async Task<bool> IsLeAsync(string deviceId)
     {
         try
         {
             using var device = await BluetoothLEDevice.FromIdAsync(deviceId);
             return device is not null;
         }
-        catch
+        catch (Exception ex)
         {
+            _logger.LogDebug(ex, "Bluetooth LE probe failed");
             return false;
         }
     }

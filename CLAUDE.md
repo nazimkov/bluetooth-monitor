@@ -1,6 +1,8 @@
 # Instructions
 Always use ASD-STE100 Simplified Technical English when you talk to me.
 
+Application logging rules are in [docs/logging.md](docs/logging.md). Follow them for all logging changes.
+
 # Build & Run
 
 ```bash

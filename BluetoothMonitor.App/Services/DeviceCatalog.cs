@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BluetoothMonitor.App.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace BluetoothMonitor.App.Services;
 
@@ -11,10 +12,12 @@ public sealed class DeviceCatalog : IDeviceCatalog
 {
     private readonly IBluetoothFacade _facade;
     private readonly SemaphoreSlim _refreshLock = new(1, 1);
+    private readonly ILogger<DeviceCatalog> _logger;
 
-    public DeviceCatalog(IBluetoothFacade facade)
+    public DeviceCatalog(IBluetoothFacade facade, ILogger<DeviceCatalog> logger)
     {
         _facade = facade;
+        _logger = logger;
     }
 
     public ObservableCollection<DeviceItemViewModel> Devices { get; } = new();
@@ -30,6 +33,7 @@ public sealed class DeviceCatalog : IDeviceCatalog
             IsRefreshing = true;
             _facade.InvalidateCache();
             var list = await _facade.ListDevicesAsync();
+            _logger.LogInformation("Device catalog refresh started");
 
             var byId = Devices.ToDictionary(d => d.Id);
             foreach (var info in list)
@@ -48,6 +52,10 @@ public sealed class DeviceCatalog : IDeviceCatalog
             {
                 Devices.Remove(stale);
             }
+            _logger.LogInformation(
+                "Device catalog refresh completed with {DeviceCount} devices",
+                Devices.Count
+            );
         }
         finally
         {

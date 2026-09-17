@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using BluetoothMonitor.App.Models;
+using Microsoft.Extensions.Logging;
 
 namespace BluetoothMonitor.App.Services;
 
@@ -18,20 +19,27 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
     };
 
     private readonly string _filePath;
+    private readonly ILogger<JsonSettingsService> _logger;
     private readonly SemaphoreSlim _saveLock = new(1, 1);
     private SettingsModel _current = new();
     private CancellationTokenSource? _debounceCts;
 
-    public JsonSettingsService()
+    public JsonSettingsService(ILogger<JsonSettingsService> logger)
         : this(
             Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "BluetoothMonitor"
             )
-        ) { }
-
-    public JsonSettingsService(string directory)
+        )
     {
+        _logger = logger;
+    }
+
+    public JsonSettingsService(string directory, ILogger<JsonSettingsService>? logger = null)
+    {
+        _logger =
+            logger
+            ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<JsonSettingsService>.Instance;
         Directory.CreateDirectory(directory);
         _filePath = Path.Combine(directory, "settings.json");
     }
@@ -47,6 +55,7 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
         {
             if (!File.Exists(_filePath))
             {
+                _logger.LogInformation("Settings file not found. Creating default settings");
                 await SaveAsync();
                 return;
             }
@@ -59,7 +68,7 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Settings load failed: {ex.Message}");
+            _logger.LogError(ex, "Settings load failed");
         }
     }
 
@@ -70,6 +79,12 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
         {
             await using var stream = File.Create(_filePath);
             await JsonSerializer.SerializeAsync(stream, _current, JsonOpts);
+            _logger.LogDebug("Settings saved");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Settings save failed");
+            throw;
         }
         finally
         {

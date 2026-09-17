@@ -2,6 +2,7 @@ using BluetoothMonitor.App.Models;
 using BluetoothMonitor.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.Logging;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 
@@ -10,6 +11,7 @@ namespace BluetoothMonitor.App.ViewModels;
 public partial class NotificationsViewModel : ObservableObject
 {
     private readonly ISettingsService _settings;
+    private readonly ILogger<NotificationsViewModel> _logger;
     private readonly MediaPlayer _previewPlayer = new();
 
     private static readonly IReadOnlyDictionary<string, string> PreviewSoundUris = new Dictionary<
@@ -22,9 +24,10 @@ public partial class NotificationsViewModel : ObservableObject
         ["Alert"] = "ms-winsoundevent:Notification.Mail",
     };
 
-    public NotificationsViewModel(ISettingsService settings)
+    public NotificationsViewModel(ISettingsService settings, ILogger<NotificationsViewModel> logger)
     {
         _settings = settings;
+        _logger = logger;
         _threshold = settings.Current.LowBatteryThreshold;
         _notificationStyle = settings.Current.NotificationStyle;
         _alertSound = settings.Current.AlertSound;
@@ -87,7 +90,7 @@ public partial class NotificationsViewModel : ObservableObject
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Unable to preview alert sound: {ex}");
+            _logger.LogWarning(ex, "Unable to preview alert sound");
         }
     }
 }
