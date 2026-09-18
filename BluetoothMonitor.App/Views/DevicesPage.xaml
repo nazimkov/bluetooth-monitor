@@ -59,7 +59,11 @@
                 AutomationProperties.AutomationId="LowBatteryInfoBar"
             />
 
-            <TextBlock x:Uid="CurrentlyMonitoring" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+            <TextBlock
+                x:Uid="CurrentlyMonitoring"
+                Style="{StaticResource BluetoothMonitorSectionTitle}"
+                Margin="0"
+            />
             <controls:HeroCard
                 Device="{x:Bind ViewModel.SelectedDevice, Mode=OneWay}"
                 RefreshCommand="{x:Bind ViewModel.PollNowCommand}"
