@@ -4,9 +4,9 @@
     <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <WindowsSdkPackageVersion>10.0.22621.57</WindowsSdkPackageVersion>
-    <Version>1.0.0-beta.9</Version>
+    <Version>1.0.1</Version>
     <!-- MSIX accepts four numeric components. Keep this in sync with Version and Package.appxmanifest. -->
-    <AppxPackageVersion>1.0.0.9</AppxPackageVersion>
+    <AppxPackageVersion>1.0.1.0</AppxPackageVersion>
     <RootNamespace>BluetoothMonitor.App</RootNamespace>
     <AssemblyName>BluetoothMonitor</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
