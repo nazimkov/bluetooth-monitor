@@ -2,6 +2,8 @@
 
 Bluetooth battery monitor for Windows.
 
+[![Build applications](https://github.com/nazimkov/bluetooth-battery-hawk/actions/workflows/build.yml/badge.svg)](https://github.com/nazimkov/bluetooth-battery-hawk/actions/workflows/build.yml)
+
 ![Bluetooth Monitor main page](docs/main-page.png)
 
 ## Main features
