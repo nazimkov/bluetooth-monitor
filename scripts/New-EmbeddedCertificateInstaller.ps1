@@ -11,10 +11,13 @@ $ErrorActionPreference = 'Stop'
 $certificateBytes = [IO.File]::ReadAllBytes((Resolve-Path -LiteralPath $CertificatePath))
 $certificateBase64 = [Convert]::ToBase64String($certificateBytes)
 $certificateName = [IO.Path]::GetFileName($CertificatePath)
+# The name is inserted into generated PowerShell source. In a single-quoted
+# PowerShell string, a quote is escaped by doubling it.
+$escapedCertificateName = $certificateName.Replace("'", "''")
 
 $installer = @"
 `$ErrorActionPreference = 'Stop'
-`$certificateName = '$certificateName'
+`$certificateName = '$escapedCertificateName'
 `$certificateBytes = [Convert]::FromBase64String('$certificateBase64')
 `$temporaryCertificate = Join-Path ([IO.Path]::GetTempPath()) `$certificateName
 
