@@ -57,7 +57,7 @@
             <ctkc:SettingsCard x:Uid="TrayCriticalRangeCard" Description="{x:Bind ViewModel.CriticalRange, Mode=OneWay}"
                                AutomationProperties.AutomationId="CriticalRangeCard">
                 <ctkc:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                    <ImageIcon Source="ms-appx:///Assets/tray-critical.ico" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                     <Slider Minimum="{x:Bind ViewModel.CriticalMaximumMinimum}"
@@ -75,7 +75,7 @@
             <ctkc:SettingsCard x:Uid="TrayLowRangeCard" Description="{x:Bind ViewModel.LowRange, Mode=OneWay}"
                                AutomationProperties.AutomationId="LowRangeCard">
                 <ctkc:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                    <ImageIcon Source="ms-appx:///Assets/tray-low.ico" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
                     <Slider Minimum="{x:Bind ViewModel.LowMaximumMinimum, Mode=OneWay}"
@@ -92,7 +92,7 @@
 
             <ctkc:SettingsCard x:Uid="TrayNormalRangeCard" Description="{x:Bind ViewModel.NormalRange, Mode=OneWay}">
                 <ctkc:SettingsCard.HeaderIcon>
-                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                    <ImageIcon Source="ms-appx:///Assets/tray-connected.ico" />
                 </ctkc:SettingsCard.HeaderIcon>
                 <TextBlock Text="{x:Bind ViewModel.NormalRange, Mode=OneWay}"
                            AutomationProperties.AutomationId="NormalRangeValue" />
