@@ -106,10 +106,15 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
 
     private void UpdateBatteryBanners(byte? level)
     {
-        var threshold = _settings.Current.LowBatteryThreshold;
+        var threshold = _settings.Current.LowBatteryMaximum;
         IsCriticalBattery =
-            level.HasValue && level.Value <= 5 && _settings.Current.CriticalAlertUnder5;
-        IsLowBattery = level.HasValue && level.Value <= threshold && level.Value > 5;
+            level.HasValue
+            && level.Value <= _settings.Current.CriticalBatteryMaximum
+            && _settings.Current.CriticalAlertUnder5;
+        IsLowBattery =
+            level.HasValue
+            && level.Value <= threshold
+            && level.Value > _settings.Current.CriticalBatteryMaximum;
     }
 
     [RelayCommand]

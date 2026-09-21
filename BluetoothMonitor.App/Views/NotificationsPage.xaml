@@ -52,6 +52,56 @@
                 </StackPanel>
             </ctkc:SettingsCard>
 
+            <TextBlock x:Uid="TrayIconBatteryRanges" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+
+            <ctkc:SettingsCard x:Uid="TrayCriticalRangeCard" Description="{x:Bind ViewModel.CriticalRange, Mode=OneWay}"
+                               AutomationProperties.AutomationId="CriticalRangeCard">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Slider Minimum="{x:Bind ViewModel.CriticalMaximumMinimum}"
+                            Maximum="{x:Bind ViewModel.CriticalMaximumMaximum, Mode=OneWay}"
+                            StepFrequency="1" TickFrequency="1" Width="160"
+                            Value="{x:Bind ViewModel.CriticalMaximum, Mode=TwoWay}"
+                            AutomationProperties.AutomationId="CriticalMaximumSlider" />
+                    <TextBlock Text="{x:Bind ViewModel.CriticalMaximum, Mode=OneWay}" MinWidth="36"
+                               FontWeight="SemiBold" VerticalAlignment="Center"
+                               AutomationProperties.AutomationId="CriticalMaximumValue" />
+                    <TextBlock x:Uid="PercentUnit" VerticalAlignment="Center" />
+                </StackPanel>
+            </ctkc:SettingsCard>
+
+            <ctkc:SettingsCard x:Uid="TrayLowRangeCard" Description="{x:Bind ViewModel.LowRange, Mode=OneWay}"
+                               AutomationProperties.AutomationId="LowRangeCard">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <Slider Minimum="{x:Bind ViewModel.LowMaximumMinimum, Mode=OneWay}"
+                            Maximum="{x:Bind ViewModel.LowMaximumMaximum}"
+                            StepFrequency="1" TickFrequency="1" Width="160"
+                            Value="{x:Bind ViewModel.LowMaximum, Mode=TwoWay}"
+                            AutomationProperties.AutomationId="LowMaximumSlider" />
+                    <TextBlock Text="{x:Bind ViewModel.LowMaximum, Mode=OneWay}" MinWidth="36"
+                               FontWeight="SemiBold" VerticalAlignment="Center"
+                               AutomationProperties.AutomationId="LowMaximumValue" />
+                    <TextBlock x:Uid="PercentUnit" VerticalAlignment="Center" />
+                </StackPanel>
+            </ctkc:SettingsCard>
+
+            <ctkc:SettingsCard x:Uid="TrayNormalRangeCard" Description="{x:Bind ViewModel.NormalRange, Mode=OneWay}">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE7BA;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <TextBlock Text="{x:Bind ViewModel.NormalRange, Mode=OneWay}"
+                           AutomationProperties.AutomationId="NormalRangeValue" />
+            </ctkc:SettingsCard>
+
+            <InfoBar x:Name="TrayRangeValidation" IsOpen="{x:Bind ViewModel.HasRangeValidationMessage, Mode=OneWay}"
+                     Message="{x:Bind ViewModel.RangeValidationMessage, Mode=OneWay}"
+                     Severity="Warning" AutomationProperties.AutomationId="TrayRangeValidationMessage" />
+
             <ctkc:SettingsCard
                 x:Uid="NotificationStyleCard"
             >

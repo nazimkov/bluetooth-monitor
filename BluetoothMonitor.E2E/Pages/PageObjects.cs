@@ -145,9 +145,37 @@ public sealed class NotificationsPage(Window window)
         return slider.Value;
     }
 
+    public void SetCriticalMaximum(double value)
+    {
+        var slider = Window.ById("CriticalMaximumSlider").AsSlider();
+        slider.Value = value;
+        Keyboard.Press(VirtualKeyShort.TAB);
+        Thread.Sleep(100);
+    }
+
+    public double GetCriticalMaximum() => Window.ById("CriticalMaximumSlider").AsSlider().Value;
+
+    public void SetLowMaximum(double value)
+    {
+        var slider = Window.ById("LowMaximumSlider").AsSlider();
+        slider.Value = value;
+        Keyboard.Press(VirtualKeyShort.TAB);
+        Thread.Sleep(100);
+    }
+
+    public double GetLowMaximum() => Window.ById("LowMaximumSlider").AsSlider().Value;
+
+    public string CriticalRange() => Window.ById("CriticalRangeCard").Name;
+
+    public string LowRange() => Window.ById("LowRangeCard").Name;
+
+    public string NormalRange() => Window.ById("NormalRangeValue").Name;
+
     public void SelectNotificationStyleIndex(int index)
     {
         var combo = Window.ById("NotificationStyleCombo").AsComboBox();
+        if (combo.Patterns.ScrollItem.IsSupported)
+            combo.Patterns.ScrollItem.Pattern.ScrollIntoView();
         combo.Select(index);
         Thread.Sleep(200);
     }
@@ -173,7 +201,18 @@ public sealed class NotificationsPage(Window window)
 
     public void PreviewAlertSound() => Window.ClickId("PreviewSoundButton");
 
-    public void ToggleCriticalAlert() => Window.ClickId("CriticalAlertToggle");
+    public void ToggleCriticalAlert()
+    {
+        var toggle = Window.ById("CriticalAlertToggle");
+        if (toggle.Patterns.Toggle.IsSupported)
+        {
+            toggle.Patterns.Toggle.Pattern.Toggle();
+            return;
+        }
+        if (toggle.Patterns.ScrollItem.IsSupported)
+            toggle.Patterns.ScrollItem.Pattern.ScrollIntoView();
+        toggle.Click();
+    }
 
     public bool IsCriticalAlertOn() =>
         Window.ById("CriticalAlertToggle").Patterns.Toggle.Pattern.ToggleState.ToString() == "On";

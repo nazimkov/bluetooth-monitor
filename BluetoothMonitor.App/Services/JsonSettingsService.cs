@@ -63,6 +63,20 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
             var loaded = await JsonSerializer.DeserializeAsync<SettingsModel>(stream, JsonOpts);
             if (loaded is not null)
             {
+                // Older files have only lowBatteryThreshold. Preserve it as the new low maximum.
+                loaded.CriticalBatteryMaximum = Math.Clamp(loaded.CriticalBatteryMaximum, 0, 98);
+                var lowMaximum = loaded.LowBatteryMaximum;
+                if (
+                    lowMaximum == SettingsModelDefaults.DefaultLowMaximum
+                    && loaded.LowBatteryThreshold != SettingsModelDefaults.DefaultLowMaximum
+                )
+                    lowMaximum = loaded.LowBatteryThreshold;
+                loaded.LowBatteryMaximum = Math.Clamp(
+                    lowMaximum,
+                    loaded.CriticalBatteryMaximum + 1,
+                    99
+                );
+                loaded.LowBatteryThreshold = loaded.LowBatteryMaximum;
                 _current = loaded;
             }
         }
@@ -124,4 +138,9 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
         _debounceCts?.Dispose();
         _saveLock.Dispose();
     }
+}
+
+internal static class SettingsModelDefaults
+{
+    public const int DefaultLowMaximum = 20;
 }

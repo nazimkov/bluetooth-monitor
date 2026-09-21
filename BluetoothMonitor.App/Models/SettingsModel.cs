@@ -5,6 +5,8 @@ public class SettingsModel
     public string? SelectedDeviceId { get; set; }
     public string DeviceName { get; set; } = "Baseus Bowie D05";
     public int LowBatteryThreshold { get; set; } = 20;
+    public int CriticalBatteryMaximum { get; set; } = 5;
+    public int LowBatteryMaximum { get; set; } = 20;
     public bool CriticalAlertUnder5 { get; set; } = true;
     public bool SilenceDuringDnd { get; set; }
     public NotificationStyle NotificationStyle { get; set; } = NotificationStyle.BannerAndSound;
@@ -20,6 +22,8 @@ public class SettingsModel
             SelectedDeviceId = SelectedDeviceId,
             DeviceName = DeviceName,
             LowBatteryThreshold = LowBatteryThreshold,
+            CriticalBatteryMaximum = CriticalBatteryMaximum,
+            LowBatteryMaximum = LowBatteryMaximum,
             CriticalAlertUnder5 = CriticalAlertUnder5,
             SilenceDuringDnd = SilenceDuringDnd,
             NotificationStyle = NotificationStyle,

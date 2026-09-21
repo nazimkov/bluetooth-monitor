@@ -39,6 +39,12 @@
   <data name="LowBatteryAlert.Text" xml:space="preserve"><value>Low battery alert</value></data>
   <data name="LowBatteryThresholdCard.Header" xml:space="preserve"><value>Warn me when battery drops below</value></data>
   <data name="PercentUnit.Text" xml:space="preserve"><value>%</value></data>
+  <data name="TrayIconBatteryRanges.Text" xml:space="preserve"><value>Tray icon battery ranges</value></data>
+  <data name="TrayCriticalRangeCard.Header" xml:space="preserve"><value>Critical</value></data>
+  <data name="TrayLowRangeCard.Header" xml:space="preserve"><value>Low</value></data>
+  <data name="TrayNormalRangeCard.Header" xml:space="preserve"><value>Normal</value></data>
+  <data name="TrayRanges.InvalidCritical" xml:space="preserve"><value>Critical must end before Low starts.</value></data>
+  <data name="TrayRanges.InvalidLow" xml:space="preserve"><value>Low must end after Critical ends.</value></data>
   <data name="NotificationStyleCard.Header" xml:space="preserve"><value>Notification style</value></data>
   <data name="NotificationStyleCard.Description" xml:space="preserve"><value>How Bluetooth Monitor lets you know.</value></data>
   <data name="BannerSound.Content" xml:space="preserve"><value>Banner + sound</value></data>
@@ -53,8 +59,8 @@
   <data name="NoneSound.Text" xml:space="preserve"><value>None</value></data>
   <data name="PreviewButton.Content" xml:space="preserve"><value>Preview</value></data>
   <data name="Advanced.Text" xml:space="preserve"><value>Advanced</value></data>
-  <data name="CriticalAlertCard.Header" xml:space="preserve"><value>Critical alert under 5%</value></data>
-  <data name="CriticalAlertCard.Description" xml:space="preserve"><value>Send an extra urgent notification that can't be suppressed.</value></data>
+  <data name="CriticalAlertCard.Header" xml:space="preserve"><value>Critical alert</value></data>
+  <data name="CriticalAlertCard.Description" xml:space="preserve"><value>Send an extra urgent notification for the Critical tray range.</value></data>
   <data name="SilenceDndCard.Header" xml:space="preserve"><value>Silence during Do Not Disturb</value></data>
   <data name="SilenceDndCard.Description" xml:space="preserve"><value>Coming in a future release — Windows does not expose Focus assist state yet.</value></data>
   <data name="SilenceDndCard.ToolTipService.ToolTip" xml:space="preserve"><value>Windows Focus-assist state is not exposed to apps in the current OS build.</value></data>

@@ -85,7 +85,7 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
     private void HandleThresholds(string deviceId, byte level)
     {
         var settings = _settings.Current;
-        var threshold = settings.LowBatteryThreshold;
+        var threshold = settings.LowBatteryMaximum;
 
         if (level >= threshold + 5)
         {
@@ -95,7 +95,11 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
             return;
         }
 
-        if (level <= 5 && settings.CriticalAlertUnder5 && !_criticalNotified)
+        if (
+            level <= settings.CriticalBatteryMaximum
+            && settings.CriticalAlertUnder5
+            && !_criticalNotified
+        )
         {
             _notifications.ShowCriticalBattery(settings.DeviceName, level);
             _logger.LogInformation(

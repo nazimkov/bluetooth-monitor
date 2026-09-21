@@ -89,15 +89,17 @@ public sealed class TrayIconService : ITrayIconService
         if (_icon is null)
             return;
 
-        var fileName = !_lastConnected
-            ? "tray-offline.ico"
-            : _lastLevel switch
-            {
-                null => "tray-offline.ico",
-                <= 5 => "tray-critical.ico",
-                <= 20 => "tray-low.ico",
-                _ => "tray-connected.ico",
-            };
+        var fileName = BatteryRangePolicy.Classify(
+            _lastLevel,
+            _lastConnected,
+            _settings.Current
+        ) switch
+        {
+            BatteryIconState.Critical => "tray-critical.ico",
+            BatteryIconState.Low => "tray-low.ico",
+            BatteryIconState.Normal => "tray-connected.ico",
+            _ => "tray-offline.ico",
+        };
         var path = Path.Combine(AppContext.BaseDirectory, "Assets", fileName);
         var fallback = Path.Combine(AppContext.BaseDirectory, "Assets", "app.ico");
         var chosen = File.Exists(path) ? path : (File.Exists(fallback) ? fallback : null);

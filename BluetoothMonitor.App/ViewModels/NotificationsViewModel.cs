@@ -28,7 +28,9 @@ public partial class NotificationsViewModel : ObservableObject
     {
         _settings = settings;
         _logger = logger;
-        _threshold = settings.Current.LowBatteryThreshold;
+        _threshold = settings.Current.LowBatteryMaximum;
+        _criticalMaximum = settings.Current.CriticalBatteryMaximum;
+        _lowMaximum = settings.Current.LowBatteryMaximum;
         _notificationStyle = settings.Current.NotificationStyle;
         _alertSound = settings.Current.AlertSound;
         _criticalAlertUnder5 = settings.Current.CriticalAlertUnder5;
@@ -37,6 +39,24 @@ public partial class NotificationsViewModel : ObservableObject
 
     [ObservableProperty]
     private int _threshold;
+
+    [ObservableProperty]
+    private int _criticalMaximum;
+
+    [ObservableProperty]
+    private int _lowMaximum;
+
+    [ObservableProperty]
+    private string? _rangeValidationMessage;
+
+    public int CriticalMaximumMinimum => 0;
+    public int CriticalMaximumMaximum => LowMaximum - 1;
+    public int LowMaximumMinimum => CriticalMaximum + 1;
+    public int LowMaximumMaximum => 99;
+    public string CriticalRange => BatteryRangePolicy.Critical(_settings.Current).ToString();
+    public string LowRange => BatteryRangePolicy.Low(_settings.Current).ToString();
+    public string NormalRange => BatteryRangePolicy.Normal(_settings.Current).ToString();
+    public bool HasRangeValidationMessage => !string.IsNullOrEmpty(RangeValidationMessage);
 
     [ObservableProperty]
     private NotificationStyle _notificationStyle;
@@ -60,8 +80,64 @@ public partial class NotificationsViewModel : ObservableObject
         }
     }
 
-    partial void OnThresholdChanged(int value) =>
-        _settings.Update(s => s.LowBatteryThreshold = value);
+    partial void OnThresholdChanged(int value) => SetLowMaximum(value);
+
+    partial void OnCriticalMaximumChanged(int value)
+    {
+        if (!BatteryRangePolicy.IsCriticalMaximumValid(value, LowMaximum))
+        {
+            RangeValidationMessage = AppResources.Get("TrayRanges.InvalidCritical");
+            OnPropertyChanged(nameof(HasRangeValidationMessage));
+            _criticalMaximum = _settings.Current.CriticalBatteryMaximum;
+            OnPropertyChanged(nameof(CriticalMaximum));
+            return;
+        }
+        RangeValidationMessage = null;
+        OnPropertyChanged(nameof(HasRangeValidationMessage));
+        _settings.Update(s => s.CriticalBatteryMaximum = value);
+        NotifyRanges();
+    }
+
+    partial void OnLowMaximumChanged(int value) => SetLowMaximum(value);
+
+    private void SetLowMaximum(int value)
+    {
+        if (!BatteryRangePolicy.IsLowMaximumValid(value, CriticalMaximum))
+        {
+            RangeValidationMessage = AppResources.Get("TrayRanges.InvalidLow");
+            OnPropertyChanged(nameof(HasRangeValidationMessage));
+            _lowMaximum = _settings.Current.LowBatteryMaximum;
+            OnPropertyChanged(nameof(LowMaximum));
+            return;
+        }
+        RangeValidationMessage = null;
+        OnPropertyChanged(nameof(HasRangeValidationMessage));
+        _settings.Update(s =>
+        {
+            s.LowBatteryMaximum = value;
+            s.LowBatteryThreshold = value;
+        });
+        if (_threshold != value)
+        {
+            _threshold = value;
+            OnPropertyChanged(nameof(Threshold));
+        }
+        if (_lowMaximum != value)
+        {
+            _lowMaximum = value;
+            OnPropertyChanged(nameof(LowMaximum));
+        }
+        NotifyRanges();
+    }
+
+    private void NotifyRanges()
+    {
+        OnPropertyChanged(nameof(CriticalMaximumMaximum));
+        OnPropertyChanged(nameof(LowMaximumMinimum));
+        OnPropertyChanged(nameof(CriticalRange));
+        OnPropertyChanged(nameof(LowRange));
+        OnPropertyChanged(nameof(NormalRange));
+    }
 
     partial void OnNotificationStyleChanged(NotificationStyle value)
     {
