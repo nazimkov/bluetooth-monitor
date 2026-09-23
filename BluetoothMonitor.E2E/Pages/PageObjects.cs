@@ -1,6 +1,8 @@
+using System.Drawing;
 using BluetoothMonitor.E2E.Helpers;
 using BluetoothMonitor.E2E.TestDoubles;
 using FlaUI.Core.AutomationElements;
+using FlaUI.Core.Definitions;
 using FlaUI.Core.Input;
 using FlaUI.Core.WindowsAPI;
 
@@ -9,6 +11,40 @@ namespace BluetoothMonitor.E2E.Pages;
 public sealed class MainShell(Window window)
 {
     public Window Window { get; } = window;
+
+    public bool IsSearchEnabled() => Window.ById("NavSearch").IsEnabled;
+
+    public void Search(string query)
+    {
+        var search = Window.ById("NavSearch").AsTextBox();
+        search.Text = string.Empty;
+        search.Focus();
+        Keyboard.Type(query);
+    }
+
+    public void ClearSearch()
+    {
+        GoToDevices();
+
+        var search = Window.ById("NavSearch");
+        search.Focus();
+        var bounds = search.BoundingRectangle;
+        Mouse.Click(new Point(bounds.Right - 50, bounds.Top + bounds.Height / 2));
+    }
+
+    public void SubmitSearch()
+    {
+        Window.ById("NavSearch").Focus();
+        Keyboard.Press(VirtualKeyShort.ENTER);
+    }
+
+    public AutomationElement WaitForSearchSuggestion(string text) =>
+        UiWait.WaitFor(Window, cf => cf.ByName(text));
+
+    public void ChooseSearchSuggestion(string text)
+    {
+        WaitForSearchSuggestion(text).Click();
+    }
 
     public void GoToDevices() => Navigate("NavDevices", "DevicesPageTitle");
 

@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.ViewModels;
 using BluetoothMonitor.App.Views;
@@ -16,6 +18,11 @@ namespace BluetoothMonitor.App;
 
 public sealed partial class MainWindow : Window
 {
+    private sealed record SettingSearchResult(string Text, Type Page)
+    {
+        public override string ToString() => Text;
+    };
+
     private readonly ISettingsService _settings;
     private bool _reallyClose;
     private int _exitRequested;
@@ -51,7 +58,106 @@ public sealed partial class MainWindow : Window
 
         ContentFrame.Navigate(typeof(DevicesPage));
 
+        NavSearch.ItemsSource = CreateSettingSearchIndex();
+
         Closed += OnClosed;
+    }
+
+    private static IReadOnlyList<SettingSearchResult> CreateSettingSearchIndex() =>
+        new[]
+        {
+            new SettingSearchResult(
+                AppResources.Get("StartAtSignInCard.Header"),
+                typeof(GeneralPage)
+            ),
+            new SettingSearchResult(
+                AppResources.Get("KeepRunningCard.Header"),
+                typeof(GeneralPage)
+            ),
+            new SettingSearchResult(
+                AppResources.Get("RefreshIntervalCard.Header"),
+                typeof(GeneralPage)
+            ),
+            new SettingSearchResult(AppResources.Get("ThemeCard.Header"), typeof(GeneralPage)),
+            new SettingSearchResult(
+                AppResources.Get("LowBatteryThresholdCard.Header"),
+                typeof(NotificationsPage)
+            ),
+            new SettingSearchResult(
+                AppResources.Get("NotificationStyleCard.Header"),
+                typeof(NotificationsPage)
+            ),
+            new SettingSearchResult(
+                AppResources.Get("AlertSoundCard.Header"),
+                typeof(NotificationsPage)
+            ),
+            new SettingSearchResult(
+                AppResources.Get("CriticalAlertCard.Header"),
+                typeof(NotificationsPage)
+            ),
+            new SettingSearchResult(
+                AppResources.Get("SilenceDndCard.Header"),
+                typeof(NotificationsPage)
+            ),
+        };
+
+    private void NavSearch_TextChanged(
+        AutoSuggestBox sender,
+        AutoSuggestBoxTextChangedEventArgs args
+    )
+    {
+        if (args.Reason != AutoSuggestionBoxTextChangeReason.UserInput)
+            return;
+
+        var query = sender.Text.Trim();
+        sender.ItemsSource = string.IsNullOrEmpty(query)
+            ? CreateSettingSearchIndex()
+            :
+            [
+                .. CreateSettingSearchIndex()
+                    .Where(result =>
+                        result.Text.Contains(query, StringComparison.CurrentCultureIgnoreCase)
+                    ),
+            ];
+    }
+
+    private void NavSearch_SuggestionChosen(
+        AutoSuggestBox sender,
+        AutoSuggestBoxSuggestionChosenEventArgs args
+    )
+    {
+        var result =
+            args.SelectedItem as SettingSearchResult
+            ?? CreateSettingSearchIndex()
+                .FirstOrDefault(item =>
+                    string.Equals(
+                        item.Text,
+                        sender.Text.Trim(),
+                        StringComparison.CurrentCultureIgnoreCase
+                    )
+                );
+
+        if (result is not null)
+            NavigateToSetting(result);
+    }
+
+    private void NavSearch_QuerySubmitted(
+        AutoSuggestBox sender,
+        AutoSuggestBoxQuerySubmittedEventArgs args
+    )
+    {
+        var result = args.ChosenSuggestion as SettingSearchResult;
+
+        if (result is not null)
+            NavigateToSetting(result);
+    }
+
+    private void NavigateToSetting(SettingSearchResult result)
+    {
+        if (ContentFrame.CurrentSourcePageType != result.Page)
+            ContentFrame.Navigate(result.Page);
+
+        RootNav.SelectedItem = result.Page == typeof(GeneralPage) ? NavGeneral : NavNotifications;
     }
 
     private void OnSettingsChanged(object? sender, EventArgs e) => ApplyTheme();

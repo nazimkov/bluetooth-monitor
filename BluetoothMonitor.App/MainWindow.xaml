@@ -61,8 +61,11 @@
                 <AutoSuggestBox
                     x:Name="NavSearch"
                     x:Uid="NavSearch"
-                    IsEnabled="False"
+                    DisplayMemberPath="Text"
                     QueryIcon="Find"
+                    QuerySubmitted="NavSearch_QuerySubmitted"
+                    SuggestionChosen="NavSearch_SuggestionChosen"
+                    TextChanged="NavSearch_TextChanged"
                     AutomationProperties.AutomationId="NavSearch"
                 />
             </NavigationView.AutoSuggestBox>

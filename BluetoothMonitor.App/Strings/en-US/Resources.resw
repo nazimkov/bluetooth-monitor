@@ -9,7 +9,7 @@
   <data name="PublisherName" xml:space="preserve"><value>nazimkov</value></data>
   <data name="AppDescription" xml:space="preserve"><value>Bluetooth headset battery monitor</value></data>
   <data name="NavSearch.PlaceholderText" xml:space="preserve"><value>Find a setting</value></data>
-  <data name="NavSearch.ToolTipService.ToolTip" xml:space="preserve"><value>Search is coming in a future release</value></data>
+  <data name="NavSearch.ToolTipService.ToolTip" xml:space="preserve"><value>Search settings</value></data>
   <data name="NavDevices.Content" xml:space="preserve"><value>Devices</value></data>
   <data name="NavNotifications.Content" xml:space="preserve"><value>Notifications</value></data>
   <data name="NavGeneral.Content" xml:space="preserve"><value>General</value></data>
