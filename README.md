@@ -3,8 +3,8 @@
   <h1>Bluetooth Monitor</h1>
   <p>See battery levels for paired Bluetooth audio devices on Windows.</p>
   <p>
-    <a href="https://github.com/nazimkov/bluetooth-battery-hawk/actions/workflows/build.yml">
-      <img src="https://github.com/nazimkov/bluetooth-battery-hawk/actions/workflows/build.yml/badge.svg" alt="Build applications" />
+    <a href="https://github.com/nazimkov/bluetooth-monitor/actions/workflows/build.yml">
+      <img src="https://github.com/nazimkov/bluetooth-monitor/actions/workflows/build.yml/badge.svg" alt="Build applications" />
     </a>
   </p>
 </div>

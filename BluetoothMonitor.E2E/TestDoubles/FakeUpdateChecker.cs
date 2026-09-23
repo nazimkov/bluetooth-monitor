@@ -7,7 +7,7 @@ public sealed class FakeUpdateChecker
             new FakeUpdateResult(
                 IsUpdateAvailable: true,
                 LatestVersion: "v9.9.0-beta.1",
-                ReleaseUrl: "https://github.com/nazimkov/bluetooth-battery-hawk/releases/tag/v9.9.0-beta.1"
+                ReleaseUrl: "https://github.com/nazimkov/bluetooth-monitor/releases/tag/v9.9.0-beta.1"
             )
         );
 }
