@@ -66,6 +66,7 @@ public sealed partial class MainWindow : Window
     private static IReadOnlyList<SettingSearchResult> CreateSettingSearchIndex() =>
         new[]
         {
+            new SettingSearchResult(AppResources.Get("Startup.Text"), typeof(GeneralPage)),
             new SettingSearchResult(
                 AppResources.Get("StartAtSignInCard.Header"),
                 typeof(GeneralPage)
@@ -74,13 +75,23 @@ public sealed partial class MainWindow : Window
                 AppResources.Get("KeepRunningCard.Header"),
                 typeof(GeneralPage)
             ),
+            new SettingSearchResult(AppResources.Get("Polling.Text"), typeof(GeneralPage)),
             new SettingSearchResult(
                 AppResources.Get("RefreshIntervalCard.Header"),
                 typeof(GeneralPage)
             ),
+            new SettingSearchResult(AppResources.Get("Appearance.Text"), typeof(GeneralPage)),
             new SettingSearchResult(AppResources.Get("ThemeCard.Header"), typeof(GeneralPage)),
             new SettingSearchResult(
+                AppResources.Get("LowBatteryAlert.Text"),
+                typeof(NotificationsPage)
+            ),
+            new SettingSearchResult(
                 AppResources.Get("LowBatteryThresholdCard.Header"),
+                typeof(NotificationsPage)
+            ),
+            new SettingSearchResult(
+                AppResources.Get("TrayIconBatteryRanges.Text"),
                 typeof(NotificationsPage)
             ),
             new SettingSearchResult(
@@ -91,6 +102,7 @@ public sealed partial class MainWindow : Window
                 AppResources.Get("AlertSoundCard.Header"),
                 typeof(NotificationsPage)
             ),
+            new SettingSearchResult(AppResources.Get("Advanced.Text"), typeof(NotificationsPage)),
             new SettingSearchResult(
                 AppResources.Get("CriticalAlertCard.Header"),
                 typeof(NotificationsPage)
