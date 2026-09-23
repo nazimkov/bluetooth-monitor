@@ -5,7 +5,7 @@
   </Configurations>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
-    <File Path="CLAUDE.md" />
+    <File Path="AGENTS.md" />
   </Folder>
   <Project Path="BluetoothMonitor.App/BluetoothMonitor.App.csproj">
     <Platform Project="x64" />

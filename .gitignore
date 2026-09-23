@@ -20,8 +20,8 @@ mono_crash.*
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
-!.codex/skills/release/
-!.codex/skills/release/**
+!.agents/skills/release/
+!.agents/skills/release/**
 [Rr]eleases/
 x64/
 x86/
