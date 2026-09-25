@@ -9,6 +9,7 @@ namespace BluetoothMonitor.App.Services;
 public sealed class TrayIconService : ITrayIconService
 {
     private readonly ISettingsService _settings;
+    private readonly IDeviceCatalog _catalog;
     private readonly IBatteryPollingService _polling;
     private TrayIconWithContextMenu? _icon;
     private PopupMenu? _menu;
@@ -18,14 +19,18 @@ public sealed class TrayIconService : ITrayIconService
 
     public TrayIconService(
         ISettingsService settings,
+        IDeviceCatalog catalog,
         IBatteryPollingService polling,
         ILogger<TrayIconService> logger
     )
     {
         _settings = settings;
+        _catalog = catalog;
         _polling = polling;
         _logger = logger;
         _polling.BatteryUpdated += OnBatteryUpdated;
+        _settings.Changed += OnSettingsChanged;
+        _catalog.Refreshed += OnCatalogRefreshed;
     }
 
     public void Initialize()
@@ -57,11 +62,7 @@ public sealed class TrayIconService : ITrayIconService
             )
         );
 
-        _icon = new TrayIconWithContextMenu
-        {
-            ToolTip = $"{_settings.Current.DeviceName}",
-            ContextMenu = _menu,
-        };
+        _icon = new TrayIconWithContextMenu { ToolTip = GetToolTipText(), ContextMenu = _menu };
         _icon.MessageWindow.MouseEventReceived += (_, args) =>
         {
             if (args.MouseEvent is MouseEvent.IconLeftDoubleClick or MouseEvent.IconLeftMouseUp)
@@ -117,8 +118,33 @@ public sealed class TrayIconService : ITrayIconService
             }
         }
 
-        var label = _lastLevel is byte b ? $" {b}%" : string.Empty;
-        _icon.UpdateToolTip($"{_settings.Current.DeviceName}{label}");
+        _icon.UpdateToolTip(GetToolTipText());
+    }
+
+    private string GetToolTipText()
+    {
+        var selectedName = _catalog.FindById(_settings.Current.SelectedDeviceId)?.Name;
+        var deviceName = string.IsNullOrWhiteSpace(selectedName)
+            ? _settings.Current.DeviceName
+            : selectedName;
+        var label = _lastLevel is byte level ? $" {level}%" : string.Empty;
+        return $"{deviceName}{label}";
+    }
+
+    private void OnSettingsChanged(object? sender, EventArgs e)
+    {
+        if (_icon is not null)
+        {
+            _icon.UpdateToolTip(GetToolTipText());
+        }
+    }
+
+    private void OnCatalogRefreshed(object? sender, EventArgs e)
+    {
+        if (_icon is not null)
+        {
+            _icon.UpdateToolTip(GetToolTipText());
+        }
     }
 
     private void OnBatteryUpdated(object? sender, BatteryUpdatedEventArgs e)
@@ -129,6 +155,8 @@ public sealed class TrayIconService : ITrayIconService
     public void Dispose()
     {
         _polling.BatteryUpdated -= OnBatteryUpdated;
+        _settings.Changed -= OnSettingsChanged;
+        _catalog.Refreshed -= OnCatalogRefreshed;
         _icon?.Dispose();
     }
 }
