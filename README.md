@@ -6,6 +6,12 @@
     <a href="https://github.com/nazimkov/bluetooth-monitor/actions/workflows/build.yml">
       <img src="https://github.com/nazimkov/bluetooth-monitor/actions/workflows/build.yml/badge.svg" alt="Build MSIX" />
     </a>
+    <a href="https://github.com/nazimkov/bluetooth-monitor/releases/latest">
+      <img src="https://img.shields.io/github/v/release/nazimkov/bluetooth-monitor?label=version" alt="Latest version" />
+    </a>
+    <a href="https://github.com/nazimkov/bluetooth-monitor/blob/master/LICENSE.txt">
+      <img src="https://img.shields.io/github/license/nazimkov/bluetooth-monitor" alt="MIT license" />
+    </a>
   </p>
 </div>
 
