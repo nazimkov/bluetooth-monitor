@@ -4,7 +4,7 @@
   <p>See battery levels for paired Bluetooth audio devices on Windows.</p>
   <p>
     <a href="https://github.com/nazimkov/bluetooth-monitor/actions/workflows/build.yml">
-      <img src="https://github.com/nazimkov/bluetooth-monitor/actions/workflows/build.yml/badge.svg" alt="Build applications" />
+      <img src="https://github.com/nazimkov/bluetooth-monitor/actions/workflows/build.yml/badge.svg" alt="Build MSIX" />
     </a>
   </p>
 </div>
@@ -34,42 +34,30 @@ The current V1 scope has these limits:
 - Do Not Disturb silencing is displayed but disabled because Windows does not expose the required state.
 - Settings search, automatic updates, and in-app pairing are not implemented.
 
-## Install the portable app
-
-The portable build does not need .NET or the Windows App SDK. It runs on
-64-bit Windows 10 version 1809 or later, and on Windows 11.
-
-1. Open the project's **Releases** page on GitHub.
-2. Download `BluetoothMonitor-win-x64.zip` from the latest release.
-3. Extract the ZIP file to a folder, such as `C:\Apps\BluetoothMonitor`.
-4. Run `BluetoothMonitor.exe` from the extracted folder.
-
-Keep all files in the extracted folder. The executable needs the files beside
-it to start correctly.
-
-The app stores its settings in:
-
-`%LOCALAPPDATA%\BluetoothMonitor\settings.json`
-
-To remove the app, close it and delete the extracted folder. To also remove
-your settings, delete the `BluetoothMonitor` folder under `%LOCALAPPDATA%`.
-
 ## Build from source
 
-Install the .NET 10 SDK and the Windows 10 SDK version 22621 or later. Then run:
+Install the .NET 8 SDK and the Windows 10 SDK version 22621 or later. Then run:
 
 ```powershell
 dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64
 ```
 
-The portable package is built by the GitHub Actions workflow. Start it from
-**Actions > Build applications > Run workflow**, or push a tag that starts with
-`v`, such as `v1.0.0`.
+## Install the package
 
-## Install the packaged MSIX app
+1. Download the `.msix` file from the [GitHub releases page](https://github.com/nazimkov/bluetooth-monitor/releases).
+2. Open the file and follow the app installer steps.
 
-The packaged build is self-contained and is available from the **Build
-applications** workflow artifact or from a tagged release. A self-signed certificate
-must be trusted on the target computer before installation. See
-[docs/MSIX.md](docs/MSIX.md) for certificate creation, GitHub Actions setup,
-and installation commands.
+If Windows reports a certificate or publisher error, install the certificate
+from the MSIX file:
+
+1. Right-click the `.msix` file and select **Properties**.
+2. Open **Digital Signatures**.
+3. Select the signature in the list and click **Details**.
+4. Click **View Certificate**.
+5. Click **Install Certificate**.
+6. When prompted, choose **Local Machine**. Administrator approval is
+   required.
+7. Choose **Place all certificates in the following store**.
+8. Select **Trusted People**.
+9. Finish the certificate import.
+10. Run the app installer again.
