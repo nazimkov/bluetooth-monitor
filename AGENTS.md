@@ -13,7 +13,7 @@ dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64
 dotnet run --project BluetoothMonitor.App -c Debug -r win-x64
 ```
 
-The app targets `net8.0-windows10.0.22621.0` so it requires the Windows 10 22621 SDK and a Windows host. The WinUI project is packaged (MSIX) — first build will auto-generate a `BluetoothMonitor.App_TemporaryKey.pfx` signing cert.
+The app targets `net10.0-windows10.0.26100.0` and uses Windows SDK package version `10.0.28000.87`. It requires a Windows host. The WinUI project is packaged (MSIX) — first build will auto-generate a `BluetoothMonitor.App_TemporaryKey.pfx` signing cert.
 
 ## E2E (agent loop)
 

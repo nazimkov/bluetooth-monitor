@@ -42,7 +42,7 @@ The current V1 scope has these limits:
 
 ## Build from source
 
-Install the .NET 8 SDK and the Windows 10 SDK version 22621 or later. Then run:
+Install the .NET 10 SDK. The project targets `net10.0-windows10.0.26100.0` and restores Windows SDK package `10.0.28000.87`. Then run:
 
 ```powershell
 dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64

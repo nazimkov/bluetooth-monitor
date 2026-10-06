@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows10.0.22621.0</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.26100.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
-    <WindowsSdkPackageVersion>10.0.22621.57</WindowsSdkPackageVersion>
+    <WindowsSdkPackageVersion>10.0.28000.87</WindowsSdkPackageVersion>
     <Version>1.0.3</Version>
     <!-- MSIX accepts four numeric components. Keep this in sync with Version and Package.appxmanifest. -->
     <AppxPackageVersion>1.0.3.0</AppxPackageVersion>

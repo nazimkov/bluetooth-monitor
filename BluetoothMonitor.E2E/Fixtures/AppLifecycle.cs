@@ -321,7 +321,7 @@ public sealed class AppLifecycle : IDisposable
     private static string ResolveExePath()
     {
         var config = "Debug";
-        var tfm = "net8.0-windows10.0.22621.0";
+        var tfm = "net10.0-windows10.0.26100.0";
         var repoRoot = FindRepoRoot();
         var candidates = new[]
         {
