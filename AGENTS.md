@@ -74,13 +74,13 @@ Three projects:
 - Mockup's banners → `InfoBar` with Severity mapping info/warn/danger → Informational/Warning/Error.
 - Mockup's window chrome → `MicaBackdrop` + `ExtendsContentIntoTitleBar`; caption buttons are drawn by Windows.
 - Mockup's tray badge → not rendered in-app; the OS tray renders our .ico set with numeric text in tooltip.
+- When adding a setting or setting action, add it to `MainWindow.CreateSettingSearchIndex` with its displayed resource label.
 
 ## Intentionally scoped out of V1 (design-vs-backend gaps)
 
 - L/R/case sub-batteries for earbuds (Core returns a single byte — hero shows one ring).
 - Codec display (Windows does not expose A2DP negotiated codec).
 - DND / Focus-assist silencing (no public Windows API). The toggle row is rendered but disabled with an explanatory tooltip.
-- "Find a setting" sidebar search (disabled `AutoSuggestBox` placeholder).
 - "Check for updates" (shows an `InfoBar` "no update server configured").
 - "Pair new" in-app pairing (deep-links to `ms-settings:bluetooth?&pair` instead).
 

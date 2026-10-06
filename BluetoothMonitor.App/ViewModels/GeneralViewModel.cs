@@ -1,7 +1,9 @@
+using System;
 using System.Threading.Tasks;
 using BluetoothMonitor.App.Models;
 using BluetoothMonitor.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace BluetoothMonitor.App.ViewModels;
 
@@ -9,11 +11,17 @@ public partial class GeneralViewModel : ObservableObject
 {
     private readonly ISettingsService _settings;
     private readonly IStartupService _startup;
+    private readonly IUriLauncher _uriLauncher;
 
-    public GeneralViewModel(ISettingsService settings, IStartupService startup)
+    public GeneralViewModel(
+        ISettingsService settings,
+        IStartupService startup,
+        IUriLauncher uriLauncher
+    )
     {
         _settings = settings;
         _startup = startup;
+        _uriLauncher = uriLauncher;
 
         _startAtSignIn = settings.Current.StartAtSignIn;
         _keepRunningInBackground = settings.Current.KeepRunningInBackground;
@@ -75,6 +83,12 @@ public partial class GeneralViewModel : ObservableObject
 
     partial void OnKeepRunningInBackgroundChanged(bool value) =>
         _settings.Update(s => s.KeepRunningInBackground = value);
+
+    [RelayCommand]
+    private async Task OpenTaskbarSettingsAsync()
+    {
+        await _uriLauncher.LaunchAsync(new Uri(AppResources.Get("Url.TaskbarSettings")));
+    }
 
     partial void OnRefreshIntervalSecondsChanged(int value)
     {

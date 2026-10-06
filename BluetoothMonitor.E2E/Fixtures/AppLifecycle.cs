@@ -38,6 +38,7 @@ public sealed class AppLifecycle : IDisposable
 
     public string SettingsFilePath => Path.Combine(SettingsDirectory, "settings.json");
     public string NotificationLogPath => Path.Combine(SettingsDirectory, "notifications.jsonl");
+    public string UriLaunchesPath => Path.Combine(SettingsDirectory, "uri-launches.txt");
     public string FakeBatteryLevelPath => Path.Combine(SettingsDirectory, "battery-level.txt");
 
     public void SetFakeBatteryLevel(byte level) =>
@@ -195,6 +196,7 @@ public sealed class AppLifecycle : IDisposable
         };
         startInfo.Environment["BLUETOOTHMONITOR_E2E"] = "1";
         startInfo.Environment["BLUETOOTHMONITOR_E2E_SETTINGS_DIR"] = SettingsDirectory;
+        startInfo.Environment["BLUETOOTHMONITOR_E2E_URI_LAUNCHES_PATH"] = UriLaunchesPath;
         startInfo.Environment["BLUETOOTHMONITOR_E2E_INSTANCE_KEY"] = InstanceKey;
         startInfo.Environment["BLUETOOTHMONITOR_E2E_SELECTED_DEVICE_ID"] =
             FakeBluetoothFacade.EarbudsId;

@@ -75,6 +75,11 @@ public sealed partial class MainWindow : Window
                 AppResources.Get("KeepRunningCard.Header"),
                 typeof(GeneralPage)
             ),
+            new SettingSearchResult(
+                AppResources.Get("OpenTaskbarSettingsButton.Content"),
+                typeof(GeneralPage)
+            ),
+            new SettingSearchResult(AppResources.Get("SystemTray.Text"), typeof(GeneralPage)),
             new SettingSearchResult(AppResources.Get("Polling.Text"), typeof(GeneralPage)),
             new SettingSearchResult(
                 AppResources.Get("RefreshIntervalCard.Header"),

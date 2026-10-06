@@ -71,6 +71,10 @@
   <data name="StartAtSignInCard.Description" xml:space="preserve"><value>Launches silently and sits in the system tray.</value></data>
   <data name="KeepRunningCard.Header" xml:space="preserve"><value>Keep running in the background</value></data>
   <data name="KeepRunningCard.Description" xml:space="preserve"><value>Closing the window will minimize to tray instead of quitting.</value></data>
+  <data name="SystemTray.Text" xml:space="preserve"><value>System tray</value></data>
+  <data name="TaskbarSettingsCard.Header" xml:space="preserve"><value>Choose which icons stay visible in the tray</value></data>
+  <data name="TaskbarSettingsCard.Description" xml:space="preserve"><value>Open Windows taskbar settings. Under Other system tray icons, turn on Bluetooth Monitor.</value></data>
+  <data name="OpenTaskbarSettingsButton.Content" xml:space="preserve"><value>Open taskbar settings</value></data>
   <data name="Polling.Text" xml:space="preserve"><value>Polling</value></data>
   <data name="RefreshIntervalCard.Header" xml:space="preserve"><value>Refresh interval</value></data>
   <data name="RefreshIntervalCard.Description" xml:space="preserve"><value>How often Bluetooth Monitor reads the battery level. Lower values use slightly more battery on your PC.</value></data>
@@ -115,6 +119,7 @@
   <data name="Update.Latest" xml:space="preserve"><value>You have the latest version.</value></data>
   <data name="Update.Failed" xml:space="preserve"><value>Unable to check for updates. Try again later.</value></data>
   <data name="Url.BluetoothSettings" xml:space="preserve"><value>ms-settings:bluetooth</value></data>
+  <data name="Url.TaskbarSettings" xml:space="preserve"><value>ms-settings:taskbar</value></data>
   <data name="Url.PairBluetoothDevice" xml:space="preserve"><value>ms-settings:bluetooth?&amp;pair</value></data>
   <data name="Url.PrivacyPolicy" xml:space="preserve"><value>https://github.com/nazimkov/bluetooth-monitor/blob/master/PRIVACY_POLICY.md</value></data>
   <data name="Url.LatestReleaseApi" xml:space="preserve"><value>https://api.github.com/repos/nazimkov/bluetooth-monitor/releases/latest</value></data>

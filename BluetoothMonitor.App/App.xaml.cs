@@ -68,6 +68,14 @@ public partial class App : Application
         var services = new ServiceCollection();
         services.AddLogging(builder => builder.AddSerilog(Log.Logger, dispose: false));
         var e2e = E2ETestHost.IsEnabled;
+        if (e2e && E2ETestHost.UriLaunchesPath is { Length: > 0 } uriLaunchesPath)
+        {
+            services.AddSingleton<IUriLauncher>(_ => new E2EUriLauncher(uriLaunchesPath));
+        }
+        else
+        {
+            services.AddSingleton<IUriLauncher, WindowsUriLauncher>();
+        }
 
         if (e2e && E2ETestHost.SettingsDirectory is { Length: > 0 } settingsDir)
         {

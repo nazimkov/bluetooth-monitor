@@ -277,6 +277,8 @@ public sealed class GeneralPage(Window window)
 
     public void ToggleStartAtSignIn() => Window.ClickId("StartAtSignInToggle");
 
+    public void OpenTaskbarSettings() => Window.ClickId("OpenTaskbarSettingsButton");
+
     public bool IsStartAtSignInOn() =>
         Window.ById("StartAtSignInToggle").Patterns.Toggle.Pattern.ToggleState.ToString() == "On";
 

@@ -47,6 +47,19 @@
                 />
             </ctkc:SettingsCard>
 
+            <TextBlock x:Uid="SystemTray" Style="{StaticResource BluetoothMonitorSectionTitle}" />
+
+            <ctkc:SettingsCard x:Uid="TaskbarSettingsCard">
+                <ctkc:SettingsCard.HeaderIcon>
+                    <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE700;" />
+                </ctkc:SettingsCard.HeaderIcon>
+                <Button
+                    x:Uid="OpenTaskbarSettingsButton"
+                    Command="{x:Bind ViewModel.OpenTaskbarSettingsCommand}"
+                    AutomationProperties.AutomationId="OpenTaskbarSettingsButton"
+                />
+            </ctkc:SettingsCard>
+
             <TextBlock x:Uid="Polling" Style="{StaticResource BluetoothMonitorSectionTitle}" />
 
             <ctkc:SettingsCard

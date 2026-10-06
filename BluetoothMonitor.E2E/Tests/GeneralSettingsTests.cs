@@ -30,4 +30,25 @@ public sealed class GeneralSettingsTests(AppLifecycle app) : E2ETestBase(app)
             }
         );
     }
+
+    [Fact]
+    public void TaskbarSettingsButton_CallsUriLauncher()
+    {
+        CaptureOnFailure(
+            nameof(TaskbarSettingsButton_CallsUriLauncher),
+            () =>
+            {
+                Shell.GoToGeneral();
+                General.WaitUntilLoaded();
+                General.OpenTaskbarSettings();
+
+                UiWait.WaitUntil(
+                    () => File.Exists(App.UriLaunchesPath),
+                    TimeSpan.FromSeconds(5),
+                    "The URI launcher was not called."
+                );
+                Assert.Equal("ms-settings:taskbar", File.ReadAllText(App.UriLaunchesPath).Trim());
+            }
+        );
+    }
 }

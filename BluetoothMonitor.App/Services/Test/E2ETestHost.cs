@@ -9,6 +9,7 @@ public static class E2ETestHost
 {
     public const string EnvFlag = "BLUETOOTHMONITOR_E2E";
     public const string EnvSettingsDir = "BLUETOOTHMONITOR_E2E_SETTINGS_DIR";
+    public const string EnvUriLaunchesPath = "BLUETOOTHMONITOR_E2E_URI_LAUNCHES_PATH";
     public const string EnvInstanceKey = "BLUETOOTHMONITOR_E2E_INSTANCE_KEY";
     public const string EnvDevicesJson = "BLUETOOTHMONITOR_E2E_DEVICES_JSON";
     public const string EnvSelectedDeviceId = "BLUETOOTHMONITOR_E2E_SELECTED_DEVICE_ID";
@@ -19,6 +20,8 @@ public static class E2ETestHost
         string.Equals(Environment.GetEnvironmentVariable(EnvFlag), "1", StringComparison.Ordinal);
 
     public static string? SettingsDirectory => Environment.GetEnvironmentVariable(EnvSettingsDir);
+
+    public static string? UriLaunchesPath => Environment.GetEnvironmentVariable(EnvUriLaunchesPath);
 
     public static string InstanceKey =>
         Environment.GetEnvironmentVariable(EnvInstanceKey) is { Length: > 0 } key
