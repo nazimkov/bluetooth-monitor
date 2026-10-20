@@ -40,6 +40,12 @@ internal sealed class ExternalBluetoothFacade : IBluetoothFacade
     public async Task<string?> FindDeviceIdAsync(string deviceName) =>
         (string?)await InvokeAsync(nameof(FindDeviceIdAsync), deviceName);
 
+    public async Task<bool> IsConnectedAsync(string deviceId)
+    {
+        var devices = await ListDevicesAsync();
+        return devices.FirstOrDefault(device => device.Id == deviceId)?.IsConnected ?? false;
+    }
+
     public async Task<byte?> GetBatteryLevelAsync(string deviceId) =>
         (byte?)await InvokeAsync(nameof(GetBatteryLevelAsync), deviceId);
 

@@ -50,6 +50,29 @@ public sealed class BluetoothFacade : IBluetoothFacade
         return await _classic.FindDeviceIdAsync(deviceName);
     }
 
+    public async Task<bool> IsConnectedAsync(string deviceId)
+    {
+        if (string.IsNullOrWhiteSpace(deviceId))
+            return false;
+
+        try
+        {
+            var info = await DeviceInformation.CreateFromIdAsync(
+                deviceId,
+                new[] { "System.Devices.Aep.IsConnected" }
+            );
+            return info is not null
+                && info.Properties.TryGetValue("System.Devices.Aep.IsConnected", out var value)
+                && value is bool connected
+                && connected;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Bluetooth connection state check failed");
+            return false;
+        }
+    }
+
     public async Task<byte?> GetBatteryLevelAsync(string deviceId)
     {
         if (string.IsNullOrWhiteSpace(deviceId))

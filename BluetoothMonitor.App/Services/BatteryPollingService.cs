@@ -65,17 +65,28 @@ public sealed class BatteryPollingService : IBatteryPollingService, IDisposable
         if (string.IsNullOrWhiteSpace(id))
             return;
 
-        byte? level;
+        bool isConnected;
+        byte? level = null;
         try
         {
-            level = await _facade.GetBatteryLevelAsync(id);
+            isConnected = await _facade.IsConnectedAsync(id);
+            if (isConnected)
+                level = await _facade.GetBatteryLevelAsync(id);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Battery polling failed");
             return;
         }
-        BatteryUpdated?.Invoke(this, new BatteryUpdatedEventArgs { DeviceId = id, Level = level });
+        BatteryUpdated?.Invoke(
+            this,
+            new BatteryUpdatedEventArgs
+            {
+                DeviceId = id,
+                IsConnected = isConnected,
+                Level = level,
+            }
+        );
 
         if (level is null)
             return;

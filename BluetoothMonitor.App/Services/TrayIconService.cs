@@ -149,7 +149,7 @@ public sealed class TrayIconService : ITrayIconService
 
     private void OnBatteryUpdated(object? sender, BatteryUpdatedEventArgs e)
     {
-        UpdateIcon(e.Level, e.Level is not null);
+        UpdateIcon(e.Level, e.IsConnected);
     }
 
     public void Dispose()

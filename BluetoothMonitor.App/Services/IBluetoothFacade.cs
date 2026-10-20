@@ -16,6 +16,7 @@ public interface IBluetoothFacade
 {
     Task<IReadOnlyList<BluetoothDeviceInfo>> ListDevicesAsync();
     Task<string?> FindDeviceIdAsync(string deviceName);
+    Task<bool> IsConnectedAsync(string deviceId);
     Task<byte?> GetBatteryLevelAsync(string deviceId);
     void InvalidateCache();
 }

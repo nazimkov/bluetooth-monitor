@@ -60,6 +60,7 @@ public partial class App : Application
 
         var tray = Services.GetRequiredService<ITrayIconService>();
         tray.Initialize();
+        _ = polling.PollOnceAsync();
         logger.Information("Application initialization completed");
     }
 

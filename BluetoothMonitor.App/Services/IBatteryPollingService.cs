@@ -7,6 +7,7 @@ namespace BluetoothMonitor.App.Services;
 public sealed class BatteryUpdatedEventArgs : EventArgs
 {
     public required string DeviceId { get; init; }
+    public required bool IsConnected { get; init; }
     public required byte? Level { get; init; }
 }
 

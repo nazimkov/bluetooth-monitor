@@ -65,12 +65,13 @@ public sealed class DeviceCatalog : IDeviceCatalog
         }
     }
 
-    public void ApplyBatteryUpdate(string deviceId, byte? level)
+    public void ApplyBatteryUpdate(string deviceId, byte? level, bool isConnected)
     {
         var match = FindById(deviceId);
         if (match is not null)
         {
-            match.BatteryLevel = match.IsConnected ? level : null;
+            match.IsConnected = isConnected;
+            match.BatteryLevel = isConnected ? level : null;
         }
     }
 

@@ -80,7 +80,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
 
     private void OnBatteryUpdated(object? sender, BatteryUpdatedEventArgs e)
     {
-        _catalog.ApplyBatteryUpdate(e.DeviceId, e.Level);
+        _catalog.ApplyBatteryUpdate(e.DeviceId, e.Level, e.IsConnected);
         UpdateBatteryBanners(e.Level);
     }
 

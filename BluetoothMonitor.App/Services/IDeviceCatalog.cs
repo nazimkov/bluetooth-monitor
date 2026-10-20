@@ -11,6 +11,6 @@ public interface IDeviceCatalog
     bool IsRefreshing { get; }
     event EventHandler? Refreshed;
     Task RefreshAsync();
-    void ApplyBatteryUpdate(string deviceId, byte? level);
+    void ApplyBatteryUpdate(string deviceId, byte? level, bool isConnected);
     DeviceItemViewModel? FindById(string? id);
 }
