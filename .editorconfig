@@ -185,11 +185,12 @@ dotnet_code_quality.ca1802.api_surface = private, internal
 dotnet_code_quality.ca1822.api_surface = private, internal
 dotnet_code_quality.ca2208.api_surface = public
 dotnet_diagnostic.CS1591.severity = suggestion
-dotnet_analyzer_diagnostic.category-Style.severity = warning
+#Use explicit type instead of var
+dotnet_diagnostic.IDE0008.severity = none
 #Name can be simplified
 dotnet_diagnostic.IDE0002.severity = suggestion
 #Use explicit type instead of var
-dotnet_diagnostic.IDE0008.severity = suggestion
+dotnet_diagnostic.IDE0008.severity = none
 #Add missing cases to switch statement
 dotnet_diagnostic.IDE0010.severity = suggestion
 #Simplify LINQ expression
@@ -217,7 +218,7 @@ dotnet_diagnostic.IDE0090.severity = suggestion
 #namespace should match folder
 dotnet_diagnostic.IDE0130.severity = suggestion
 #file-scoped namespaces
-dotnet_diagnostic.IDE0160.severity = suggestion
+dotnet_diagnostic.IDE0160.severity = none
 #top-level-statements
 dotnet_diagnostic.IDE0210.severity = suggestion
 #Use primary constructor
@@ -616,6 +617,10 @@ dotnet_diagnostic.xUnit2001.severity = warning
 dotnet_diagnostic.xUnit2019.severity = warning
 
 # test code files
+
+# Default severity for all analyzer diagnostics
+dotnet_analyzer_diagnostic.severity = none
+
 [test/**/*.{cs,vb}]
 # Use literals where appropriate
 dotnet_diagnostic.CA1802.severity = none
