@@ -131,26 +131,14 @@ public sealed class TrayIconService : ITrayIconService
         return $"{deviceName}{label}";
     }
 
-    private void OnSettingsChanged(object? sender, EventArgs e)
-    {
-        if (_icon is not null)
-        {
-            _icon.UpdateToolTip(GetToolTipText());
-        }
-    }
+    private void OnSettingsChanged(object? sender, EventArgs e) =>
+        _icon?.UpdateToolTip(GetToolTipText());
 
-    private void OnCatalogRefreshed(object? sender, EventArgs e)
-    {
-        if (_icon is not null)
-        {
-            _icon.UpdateToolTip(GetToolTipText());
-        }
-    }
+    private void OnCatalogRefreshed(object? sender, EventArgs e) =>
+        _icon?.UpdateToolTip(GetToolTipText());
 
-    private void OnBatteryUpdated(object? sender, BatteryUpdatedEventArgs e)
-    {
+    private void OnBatteryUpdated(object? sender, BatteryUpdatedEventArgs e) =>
         UpdateIcon(e.Level, e.IsConnected);
-    }
 
     public void Dispose()
     {

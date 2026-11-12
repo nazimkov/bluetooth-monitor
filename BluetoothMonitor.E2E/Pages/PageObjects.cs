@@ -41,10 +41,7 @@ public sealed class MainShell(Window window)
     public AutomationElement WaitForSearchSuggestion(string text) =>
         UiWait.WaitFor(Window, cf => cf.ByName(text));
 
-    public void ChooseSearchSuggestion(string text)
-    {
-        WaitForSearchSuggestion(text).Click();
-    }
+    public void ChooseSearchSuggestion(string text) => WaitForSearchSuggestion(text).Click();
 
     public void GoToDevices() => Navigate("NavDevices", "DevicesPageTitle");
 
@@ -143,21 +140,19 @@ public sealed class DevicesPage(Window window)
 
     private bool IsVisible(string automationId) => Window.TryById(automationId) is not null;
 
-    private AutomationElement? FindDeviceElement(string deviceId)
-    {
-        return Window.TryById($"DeviceRow_{deviceId}")
-            ?? Window.TryById($"DeviceName_{deviceId}")
-            ?? deviceId switch
-            {
-                FakeBluetoothFacade.HeadsetId => Window.FindFirstDescendant(cf =>
-                    cf.ByName(FakeBluetoothFacade.HeadsetName)
-                ),
-                FakeBluetoothFacade.EarbudsId => Window.FindFirstDescendant(cf =>
-                    cf.ByName(FakeBluetoothFacade.EarbudsName)
-                ),
-                _ => null,
-            };
-    }
+    private AutomationElement? FindDeviceElement(string deviceId) =>
+        Window.TryById($"DeviceRow_{deviceId}")
+        ?? Window.TryById($"DeviceName_{deviceId}")
+        ?? deviceId switch
+        {
+            FakeBluetoothFacade.HeadsetId => Window.FindFirstDescendant(cf =>
+                cf.ByName(FakeBluetoothFacade.HeadsetName)
+            ),
+            FakeBluetoothFacade.EarbudsId => Window.FindFirstDescendant(cf =>
+                cf.ByName(FakeBluetoothFacade.EarbudsName)
+            ),
+            _ => null,
+        };
 }
 
 public sealed class NotificationsPage(Window window)

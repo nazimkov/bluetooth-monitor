@@ -189,15 +189,13 @@ public sealed class BluetoothFacade : IBluetoothFacade
         }
     }
 
-    private static string FormatMac(ulong address)
-    {
-        return string.Join(
+    private static string FormatMac(ulong address) =>
+        string.Join(
             ":",
             Enumerable
                 .Range(0, 6)
                 .Select(index => ((address >> (8 * (5 - index))) & 0xFF).ToString("X2"))
         );
-    }
 
     private static string FormatMac(string hex)
     {

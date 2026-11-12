@@ -73,10 +73,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
         await _polling.PollOnceAsync();
     }
 
-    private void OnCatalogRefreshed(object? sender, EventArgs e)
-    {
-        ApplySelection();
-    }
+    private void OnCatalogRefreshed(object? sender, EventArgs e) => ApplySelection();
 
     private void OnBatteryUpdated(object? sender, BatteryUpdatedEventArgs e)
     {
@@ -96,10 +93,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
         foreach (var d in Devices)
             d.IsMonitored = false;
         var match = _catalog.FindById(id);
-        if (match is not null)
-        {
-            match.IsMonitored = true;
-        }
+        match?.IsMonitored = true;
         SelectedDevice = match;
         UpdateBatteryBanners(SelectedDevice?.BatteryLevel);
     }
@@ -145,16 +139,12 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    private async Task OpenBluetoothSettings()
-    {
+    private async Task OpenBluetoothSettings() =>
         await Launcher.LaunchUriAsync(new Uri(AppResources.Get("Url.BluetoothSettings")));
-    }
 
     [RelayCommand]
-    private async Task PairNew()
-    {
+    private async Task PairNew() =>
         await Launcher.LaunchUriAsync(new Uri(AppResources.Get("Url.PairBluetoothDevice")));
-    }
 
     public void Dispose()
     {

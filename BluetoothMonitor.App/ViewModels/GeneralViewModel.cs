@@ -85,10 +85,8 @@ public partial class GeneralViewModel : ObservableObject
         _settings.Update(s => s.KeepRunningInBackground = value);
 
     [RelayCommand]
-    private async Task OpenTaskbarSettingsAsync()
-    {
+    private async Task OpenTaskbarSettingsAsync() =>
         await _uriLauncher.LaunchAsync(new Uri(AppResources.Get("Url.TaskbarSettings")));
-    }
 
     partial void OnRefreshIntervalSecondsChanged(int value)
     {

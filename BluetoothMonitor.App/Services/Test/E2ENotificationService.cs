@@ -15,13 +15,11 @@ public sealed class E2ENotificationService : INotificationService
         Write("Low battery", $"{deviceName} is at {level}%. Charge soon to avoid disconnection.");
     }
 
-    public void ShowCriticalBattery(string deviceName, byte level)
-    {
+    public void ShowCriticalBattery(string deviceName, byte level) =>
         Write(
             "Critical battery",
             $"{deviceName} is at {level}%. Charge now to avoid disconnection."
         );
-    }
 
     private static void Write(string title, string message)
     {

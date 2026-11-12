@@ -6,8 +6,7 @@ namespace BluetoothMonitor.E2E.Tests;
 public sealed class NotificationsSettingsTests(AppLifecycle app) : E2ETestBase(app)
 {
     [Fact]
-    public void AlertSoundPreview_PlaysWithoutBreakingThePage()
-    {
+    public void AlertSoundPreview_PlaysWithoutBreakingThePage() =>
         CaptureOnFailure(
             nameof(AlertSoundPreview_PlaysWithoutBreakingThePage),
             () =>
@@ -29,11 +28,9 @@ public sealed class NotificationsSettingsTests(AppLifecycle app) : E2ETestBase(a
                 Assert.Equal("Ping", Notifications.SelectedAlertSoundText());
             }
         );
-    }
 
     [Fact]
-    public async Task LowBatteryThreshold_PersistsToSettingsJson()
-    {
+    public async Task LowBatteryThreshold_PersistsToSettingsJson() =>
         await CaptureOnFailureAsync(
             nameof(LowBatteryThreshold_PersistsToSettingsJson),
             async () =>
@@ -51,5 +48,4 @@ public sealed class NotificationsSettingsTests(AppLifecycle app) : E2ETestBase(a
                 Assert.Equal(35, Notifications.GetLowBatteryThreshold(), 0.1);
             }
         );
-    }
 }

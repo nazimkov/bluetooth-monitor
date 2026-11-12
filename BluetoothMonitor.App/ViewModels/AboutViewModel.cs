@@ -34,10 +34,7 @@ public partial class AboutViewModel : ObservableObject
     private Uri? _updateReleaseUrl;
 
     [RelayCommand]
-    private void CheckForUpdates()
-    {
-        _ = CheckForUpdatesAsync();
-    }
+    private void CheckForUpdates() => _ = CheckForUpdatesAsync();
 
     private async Task CheckForUpdatesAsync()
     {
@@ -66,10 +63,8 @@ public partial class AboutViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task OpenPrivacyPolicy()
-    {
+    private async Task OpenPrivacyPolicy() =>
         await Launcher.LaunchUriAsync(new Uri(AppResources.Get("Url.PrivacyPolicy")));
-    }
 
     private static string GetVersion()
     {
