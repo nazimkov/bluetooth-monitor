@@ -123,7 +123,7 @@ namespace BluetoothMonitor.Core.Utils
         {
             try
             {
-                SetupDiGetDeviceProperty(
+                _ = SetupDiGetDeviceProperty(
                     hdevinfo,
                     ref data,
                     ref pk,

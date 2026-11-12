@@ -28,7 +28,7 @@ public sealed class AppLifecycle : IDisposable
     public AppLifecycle()
     {
         SettingsDirectory = Path.Combine(Path.GetTempPath(), "BluetoothMonitorE2E", RunId);
-        Directory.CreateDirectory(SettingsDirectory);
+        _ = Directory.CreateDirectory(SettingsDirectory);
         InstanceKey = $"BluetoothMonitor.App.E2E.{RunId}";
         ExePath = ResolveExePath();
 
@@ -399,7 +399,7 @@ public sealed class AppLifecycle : IDisposable
             try
             {
                 process.Kill(entireProcessTree: true);
-                process.WaitForExit(3000);
+                _ = process.WaitForExit(3000);
             }
             catch
             {

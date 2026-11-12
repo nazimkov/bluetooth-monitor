@@ -35,7 +35,7 @@ public static class FailureArtifacts
     {
         var safeName = Sanitize(testName);
         var dir = Path.Combine(RootDirectory, runId, safeName);
-        Directory.CreateDirectory(dir);
+        _ = Directory.CreateDirectory(dir);
 
         var screenshotPath = Path.Combine(dir, "screenshot.png");
         var treePath = Path.Combine(dir, "uia-tree.txt");
@@ -67,40 +67,40 @@ public static class FailureArtifacts
         }
 
         var sb = new StringBuilder();
-        sb.AppendLine("# E2E failure");
-        sb.AppendLine();
-        sb.AppendLine($"**Test:** `{testName}`");
-        sb.AppendLine($"**Run:** `{runId}`");
-        sb.AppendLine();
-        sb.AppendLine("## Message");
-        sb.AppendLine();
-        sb.AppendLine(message);
+        _ = sb.AppendLine("# E2E failure");
+        _ = sb.AppendLine();
+        _ = sb.AppendLine($"**Test:** `{testName}`");
+        _ = sb.AppendLine($"**Run:** `{runId}`");
+        _ = sb.AppendLine();
+        _ = sb.AppendLine("## Message");
+        _ = sb.AppendLine();
+        _ = sb.AppendLine(message);
         if (exception is not null)
         {
-            sb.AppendLine();
-            sb.AppendLine("## Exception");
-            sb.AppendLine();
-            sb.AppendLine("```");
-            sb.AppendLine(exception.ToString());
-            sb.AppendLine("```");
+            _ = sb.AppendLine();
+            _ = sb.AppendLine("## Exception");
+            _ = sb.AppendLine();
+            _ = sb.AppendLine("```");
+            _ = sb.AppendLine(exception.ToString());
+            _ = sb.AppendLine("```");
         }
 
-        sb.AppendLine();
-        sb.AppendLine("## Artifacts");
-        sb.AppendLine();
-        sb.AppendLine($"- Screenshot: `{screenshotPath}`");
-        sb.AppendLine($"- UIA tree: `{treePath}`");
-        sb.AppendLine();
-        sb.AppendLine("## Repro");
-        sb.AppendLine();
-        sb.AppendLine("```bash");
-        sb.AppendLine("dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64");
-        sb.AppendLine(
+        _ = sb.AppendLine();
+        _ = sb.AppendLine("## Artifacts");
+        _ = sb.AppendLine();
+        _ = sb.AppendLine($"- Screenshot: `{screenshotPath}`");
+        _ = sb.AppendLine($"- UIA tree: `{treePath}`");
+        _ = sb.AppendLine();
+        _ = sb.AppendLine("## Repro");
+        _ = sb.AppendLine();
+        _ = sb.AppendLine("```bash");
+        _ = sb.AppendLine("dotnet build BluetoothMonitor.slnx -c Debug -p:Platform=x64");
+        _ = sb.AppendLine(
             $"dotnet test BluetoothMonitor.E2E -c Debug -p:Platform=x64 --filter FullyQualifiedName~{safeName}"
         );
-        sb.AppendLine("```");
-        sb.AppendLine();
-        sb.AppendLine(
+        _ = sb.AppendLine("```");
+        _ = sb.AppendLine();
+        _ = sb.AppendLine(
             "Read `failure.md`, `screenshot.png`, and `uia-tree.txt` before editing product code."
         );
 
@@ -151,8 +151,8 @@ public static class FailureArtifacts
             return;
         }
 
-        sb.Append(' ', depth * 2);
-        sb.AppendLine($"[{controlType}] Id=\"{id}\" Name=\"{Truncate(name, 60)}\"");
+        _ = sb.Append(' ', depth * 2);
+        _ = sb.AppendLine($"[{controlType}] Id=\"{id}\" Name=\"{Truncate(name, 60)}\"");
 
         AutomationElement[] children;
         try

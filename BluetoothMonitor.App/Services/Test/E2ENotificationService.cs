@@ -27,7 +27,7 @@ public sealed class E2ENotificationService : INotificationService
         if (string.IsNullOrWhiteSpace(directory))
             return;
 
-        Directory.CreateDirectory(directory);
+        _ = Directory.CreateDirectory(directory);
         var entry = JsonSerializer.Serialize(new { title, message });
         lock (Sync)
         {

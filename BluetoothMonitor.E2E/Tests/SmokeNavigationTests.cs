@@ -48,7 +48,7 @@ public sealed class SmokeNavigationTests(AppLifecycle app) : E2ETestBase(app)
                 Shell.AssertPageTitle("GeneralPageTitle", "General");
 
                 Shell.GoToAbout();
-                App.MainWindow.ById("AboutPageTitle");
+                _ = App.MainWindow.ById("AboutPageTitle");
                 Shell.AssertPageTitle("AboutPageTitle", "About Bluetooth Monitor");
 
                 Shell.GoToDevices();

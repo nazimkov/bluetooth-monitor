@@ -56,7 +56,7 @@ public sealed partial class MainWindow : Window
         ApplyTheme();
         _settings.Changed += OnSettingsChanged;
 
-        ContentFrame.Navigate(typeof(DevicesPage));
+        _ = ContentFrame.Navigate(typeof(DevicesPage));
 
         NavSearch.ItemsSource = CreateSettingSearchIndex();
 
@@ -172,7 +172,7 @@ public sealed partial class MainWindow : Window
     private void NavigateToSetting(SettingSearchResult result)
     {
         if (ContentFrame.CurrentSourcePageType != result.Page)
-            ContentFrame.Navigate(result.Page);
+            _ = ContentFrame.Navigate(result.Page);
 
         RootNav.SelectedItem = result.Page == typeof(GeneralPage) ? NavGeneral : NavNotifications;
     }
@@ -208,7 +208,7 @@ public sealed partial class MainWindow : Window
         };
         if (page is not null && ContentFrame.CurrentSourcePageType != page)
         {
-            ContentFrame.Navigate(page);
+            _ = ContentFrame.Navigate(page);
         }
     }
 
@@ -235,7 +235,7 @@ public sealed partial class MainWindow : Window
     {
         if (!DispatcherQueue.HasThreadAccess)
         {
-            DispatcherQueue.TryEnqueue(ShowWindow);
+            _ = DispatcherQueue.TryEnqueue(ShowWindow);
             return;
         }
 

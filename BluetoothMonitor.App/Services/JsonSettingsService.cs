@@ -40,7 +40,7 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
         _logger =
             logger
             ?? Microsoft.Extensions.Logging.Abstractions.NullLogger<JsonSettingsService>.Instance;
-        Directory.CreateDirectory(directory);
+        _ = Directory.CreateDirectory(directory);
         _filePath = Path.Combine(directory, "settings.json");
     }
 
@@ -102,7 +102,7 @@ public sealed class JsonSettingsService : ISettingsService, IDisposable
         }
         finally
         {
-            _saveLock.Release();
+            _ = _saveLock.Release();
         }
     }
 

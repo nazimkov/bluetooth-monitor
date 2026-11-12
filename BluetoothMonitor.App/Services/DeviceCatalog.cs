@@ -41,7 +41,7 @@ public sealed class DeviceCatalog : IDeviceCatalog
                 if (byId.TryGetValue(info.Id, out var existing))
                 {
                     existing.Update(info);
-                    byId.Remove(info.Id);
+                    _ = byId.Remove(info.Id);
                 }
                 else
                 {
@@ -50,7 +50,7 @@ public sealed class DeviceCatalog : IDeviceCatalog
             }
             foreach (var stale in byId.Values)
             {
-                Devices.Remove(stale);
+                _ = Devices.Remove(stale);
             }
             _logger.LogInformation(
                 "Device catalog refresh completed with {DeviceCount} devices",
@@ -60,7 +60,7 @@ public sealed class DeviceCatalog : IDeviceCatalog
         finally
         {
             IsRefreshing = false;
-            _refreshLock.Release();
+            _ = _refreshLock.Release();
             Refreshed?.Invoke(this, EventArgs.Empty);
         }
     }

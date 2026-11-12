@@ -59,7 +59,7 @@ public partial class AboutViewModel : ObservableObject
     private async Task OpenUpdate()
     {
         if (UpdateReleaseUrl is not null)
-            await Launcher.LaunchUriAsync(UpdateReleaseUrl);
+            _ = await Launcher.LaunchUriAsync(UpdateReleaseUrl);
     }
 
     [RelayCommand]

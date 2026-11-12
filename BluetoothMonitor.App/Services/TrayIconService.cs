@@ -67,8 +67,10 @@ public sealed class TrayIconService : ITrayIconService
         {
             if (args.MouseEvent is MouseEvent.IconLeftDoubleClick or MouseEvent.IconLeftMouseUp)
             {
-                App.Current.MainWindow?.DispatcherQueue.TryEnqueue(() =>
-                    App.Current.MainWindow?.ShowWindow()
+                _ = (
+                    App.Current.MainWindow?.DispatcherQueue.TryEnqueue(() =>
+                        App.Current.MainWindow?.ShowWindow()
+                    )
                 );
             }
         };
@@ -110,7 +112,7 @@ public sealed class TrayIconService : ITrayIconService
             try
             {
                 var icon = new System.Drawing.Icon(chosen);
-                _icon.UpdateIcon(icon.Handle);
+                _ = _icon.UpdateIcon(icon.Handle);
             }
             catch (Exception ex)
             {

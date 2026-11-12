@@ -59,7 +59,7 @@ public partial class DevicesViewModel : ObservableObject, IDisposable
         // selection can silently fail to reach the UI.
         if (_dispatcher is not null)
         {
-            _dispatcher.TryEnqueue(async () => await RefreshAndPollAsync());
+            _ = _dispatcher.TryEnqueue(async () => await RefreshAndPollAsync());
         }
         else
         {

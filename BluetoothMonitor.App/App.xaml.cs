@@ -67,52 +67,52 @@ public partial class App : Application
     private static IServiceProvider ConfigureServices()
     {
         var services = new ServiceCollection();
-        services.AddLogging(builder => builder.AddSerilog(Log.Logger, dispose: false));
+        _ = services.AddLogging(builder => builder.AddSerilog(Log.Logger, dispose: false));
         var e2e = E2ETestHost.IsEnabled;
         if (e2e && E2ETestHost.UriLaunchesPath is { Length: > 0 } uriLaunchesPath)
         {
-            services.AddSingleton<IUriLauncher>(_ => new E2EUriLauncher(uriLaunchesPath));
+            _ = services.AddSingleton<IUriLauncher>(_ => new E2EUriLauncher(uriLaunchesPath));
         }
         else
         {
-            services.AddSingleton<IUriLauncher, WindowsUriLauncher>();
+            _ = services.AddSingleton<IUriLauncher, WindowsUriLauncher>();
         }
 
         if (e2e && E2ETestHost.SettingsDirectory is { Length: > 0 } settingsDir)
         {
-            services.AddSingleton<ISettingsService>(_ => new JsonSettingsService(settingsDir));
+            _ = services.AddSingleton<ISettingsService>(_ => new JsonSettingsService(settingsDir));
         }
         else
         {
-            services.AddSingleton<ISettingsService, JsonSettingsService>();
+            _ = services.AddSingleton<ISettingsService, JsonSettingsService>();
         }
 
         if (e2e)
         {
-            services.AddSingleton<IBluetoothFacade>(_ => LoadE2EFacade());
-            services.AddSingleton<INotificationService, E2ENotificationService>();
-            services.AddSingleton<IStartupService, NoOpStartupService>();
-            services.AddSingleton<ITrayIconService, NoOpTrayIconService>();
+            _ = services.AddSingleton<IBluetoothFacade>(_ => LoadE2EFacade());
+            _ = services.AddSingleton<INotificationService, E2ENotificationService>();
+            _ = services.AddSingleton<IStartupService, NoOpStartupService>();
+            _ = services.AddSingleton<ITrayIconService, NoOpTrayIconService>();
         }
         else if (AppEnvironment.IsPackaged)
         {
-            services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
-            services.AddSingleton<INotificationService, AppNotificationService>();
-            services.AddSingleton<IStartupService, StartupTaskService>();
-            services.AddSingleton<ITrayIconService, TrayIconService>();
+            _ = services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
+            _ = services.AddSingleton<INotificationService, AppNotificationService>();
+            _ = services.AddSingleton<IStartupService, StartupTaskService>();
+            _ = services.AddSingleton<ITrayIconService, TrayIconService>();
         }
         else
         {
-            services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
-            services.AddSingleton<INotificationService, NoOpNotificationService>();
-            services.AddSingleton<IStartupService, NoOpStartupService>();
-            services.AddSingleton<ITrayIconService, TrayIconService>();
+            _ = services.AddSingleton<IBluetoothFacade, BluetoothFacade>();
+            _ = services.AddSingleton<INotificationService, NoOpNotificationService>();
+            _ = services.AddSingleton<IStartupService, NoOpStartupService>();
+            _ = services.AddSingleton<ITrayIconService, TrayIconService>();
         }
 
-        services.AddSingleton<IDeviceCatalog, DeviceCatalog>();
-        services.AddSingleton<IBatteryPollingService, BatteryPollingService>();
-        services.AddSingleton<ISingleInstanceService, AppInstanceService>();
-        services.AddSingleton<IUpdateChecker>(_ =>
+        _ = services.AddSingleton<IDeviceCatalog, DeviceCatalog>();
+        _ = services.AddSingleton<IBatteryPollingService, BatteryPollingService>();
+        _ = services.AddSingleton<ISingleInstanceService, AppInstanceService>();
+        _ = services.AddSingleton<IUpdateChecker>(_ =>
         {
             if (e2e)
             {
@@ -129,13 +129,13 @@ public partial class App : Application
             return new GitHubUpdateChecker(client);
         });
 
-        services.AddSingleton<MainViewModel>();
-        services.AddTransient<DevicesViewModel>();
-        services.AddTransient<NotificationsViewModel>();
-        services.AddTransient<GeneralViewModel>();
-        services.AddTransient<AboutViewModel>();
+        _ = services.AddSingleton<MainViewModel>();
+        _ = services.AddTransient<DevicesViewModel>();
+        _ = services.AddTransient<NotificationsViewModel>();
+        _ = services.AddTransient<GeneralViewModel>();
+        _ = services.AddTransient<AboutViewModel>();
 
-        services.AddSingleton<MainWindow>();
+        _ = services.AddSingleton<MainWindow>();
 
         return services.BuildServiceProvider();
     }
@@ -170,7 +170,7 @@ public partial class App : Application
     {
         if (args.Arguments.TryGetValue("action", out var action) && action == "open")
         {
-            MainWindow?.DispatcherQueue.TryEnqueue(() => MainWindow?.ShowWindow());
+            _ = (MainWindow?.DispatcherQueue.TryEnqueue(() => MainWindow?.ShowWindow()));
         }
     }
 

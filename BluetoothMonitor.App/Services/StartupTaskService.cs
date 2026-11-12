@@ -25,7 +25,7 @@ public sealed class StartupTaskService : IStartupService
         {
             if (task.State is StartupTaskState.Disabled)
             {
-                await task.RequestEnableAsync();
+                _ = await task.RequestEnableAsync();
                 _logger.LogInformation("Startup task enabled");
             }
         }

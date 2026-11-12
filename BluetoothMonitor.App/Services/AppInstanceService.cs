@@ -19,8 +19,10 @@ public sealed class AppInstanceService : ISingleInstanceService
         {
             instance.Activated += (_, e) =>
             {
-                App.Current.MainWindow?.DispatcherQueue.TryEnqueue(() =>
-                    App.Current.MainWindow?.ShowWindow()
+                _ = (
+                    App.Current.MainWindow?.DispatcherQueue.TryEnqueue(() =>
+                        App.Current.MainWindow?.ShowWindow()
+                    )
                 );
             };
             return false;

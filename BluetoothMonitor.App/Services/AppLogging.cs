@@ -17,7 +17,7 @@ internal static class AppLogging
             "BluetoothMonitor",
             "Logs"
         );
-        Directory.CreateDirectory(logDirectory);
+        _ = Directory.CreateDirectory(logDirectory);
 
         var version =
             Assembly

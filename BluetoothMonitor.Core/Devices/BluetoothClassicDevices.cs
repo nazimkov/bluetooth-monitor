@@ -104,7 +104,7 @@ namespace BluetoothMonitor.Core.Devices
             {
                 if (deviceInfoPtr != IntPtr.Zero)
                 {
-                    SetupAPI.SetupDiDestroyDeviceInfoList(deviceInfoPtr);
+                    _ = SetupAPI.SetupDiDestroyDeviceInfoList(deviceInfoPtr);
                 }
             }
         }

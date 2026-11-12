@@ -70,7 +70,7 @@ public sealed class MainShell(Window window)
             item.Click();
         }
 
-        Window.ById(pageTitleId);
+        _ = Window.ById(pageTitleId);
     }
 
     public void AssertPageTitle(string automationId, string expectedText)
@@ -90,7 +90,7 @@ public sealed class DevicesPage(Window window)
 
     public void WaitUntilLoaded()
     {
-        Window.ById("DevicesPageTitle");
+        _ = Window.ById("DevicesPageTitle");
         UiWait.WaitUntil(
             () =>
                 HasDevice(FakeBluetoothFacade.HeadsetId)
@@ -207,7 +207,7 @@ public sealed class NotificationsPage(Window window)
         var combo = Window.ById("NotificationStyleCombo").AsComboBox();
         if (combo.Patterns.ScrollItem.IsSupported)
             combo.Patterns.ScrollItem.Pattern.ScrollIntoView();
-        combo.Select(index);
+        _ = combo.Select(index);
         Thread.Sleep(200);
     }
 
@@ -220,7 +220,7 @@ public sealed class NotificationsPage(Window window)
     public void SelectAlertSoundIndex(int index)
     {
         var combo = Window.ById("AlertSoundCombo").AsComboBox();
-        combo.Select(index);
+        _ = combo.Select(index);
         Thread.Sleep(200);
     }
 
@@ -260,7 +260,7 @@ public sealed class GeneralPage(Window window)
     public void SelectThemeIndex(int index)
     {
         var combo = Window.ById("ThemeCombo").AsComboBox();
-        combo.Select(index);
+        _ = combo.Select(index);
         Thread.Sleep(200);
     }
 
@@ -282,7 +282,7 @@ public sealed class GeneralPage(Window window)
     public void SelectRefreshIntervalIndex(int index)
     {
         var combo = Window.ById("RefreshIntervalCombo").AsComboBox();
-        combo.Select(index);
+        _ = combo.Select(index);
         Thread.Sleep(200);
     }
 

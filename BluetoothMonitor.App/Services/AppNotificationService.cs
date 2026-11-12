@@ -37,7 +37,7 @@ public sealed class AppNotificationService : INotificationService
 
         if (style == NotificationStyle.BannerOnly || style == NotificationStyle.SoundOnly)
         {
-            builder.MuteAudio();
+            _ = builder.MuteAudio();
         }
 
         AppNotificationManager.Default.Show(builder.BuildNotification());
