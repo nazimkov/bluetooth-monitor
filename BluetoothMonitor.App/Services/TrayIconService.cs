@@ -89,15 +89,12 @@ public sealed class TrayIconService : ITrayIconService
         if (_icon is null)
             return;
 
-        var fileName = BatteryRangePolicy.Classify(
-            _lastLevel,
-            _lastConnected,
-            _settings.Current
-        ) switch
+        var state = BatteryRangePolicy.Classify(_lastLevel, _lastConnected, _settings.Current);
+        var fileName = state switch
         {
-            BatteryIconState.Critical => "tray-critical.ico",
-            BatteryIconState.Low => "tray-low.ico",
-            BatteryIconState.Normal => "tray-connected.ico",
+            BatteryIconState.Critical => GetLevelIconName("critical"),
+            BatteryIconState.Low => GetLevelIconName("low"),
+            BatteryIconState.Normal => GetLevelIconName("connected"),
             _ => "tray-offline.ico",
         };
         var path = Path.Combine(AppContext.BaseDirectory, "Assets", fileName);
@@ -118,6 +115,18 @@ public sealed class TrayIconService : ITrayIconService
         }
 
         _icon.UpdateToolTip(GetToolTipText());
+    }
+
+    private string GetLevelIconName(string state)
+    {
+        if (_lastLevel is not byte level)
+            return $"tray-{state}.ico";
+
+        // The ten icons show the nearest 10 percent level. The 10 percent icon is the minimum.
+        var levelBucket = Math.Clamp(((int)level + 5) / 10 * 10, 10, 100);
+        var levelIcon = $"tray-{state}-{levelBucket}.ico";
+        var path = Path.Combine(AppContext.BaseDirectory, "Assets", levelIcon);
+        return File.Exists(path) ? levelIcon : $"tray-{state}.ico";
     }
 
     private string GetToolTipText()

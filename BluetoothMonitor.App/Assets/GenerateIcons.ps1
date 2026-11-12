@@ -137,19 +137,21 @@ function Draw-AppIcon {
 function Draw-TrayIcon {
     param(
         [System.Drawing.Graphics]$Graphics,
-        [ValidateSet('Connected', 'Low', 'Critical', 'Offline')][string]$State
+        [ValidateSet('Connected', 'Low', 'Critical', 'Offline')][string]$State,
+        [int]$Level = -1
     )
 
     $spec = switch ($State) {
-        'Connected' { @{ Color = '43C697'; Level = 0.82 } }
-        'Low'       { @{ Color = 'F0B44F'; Level = 0.34 } }
-        'Critical'  { @{ Color = 'F0717A'; Level = 0.16 } }
-        'Offline'   { @{ Color = 'A2AFBD'; Level = 0.00 } }
+        'Connected' { @{ Color = '43C697'; DefaultLevel = 82 } }
+        'Low'       { @{ Color = 'F0B44F'; DefaultLevel = 34 } }
+        'Critical'  { @{ Color = 'F0717A'; DefaultLevel = 16 } }
+        'Offline'   { @{ Color = 'A2AFBD'; DefaultLevel = 0 } }
     }
     $tint = Get-Color $spec.Color
+    $chargeLevel = if ($Level -ge 0) { $Level } else { $spec.DefaultLevel }
 
-    if ($spec.Level -gt 0) {
-        $fillWidth = 143 * $spec.Level
+    if ($chargeLevel -gt 0) {
+        $fillWidth = 143 * ($chargeLevel / 100.0)
         $fillRadius = [single][math]::Min(11.0, $fillWidth / 2.0)
         $fillBrush = [System.Drawing.SolidBrush]::new($tint)
         Fill-RoundedRectangle -Graphics $Graphics -X 48 -Y 96 -Width $fillWidth -Height 64 -Radius $fillRadius -Brush $fillBrush
@@ -177,7 +179,7 @@ function Draw-TrayIcon {
 function New-RenderedIcon {
     param(
         [int]$Size,
-        [ValidateSet('App', 'Connected', 'Low', 'Critical', 'Offline', 'LockScreen')][string]$Style
+        [string]$Style
     )
 
     $large = [System.Drawing.Bitmap]::new(
@@ -209,6 +211,9 @@ function New-RenderedIcon {
         $tip = [System.Drawing.SolidBrush]::new($white)
         Fill-RoundedRectangle -Graphics $largeGraphics -X 210 -Y 106 -Width 19 -Height 44 -Radius 8 -Brush $tip
         $tip.Dispose()
+    }
+    elseif ($Style -match '^(Connected|Low|Critical)(10|20|30|40|50|60|70|80|90|100)$') {
+        Draw-TrayIcon -Graphics $largeGraphics -State $Matches[1] -Level ([int]$Matches[2])
     }
     else {
         Draw-TrayIcon -Graphics $largeGraphics -State $Style
@@ -368,6 +373,14 @@ Write-IconFile -Style Connected -Path (Join-Path $assetDirectory 'tray-connected
 Write-IconFile -Style Low -Path (Join-Path $assetDirectory 'tray-low.ico')
 Write-IconFile -Style Critical -Path (Join-Path $assetDirectory 'tray-critical.ico')
 Write-IconFile -Style Offline -Path (Join-Path $assetDirectory 'tray-offline.ico')
+
+foreach ($state in @('Connected', 'Low', 'Critical')) {
+    foreach ($level in @(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) {
+        $style = "$state$level"
+        $name = "tray-$($state.ToLowerInvariant())-$level.ico"
+        Write-IconFile -Style $style -Path (Join-Path $assetDirectory $name)
+    }
+}
 
 Write-IconPng -Size 44 -Style App -Path (Join-Path $assetDirectory 'Square44x44Logo.png')
 Write-IconPng -Size 150 -Style App -Path (Join-Path $assetDirectory 'Square150x150Logo.png')
