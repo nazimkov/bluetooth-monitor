@@ -1,5 +1,4 @@
 using BluetoothMonitor.E2E.Fixtures;
-using BluetoothMonitor.E2E.Helpers;
 using Xunit;
 
 namespace BluetoothMonitor.E2E.Tests;

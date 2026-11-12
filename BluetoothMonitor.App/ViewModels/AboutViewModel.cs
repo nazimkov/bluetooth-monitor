@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using BluetoothMonitor.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;

@@ -1,4 +1,3 @@
-using System;
 using Microsoft.UI.Xaml.Data;
 
 namespace BluetoothMonitor.App.Converters;

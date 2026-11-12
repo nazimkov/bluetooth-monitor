@@ -1,7 +1,3 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace BluetoothMonitor.App.Services;
 
 public sealed class BatteryUpdatedEventArgs : EventArgs

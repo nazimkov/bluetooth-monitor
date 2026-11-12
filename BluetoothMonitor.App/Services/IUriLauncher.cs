@@ -1,6 +1,3 @@
-using System;
-using System.Threading.Tasks;
-
 namespace BluetoothMonitor.App.Services;
 
 public interface IUriLauncher

@@ -1,8 +1,4 @@
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using BluetoothMonitor.App.Models;
 using BluetoothMonitor.Core;
 using BluetoothMonitor.Core.Devices;

@@ -1,4 +1,3 @@
-using System;
 using BluetoothMonitor.App.Models;
 using BluetoothMonitor.App.Services;
 using Microsoft.UI.Xaml.Data;

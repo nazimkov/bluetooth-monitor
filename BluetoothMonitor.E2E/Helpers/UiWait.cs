@@ -1,7 +1,5 @@
-using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core.Conditions;
-using FlaUI.Core.Definitions;
 using FlaUI.Core.Tools;
 
 namespace BluetoothMonitor.E2E.Helpers;

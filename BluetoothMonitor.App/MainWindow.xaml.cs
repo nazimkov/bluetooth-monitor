@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.ViewModels;
 using BluetoothMonitor.App.Views;

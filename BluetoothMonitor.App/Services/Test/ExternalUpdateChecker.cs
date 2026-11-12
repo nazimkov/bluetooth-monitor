@@ -1,5 +1,3 @@
-using BluetoothMonitor.App.Services;
-
 namespace BluetoothMonitor.App.Services.Test;
 
 internal sealed class ExternalUpdateChecker(object inner) : IUpdateChecker

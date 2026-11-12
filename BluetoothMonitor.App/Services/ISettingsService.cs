@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using BluetoothMonitor.App.Models;
 
 namespace BluetoothMonitor.App.Services;

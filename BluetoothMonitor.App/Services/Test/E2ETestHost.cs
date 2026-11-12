@@ -1,5 +1,3 @@
-using System;
-
 namespace BluetoothMonitor.App.Services.Test;
 
 /// <summary>

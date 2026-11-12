@@ -1,12 +1,7 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using BluetoothMonitor.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.UI.Dispatching;
 using Windows.System;
 
 namespace BluetoothMonitor.App.ViewModels;

@@ -2,7 +2,6 @@ using System.Drawing;
 using BluetoothMonitor.E2E.Helpers;
 using BluetoothMonitor.E2E.TestDoubles;
 using FlaUI.Core.AutomationElements;
-using FlaUI.Core.Definitions;
 using FlaUI.Core.Input;
 using FlaUI.Core.WindowsAPI;
 

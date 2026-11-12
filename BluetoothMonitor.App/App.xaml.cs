@@ -1,17 +1,12 @@
-using System;
-using System.IO;
 using System.Reflection;
 using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.Services.Test;
 using BluetoothMonitor.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml;
-using Microsoft.Windows.AppLifecycle;
 using Microsoft.Windows.AppNotifications;
 using Serilog;
-using WinRT;
 
 namespace BluetoothMonitor.App;
 

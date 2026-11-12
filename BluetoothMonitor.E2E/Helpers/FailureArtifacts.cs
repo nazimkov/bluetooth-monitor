@@ -1,5 +1,4 @@
 using System.Text;
-using FlaUI.Core;
 using FlaUI.Core.AutomationElements;
 using FlaUI.Core.Capturing;
 

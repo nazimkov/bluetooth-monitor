@@ -1,8 +1,5 @@
-using System;
-using System.IO;
 using H.NotifyIcon.Core;
 using Microsoft.Extensions.Logging;
-using Microsoft.UI.Xaml.Controls;
 
 namespace BluetoothMonitor.App.Services;
 

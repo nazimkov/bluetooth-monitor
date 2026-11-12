@@ -1,8 +1,6 @@
-using System;
 using BluetoothMonitor.App.Services;
 using BluetoothMonitor.App.Services.Test;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using WinRT;
 

@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using BluetoothMonitor.App.Models;
 using BluetoothMonitor.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;

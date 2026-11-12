@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace BluetoothMonitor.App.Services;
 
 public interface IStartupService

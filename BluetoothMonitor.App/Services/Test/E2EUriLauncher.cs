@@ -1,8 +1,3 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using BluetoothMonitor.App.Services;
-
 namespace BluetoothMonitor.App.Services.Test;
 
 internal sealed class E2EUriLauncher : IUriLauncher

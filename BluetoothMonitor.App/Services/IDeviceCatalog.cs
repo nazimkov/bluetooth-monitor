@@ -1,6 +1,4 @@
-using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using BluetoothMonitor.App.ViewModels;
 
 namespace BluetoothMonitor.App.Services;
